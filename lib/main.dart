@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'service_locator.dart';
 
 import 'login_page.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  setupLocator();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
