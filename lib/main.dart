@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:serveit/pages/XDLoginSignUp.dart';
+import 'package:serveit/pages/intro_page.dart';
 import 'service_locator.dart';
 
 import 'login_page.dart';
