@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:serveit/pages/signin_page.dart';
 import './XDBarsAppleiOSUIBarsStatusBariPhoneXSOnLight.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -160,15 +161,23 @@ class XDLoginSelected extends StatelessWidget {
                       // Adobe XD layer: 'button' (group)
                       Stack(
                         children: <Widget>[
+                          RaisedButton(
+                            onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePage())),
+                            child: Text("WOOOOW"),
+                          ),
+                          InkWell(
+                            onTap:()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePage())) ,
+                            child:
                           // Adobe XD layer: 'Rectangle 3' (shape)
                           Container(
                             width: 315.0,
                             height: 60.0,
+
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               color: const Color(0xff20bf55),
                             ),
-                          ),
+                          )),
                           Transform.translate(
                             offset: Offset(124.5, 19.0),
                             child:

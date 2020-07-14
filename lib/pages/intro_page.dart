@@ -3,10 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/constants.dart';
 import 'package:serveit/pages/XDLoginSelected.dart';
-import './XDBarsAppleiOSUIBarsStatusBariPhoneXSOnLight.dart';
+import 'package:serveit/pages/onboarding_page.dart';
+import 'package:serveit/pages/signin_page.dart';
 
-class XDLoginSignUp extends StatelessWidget {
-  XDLoginSignUp({
+class IntroPage extends StatelessWidget {
+  IntroPage({
     Key key,
   }) : super(key: key);
 
@@ -72,36 +73,33 @@ class XDLoginSignUp extends StatelessWidget {
                           width: 164.0,
                           child: Text(
                             'Main logo text',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 20,
-                              color: const Color(0xffffffff),
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style:Constants.buttonTextStyle.copyWith(
+                                fontWeight: FontWeight.bold,
+                            color: Constants.white,
+                            fontSize: 24),
                             textAlign: TextAlign.center,
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(10,6.0,10,50),
+                          margin: EdgeInsets.fromLTRB(15,6.0,15,50),
                           child:
                         Text(
                           'A very long description like: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidi.',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 14,
-                            color: const Color(0xffffffff),
+                          style: Constants.buttonTextStyle.copyWith(
+                            fontSize: 16,
+                            color: Constants.white,
                             fontWeight: FontWeight.w300,
                           ),
                           textAlign: TextAlign.center,
                         )),
 
                           Button("Login", Constants.white,
-                              Constants.primaryText, ()=> {
+                              Constants.buttonTextStyle, ()=> {
                             goToLogin(context)
                           })
                         ,
-                        Button("Signup", Constants.transparent, Constants.white,
-                            goToLogin),
+                        Button("Signup", Constants.transparent, Constants.buttonTextStyle.copyWith(color:Constants.white),
+                                ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePage()))),
                       ],
                     ))),
 

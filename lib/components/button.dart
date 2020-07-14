@@ -4,39 +4,38 @@ import 'package:serveit/constants.dart';
 
 class Button extends StatelessWidget {
   String text;
-  Color buttonColor, textColor;
+  Color buttonColor;
+  TextStyle textStyle;
   Function onPressButton;
-  void onPress()
-  {
+
+  void onPress() {
     onPressButton();
   }
 
-  Button(this.text, this.buttonColor, this.textColor, this.onPressButton);
+  Button(this.text, this.buttonColor, this.textStyle, this.onPressButton);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: Constants.primaryColor,
-        onTap: onPress,
-        child: Container(
-          margin: EdgeInsets.all(6.0),
-          width: 262.0,
-          height: 60.0,
-        padding: EdgeInsets.symmetric(vertical:20.0,horizontal:40.0),
-          decoration: BoxDecoration(
-            borderRadius: Constants.buttonBorderRadius,
+    return Container(
+        margin: EdgeInsets.all(6.0),
+        child: Material(
             color: buttonColor,
-          ),
-          child: Center(child:Text(
-            text,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 14,
-              color: textColor,
-//              fontWeight: FontWeight.w300,
-            )),
-          ),
-        ));
+            borderRadius: Constants.buttonBorderRadius,
+            child: InkWell(
+                borderRadius: Constants.buttonBorderRadius,
+                splashColor: Constants.primaryColor,
+                onTap: onPress,
+                child: Container(
+                  width: 262.0,
+                  padding:
+                      EdgeInsets.symmetric(vertical: 15.0, horizontal: 40.0),
+                  child: Center(
+                    child: Text(text,
+                        textAlign: TextAlign.center, style: textStyle),
+                  ),
+                )
+            )
+        )
+    );
   }
 }
