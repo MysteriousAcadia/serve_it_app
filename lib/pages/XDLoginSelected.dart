@@ -162,11 +162,11 @@ class XDLoginSelected extends StatelessWidget {
                       Stack(
                         children: <Widget>[
                           RaisedButton(
-                            onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePage())),
+                            onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePageParent())),
                             child: Text("WOOOOW"),
                           ),
                           InkWell(
-                            onTap:()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePage())) ,
+                            onTap:()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePageParent())) ,
                             child:
                           // Adobe XD layer: 'Rectangle 3' (shape)
                           Container(

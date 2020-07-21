@@ -12,10 +12,7 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial());
 
-  UserRepository userRepository;
-  AuthBloc() {
-    userRepository = UserRepository();
-  }
+  UserRepository userRepository = UserRepository();
 
   @override
   Stream<AuthState> mapEventToState(

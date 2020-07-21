@@ -1,33 +1,40 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:serveit/blocs/login_bloc/login_bloc.dart';
+import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/constants.dart';
 import 'package:serveit/sign_in.dart';
 
 import 'XDLoginSelected.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+class MyHomePageParent extends StatelessWidget {
+  MyHomePageParent({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(create: (context)=>LoginBloc(),
+    child: MyHomePage(),);
+    
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController passwordCtrl = TextEditingController();
+  LoginBloc loginBloc;
+
+  @override
+  Widget build(BuildContext context) {
+
+    loginBloc = BlocProvider.of<LoginBloc>(context); 
+
     final emailField = TextField(
+      controller: emailCtrl,
       obscureText: false,
       style: Constants.buttonTextStyle,
       decoration: InputDecoration(
@@ -37,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
               OutlineInputBorder(borderRadius: Constants.buttonBorderRadius)),
     );
     final passwordField = TextField(
+      controller: passwordCtrl ,
       obscureText: true,
       style: Constants.buttonTextStyle,
       decoration: InputDecoration(
@@ -53,17 +61,18 @@ class _MyHomePageState extends State<MyHomePage> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => XDLoginSelected()));
+          
+        
         },
         child: Text("Login",
             textAlign: TextAlign.center,
             style: Constants.buttonTextStyle.copyWith(
-                color: Colors.white, )),
+              color: Colors.white,
+            )),
       ),
     );
 
-    return Scaffold(
+    return  Scaffold(
       body: Center(
         child: Container(
           color: Colors.white,
@@ -73,8 +82,30 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text("Log In",
-                style: Constants.buttonTextStyle.copyWith(fontWeight: FontWeight.bold,fontSize: 33),),
+                BlocBuilder<LoginBloc,LoginState>(builder: (context,state){
+                  if(state is LoginInitial)
+                  {
+                    return Text("Initial");
+                  }
+                  else if( state is LoginLoadingState)
+                  {
+                    return Text("Loading");
+                  }
+                  else if(state is LoginFailureState)
+                  {
+                    return Text("Failure");
+                  }
+                  else if(state is LoginSuccessState)
+                  {
+                    return Text("Success");
+                  }
+                })
+                ,
+                Text(
+                  "Log In",
+                  style: Constants.buttonTextStyle
+                      .copyWith(fontWeight: FontWeight.bold, fontSize: 33),
+                ),
                 SizedBox(height: 45.0),
                 emailField,
                 SizedBox(height: 25.0),
@@ -83,21 +114,26 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 35.0,
                 ),
                 Button(
-                  "Login",
-                  Constants.green,
-                  Constants.buttonTextStyle.copyWith(color: Constants.white),
-                    ()=>{}
-                ),
+                    "Login",
+                    Constants.green,
+                    Constants.buttonTextStyle.copyWith(color: Constants.white),
+                    () => {
+                      loginBloc.add(OnLoginPressed(loginType: "email",email: emailCtrl.text,password: passwordCtrl.text))
+                    }),
                 SizedBox(
                   height: 15.0,
                 ),
                 Button(
-                    "Sign in with Google",
+                    emailCtrl.text,
                     Constants.primaryColor,
                     Constants.buttonTextStyle.copyWith(color: Constants.white),
-                    () => {signInWithGoogle().then((value) => print(value)).catchError((onError)=>print(onError))}),
+                    () => {
+                          signInWithGoogle()
+                              .then((value) => print(value))
+                              .catchError((onError) => print(onError))
+                        }),
                 Button(
-                    "Sign in with Apple",
+                    passwordCtrl.text,
                     Constants.primaryColor,
                     Constants.buttonTextStyle.copyWith(color: Constants.white),
                     () => {}),
@@ -105,12 +141,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     "Sign in with Facebook",
                     Constants.primaryColor,
                     Constants.buttonTextStyle.copyWith(color: Constants.white),
-                    () => {signInWithFacebook().then((value) => print(value)).catchError((onError)=>print(onError))}),
+                    () => {
+                          signInWithFacebook()
+                              .then((value) => print(value))
+                              .catchError((onError) => print(onError))
+                        }),
               ],
             ),
           ),
         ),
       ),
-    );
+    )
+    ;
   }
 }

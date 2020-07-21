@@ -99,7 +99,7 @@ class IntroPage extends StatelessWidget {
                           })
                         ,
                         Button("Signup", Constants.transparent, Constants.buttonTextStyle.copyWith(color:Constants.white),
-                                ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePage()))),
+                                ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePageParent()))),
                       ],
                     ))),
 

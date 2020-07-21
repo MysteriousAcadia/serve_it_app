@@ -21,7 +21,7 @@ class LoginSuccessState extends LoginState {
 
 class LoginFailureState extends LoginState {
   String message;
-  LoginFailureState({@required this.message})
+  LoginFailureState({@required this.message});
   @override
   List<Object> get props => null;
 }

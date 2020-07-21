@@ -19,9 +19,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is OnLoginPressed) {
       yield LoginLoadingState();
       try {
-        var user = userRepository.signInWithEmail(event.email, event.password);
+        var user =
+            await userRepository.signInWithEmail(event.email, event.password);
+        print(user.toString());
         yield LoginSuccessState();
       } catch (e) {
+        print(e.toString());
         yield LoginFailureState(message: e.toString());
       }
     }
