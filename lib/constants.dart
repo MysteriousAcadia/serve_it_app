@@ -1,7 +1,8 @@
 import 'package:flutter/painting.dart';
-class Constants{
+
+class Constants {
   //DEFINE COLORS
-  static Color primaryColor=const Color(0xff7ddbe4);
+  static Color primaryColor = const Color(0xff7ddbe4);
   static Color accentColor = const Color(0xff7ddbe4);
   static Color white = const Color(0xffffffff);
   static Color green = const Color(0xff20bf55);
@@ -10,16 +11,17 @@ class Constants{
   static Color transparent = const Color(0x00000000);
 
   //DEFINE DIMENSIONS
-static BorderRadius buttonBorderRadius =  BorderRadius.circular(10.0);
+  static BorderRadius buttonBorderRadius = BorderRadius.circular(10.0);
 
 // DEFINE TEXTSTYLE
-static TextStyle buttonTextStyle = TextStyle(
-  fontFamily: 'Montserrat',
-  fontSize: 20,
-  color: primaryText,
+  static TextStyle buttonTextStyle = TextStyle(
+    fontFamily: 'Montserrat',
+    fontSize: 20,
+    color: primaryText,
 //  fontWeight: FontWeight.w300,
-);
+  );
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
-
+//URL AND NETWORKING
+  static String BASE_URL = "https://serveit-backend.herokuapp.com/api/v1";
 }

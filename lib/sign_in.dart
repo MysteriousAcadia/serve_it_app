@@ -6,28 +6,27 @@ final FirebaseAuth _fAuth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final FacebookLogin facebookSignIn = new FacebookLogin();
 
-
-Future<bool> isSignedIn() async{
+Future<bool> isSignedIn() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  if(user != null)
-  {
+  if (user != null) {
     return true;
+  } else {
+    return false;
   }
-  else
-    {
-      return false;
-    }
 }
 
 Future<String> signInWithGoogle() async {
+  facebookSignIn.logOut();
+  googleSignIn.signOut();
+  _fAuth.signOut();
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  if(user != null)
-    {
-      return 'Already signIn succeeded: $user';
-    }
+
+  if (user != null) {
+    return 'Already signIn succeeded: $user';
+  }
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication =
-  await googleSignInAccount.authentication;
+      await googleSignInAccount.authentication;
 
   final AuthCredential credential = GoogleAuthProvider.getCredential(
     accessToken: googleSignInAuthentication.accessToken,
@@ -46,39 +45,34 @@ Future<String> signInWithGoogle() async {
   return 'signInWithGoogle succeeded: $user';
 }
 
-void signOutGoogle() async{
+void signOutGoogle() async {
   await googleSignIn.signOut();
 
   print("User Sign Out");
 }
 
-
 Future<String> signInWithFacebook() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  if(user != null)
-  {
+  if (user != null) {
     return 'Already signIn succeeded: $user';
   }
 
   final FacebookLoginResult result =
-  await facebookSignIn.logInWithReadPermissions(['email']);
-  AuthCredential authCredential = FacebookAuthProvider.getCredential(accessToken: result.accessToken.token);
+      await facebookSignIn.logInWithReadPermissions(['email']);
+  AuthCredential authCredential =
+      FacebookAuthProvider.getCredential(accessToken: result.accessToken.token);
   assert(!user.isAnonymous);
   assert(await user.getIdToken() == null);
 
-  user =
-      (await _fAuth.signInWithCredential(authCredential)).user ;
+  user = (await _fAuth.signInWithCredential(authCredential)).user;
   //Token: ${accessToken.token}
-
 
   final FirebaseUser currentUser = await _fAuth.currentUser();
   assert(user.uid == currentUser.uid);
-
 
   return 'signInWithFacebook succeeded: $user';
 }
 
 Future<Null> signOutWithFacebook() async {
   await facebookSignIn.logOut();
-
 }

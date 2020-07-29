@@ -4,10 +4,10 @@ abstract class LoginEvent extends Equatable {
   const LoginEvent();
 }
 
-class OnLoginPressed extends LoginEvent {
+class OnLoginEvent extends LoginEvent {
   String loginType;
   String email, password;
-  OnLoginPressed({@required this.loginType, this.email, this.password});
+  OnLoginEvent({@required this.loginType, this.email, this.password});
 
   @override
   // TODO: implement props

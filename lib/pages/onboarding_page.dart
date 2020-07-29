@@ -5,6 +5,7 @@ import 'package:serveit/components/button.dart';
 import 'package:serveit/constants.dart';
 import 'package:serveit/first_page.dart';
 import 'package:serveit/pages/XDLoginSelected.dart';
+import 'package:serveit/pages/test_page.dart';
 
 class OnboardingPage extends StatelessWidget{
   final pageList = [
@@ -17,13 +18,15 @@ class OnboardingPage extends StatelessWidget{
               color: Colors.white,
               fontSize: 34.0,
             )),
-        body: Text('All hotels and hostels are sorted by hospitality rating',
+        body: Column( children: <Widget>[ Text('All hotels and hostels are sorted by hospitality rating',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.white,
               fontSize: 18.0,
-            )),
-        iconAssetPath: 'assets/temp_image.jpg'),
+            )
+            ),
+            ProfileWidget()]),
+                    iconAssetPath: 'assets/temp_image.jpg'),
     PageModel(
         color: const Color(0xFF65B0B4),
         heroAssetPath: 'assets/temp_image.jpg',

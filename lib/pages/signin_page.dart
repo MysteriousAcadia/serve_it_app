@@ -9,20 +9,17 @@ import 'package:serveit/components/button.dart';
 import 'package:serveit/constants.dart';
 import 'package:serveit/sign_in.dart';
 
+import '../first_page.dart';
 import 'XDLoginSelected.dart';
 
-class MyHomePageParent extends StatelessWidget {
-  MyHomePageParent({Key key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(create: (context)=>LoginBloc(),
-    child: MyHomePage(),);
-    
-  }
+  _HomePageState createState() => _HomePageState();
 }
 
-class MyHomePage extends StatelessWidget {
+class _HomePageState extends State<HomePage> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
@@ -30,49 +27,51 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    loginBloc = BlocProvider.of<LoginBloc>(context);
 
-    loginBloc = BlocProvider.of<LoginBloc>(context); 
+    final emailField = BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, state) => TextField(
+            controller: emailCtrl,
+            obscureText: false,
+            style: Constants.buttonTextStyle,
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                hintText: "Email",
+                border: OutlineInputBorder(
+                    borderRadius: Constants.buttonBorderRadius),
+                errorText: state is LoginFailureState
+                    ? state.validateEmail ? state.emailError : null
+                    : null)));
 
-    final emailField = TextField(
-      controller: emailCtrl,
-      obscureText: false,
-      style: Constants.buttonTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Email",
-          border:
-              OutlineInputBorder(borderRadius: Constants.buttonBorderRadius)),
-    );
-    final passwordField = TextField(
-      controller: passwordCtrl ,
-      obscureText: true,
-      style: Constants.buttonTextStyle,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Password",
-          border:
-              OutlineInputBorder(borderRadius: Constants.buttonBorderRadius)),
-    );
-    final loginButon = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(10.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
-          
-        
-        },
-        child: Text("Login",
-            textAlign: TextAlign.center,
-            style: Constants.buttonTextStyle.copyWith(
-              color: Colors.white,
-            )),
-      ),
-    );
+    final passwordField = BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, state) => TextField(
+              controller: passwordCtrl,
+              obscureText: true,
+              style: Constants.buttonTextStyle,
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                  hintText: "Password",
+                  border: OutlineInputBorder(
+                      borderRadius: Constants.buttonBorderRadius),
+                  errorText: state is LoginFailureState
+                      ? state.validateEmail ? state.emailError : null
+                      : null),
+            ));
+    
+    final loadingOrError = BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+                  if (state is LoginLoadingState) {
+                    return CircularProgressIndicator(strokeWidth: 2.0,);
+                  } else if (state is LoginFailureState) {
+                      if(state.message!=null){
+                    return Text("${state.message}");
+                    }
+                  } else if (state is LoginSuccessState) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>FirstScreen()));
+                    return Text("Success");
+                  }
+                });
 
-    return  Scaffold(
+    return Scaffold(
       body: Center(
         child: Container(
           color: Colors.white,
@@ -82,25 +81,7 @@ class MyHomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                BlocBuilder<LoginBloc,LoginState>(builder: (context,state){
-                  if(state is LoginInitial)
-                  {
-                    return Text("Initial");
-                  }
-                  else if( state is LoginLoadingState)
-                  {
-                    return Text("Loading");
-                  }
-                  else if(state is LoginFailureState)
-                  {
-                    return Text("Failure");
-                  }
-                  else if(state is LoginSuccessState)
-                  {
-                    return Text("Success");
-                  }
-                })
-                ,
+                loadingOrError,
                 Text(
                   "Log In",
                   style: Constants.buttonTextStyle
@@ -118,22 +99,23 @@ class MyHomePage extends StatelessWidget {
                     Constants.green,
                     Constants.buttonTextStyle.copyWith(color: Constants.white),
                     () => {
-                      loginBloc.add(OnLoginPressed(loginType: "email",email: emailCtrl.text,password: passwordCtrl.text))
-                    }),
+                          loginBloc.add(OnLoginEvent(
+                              loginType: "EMAIL",
+                              email: emailCtrl.text,
+                              password: passwordCtrl.text))
+                        }),
                 SizedBox(
                   height: 15.0,
                 ),
                 Button(
-                    emailCtrl.text,
+                    "Sign in with Google",
                     Constants.primaryColor,
                     Constants.buttonTextStyle.copyWith(color: Constants.white),
                     () => {
-                          signInWithGoogle()
-                              .then((value) => print(value))
-                              .catchError((onError) => print(onError))
+                          loginBloc.add(OnLoginEvent(loginType: "GOOGLE"))
                         }),
                 Button(
-                    passwordCtrl.text,
+                    "Login with Apple",
                     Constants.primaryColor,
                     Constants.buttonTextStyle.copyWith(color: Constants.white),
                     () => {}),
@@ -142,16 +124,25 @@ class MyHomePage extends StatelessWidget {
                     Constants.primaryColor,
                     Constants.buttonTextStyle.copyWith(color: Constants.white),
                     () => {
-                          signInWithFacebook()
-                              .then((value) => print(value))
-                              .catchError((onError) => print(onError))
+                          loginBloc.add(OnLoginEvent(loginType: "FACEBOOK"))
                         }),
               ],
             ),
           ),
         ),
       ),
-    )
-    ;
+    );
+  }
+}
+
+class MyHomePageParent extends StatelessWidget {
+  MyHomePageParent({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LoginBloc(),
+      child: HomePage(),
+    );
   }
 }

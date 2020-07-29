@@ -111,34 +111,6 @@ class IntroPage extends StatelessWidget {
   }
 }
 
-Widget _signInButton() {
-  return OutlineButton(
-    splashColor: Colors.grey,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-    highlightElevation: 0,
-    borderSide: BorderSide(color: Colors.grey),
-    child: Padding(
-      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Image(image: AssetImage("assets/google_logo.jpg"), height: 35.0),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Text(
-              'Sign in with Google',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.grey,
-              ),
-            ),
-          )
-        ],
-      ),
-    ),
-  );
-}
 
 const String _svg_8isoop =
     '<svg viewBox="0.0 269.0 375.0 548.0" ><path transform="translate(0.0, 161.0)" d="M 0 253.0003662109375 L 375 108.0400390625 L 375 656 L 0 656 L 0 253.0003662109375 Z" fill="#64c6cf" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
