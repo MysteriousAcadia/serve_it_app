@@ -61,6 +61,7 @@ flutter:
   assets:
     - assets/google_logo.jpg
     - assets/temp_image.jpg
+    - assets/ss.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

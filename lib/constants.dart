@@ -3,6 +3,8 @@ import 'package:flutter/painting.dart';
 class Constants {
   //DEFINE COLORS
   static Color primaryColor = const Color(0xff7ddbe4);
+  static Color primaryColorLight = const Color(0xff8ac4cf);
+  static Color googleRed = const Color(0xe76363);
   static Color accentColor = const Color(0xff7ddbe4);
   static Color white = const Color(0xffffffff);
   static Color green = const Color(0xff20bf55);

@@ -4,8 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/constants.dart';
 import 'package:serveit/first_page.dart';
-import 'package:serveit/pages/XDLoginSelected.dart';
-import 'package:serveit/pages/test_page.dart';
 
 class OnboardingPage extends StatelessWidget{
   final pageList = [
@@ -24,9 +22,8 @@ class OnboardingPage extends StatelessWidget{
               color: Colors.white,
               fontSize: 18.0,
             )
-            ),
-            ProfileWidget()]),
-                    iconAssetPath: 'assets/temp_image.jpg'),
+            )]),
+          iconAssetPath: 'assets/temp_image.jpg'),
     PageModel(
         color: const Color(0xFF65B0B4),
         heroAssetPath: 'assets/temp_image.jpg',

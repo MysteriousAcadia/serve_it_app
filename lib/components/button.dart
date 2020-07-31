@@ -26,9 +26,9 @@ class Button extends StatelessWidget {
                 splashColor: Constants.primaryColor,
                 onTap: onPress,
                 child: Container(
-                  width: 262.0,
+                  // width: 262.0,
                   padding:
-                      EdgeInsets.symmetric(vertical: 15.0, horizontal: 40.0),
+                      EdgeInsets.symmetric(vertical: 15.0, horizontal: 4.0),
                   child: Center(
                     child: Text(text,
                         textAlign: TextAlign.center, style: textStyle),

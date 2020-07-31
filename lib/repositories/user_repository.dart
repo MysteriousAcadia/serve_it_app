@@ -19,6 +19,7 @@ class UserRepository {
     if (currentUser == null || currentUser.isAnonymous) {
       return false;
     }
+    return true;
   }
 
   Future<FirebaseUser> getCurrentUser() async {
@@ -56,13 +57,16 @@ class UserRepository {
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
-    final AuthResult authResult = await _fAuth.signInWithCredential(credential);
-    user = authResult.user;
-    assert(!user.isAnonymous);
-    assert(await user.getIdToken() == null);
-    final FirebaseUser currentUser = await _fAuth.currentUser();
-    assert(user.uid == currentUser.uid);
+    try {
+      final AuthResult authResult =
+          await _fAuth.signInWithCredential(credential);
+          user = authResult.user;
+    print(authResult.user);
     return 'signInWithGoogle succeeded: $user';
+    } catch (e) {
+      throw e;
+    }
+    
   }
 
   Future<String> signInWithFacebook() async {
@@ -85,8 +89,8 @@ class UserRepository {
   }
 
   Future<void> signOut() async {
-    _googleSignIn.signOut();
-    _facebookSignIn.logOut();
+    await _googleSignIn.signOut();
+    await _facebookSignIn.logOut();
     await _fAuth.signOut();
   }
 }

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/constants.dart';
-import 'package:serveit/pages/XDLoginSelected.dart';
-import 'package:serveit/pages/onboarding_page.dart';
 import 'package:serveit/pages/signin_page.dart';
 
 class IntroPage extends StatelessWidget {
@@ -12,7 +10,7 @@ class IntroPage extends StatelessWidget {
   }) : super(key: key);
 
   void goToLogin(context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>XDLoginSelected()));
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInPage()));
   }
 
   @override
@@ -99,7 +97,7 @@ class IntroPage extends StatelessWidget {
                           })
                         ,
                         Button("Signup", Constants.transparent, Constants.buttonTextStyle.copyWith(color:Constants.white),
-                                ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>MyHomePageParent()))),
+                                ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInPage()))),
                       ],
                     ))),
 
@@ -113,6 +111,6 @@ class IntroPage extends StatelessWidget {
 
 
 const String _svg_8isoop =
-    '<svg viewBox="0.0 269.0 375.0 548.0" ><path transform="translate(0.0, 161.0)" d="M 0 253.0003662109375 L 375 108.0400390625 L 375 656 L 0 656 L 0 253.0003662109375 Z" fill="#64c6cf" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';
+    '<svg viewBox="0.0 301.8 375.0 509.9" ><path transform="translate(0.0, 281.19)" d="M 0 169.9021759033203 C 0 126.0115585327148 30.69034004211426 87.64903259277344 74.69020843505859 76.54041290283203 L 287.2831420898438 22.86715507507324 C 331.6454772949219 11.66701316833496 375 43.96819686889648 375 88.22039794921875 L 375 530.5276489257812 L -6.505213034913027e-16 530.5276489257812 L 0 169.9021759033203 Z" fill="#9bdce7" stroke="none" stroke-width="1" stroke-miterlimit="10" stroke-linecap="butt" /></svg>';
 const String _svg_1i58gx =
     '<svg viewBox="184.8 767.3 7.2 13.2" ><path transform="translate(184.8, 767.31)" d="M 7.165123462677002 13.1683349609375 L 0 6.58416748046875 L 7.165123462677002 0 L 7.165123462677002 0" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>';

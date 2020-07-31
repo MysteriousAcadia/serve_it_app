@@ -11,11 +11,8 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-
   UserRepository userRepository = UserRepository();
   AuthBloc(AuthState initialState) : super(initialState);
-
- 
 
   @override
   Stream<AuthState> mapEventToState(
@@ -30,21 +27,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           yield UnAuthenticated();
         }
       } catch (e) {
+        print(e);
         yield UnAuthenticated();
       }
-    }
-    else if(event is LogoutEvent){
-      try{
+    } else if (event is LogoutEvent) {
+      try {
         await userRepository.signOut();
         yield UnAuthenticated();
-      }
-      catch(e){
+      } catch (e) {
         throw Exception("Failed to Logout");
       }
     }
   }
-
- 
-
-  
 }

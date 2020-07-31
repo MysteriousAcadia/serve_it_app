@@ -23,8 +23,8 @@ class LoginFailureState extends LoginState {
   String message;
   String emailError;
   String passwordError;
-  bool validateEmail;
-  bool validatePassword;
+  bool validateEmail = false;
+  bool validatePassword = false;
   LoginFailureState({@required this.message});
   @override
   List<Object> get props => null;
