@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/constants.dart';
 import 'package:serveit/pages/signin_page.dart';
+import 'package:serveit/pages/signup_page.dart';
 
 class IntroPage extends StatelessWidget {
   IntroPage({
@@ -97,7 +98,7 @@ class IntroPage extends StatelessWidget {
                           })
                         ,
                         Button("Signup", Constants.transparent, Constants.buttonTextStyle.copyWith(color:Constants.white),
-                                ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SignInPage()))),
+                                ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpPage()))),
                       ],
                     ))),
 
