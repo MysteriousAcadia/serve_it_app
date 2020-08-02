@@ -8,6 +8,7 @@ import 'package:serveit/blocs/login_bloc/login_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/constants.dart';
+import 'package:serveit/pages/basic_profile_page.dart';
 import 'package:serveit/sign_in.dart';
 
 import '../first_page.dart';
@@ -16,13 +17,13 @@ class HomePage extends StatelessWidget {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
-  LoginBloc loginBloc;
+  UserRegBloc userRegBloc;
 
   @override
   Widget build(BuildContext context) {
-    loginBloc = BlocProvider.of<LoginBloc>(context);
+    userRegBloc = BlocProvider.of<UserRegBloc>(context);
 
-    final emailField = BlocBuilder<LoginBloc, LoginState>(
+    final emailField = BlocBuilder<UserRegBloc, UserRegState>(
         builder: (context, state) => Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
@@ -47,11 +48,11 @@ class HomePage extends StatelessWidget {
                         borderRadius: Constants.buttonBorderRadius,
                         borderSide: new BorderSide(color: Constants.white)),
                     fillColor: Colors.white,
-                    errorText: state is LoginFailureState
+                    errorText: state is UserRegUnSuccessfulState
                         ? state.validateEmail ? state.emailError : null
                         : null))));
 
-    final passwordField = BlocBuilder<LoginBloc, LoginState>(
+    final passwordField = BlocBuilder<UserRegBloc, UserRegState>(
         builder: (context, state) => Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
@@ -77,11 +78,11 @@ class HomePage extends StatelessWidget {
                       borderRadius: Constants.buttonBorderRadius,
                       borderSide: new BorderSide(color: Constants.white)),
                   fillColor: Colors.white,
-                  errorText: state is LoginFailureState
-                      ? state.validateEmail ? state.emailError : null
+                  errorText: state is UserRegUnSuccessfulState
+                      ? state.validatePassword ? state.passwordError: null
                       : null),
             )));
-    final repeatPasswordField = BlocBuilder<LoginBloc, LoginState>(
+    final repeatPasswordField = BlocBuilder<UserRegBloc, UserRegState>(
         builder: (context, state) => Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
@@ -107,25 +108,25 @@ class HomePage extends StatelessWidget {
                       borderRadius: Constants.buttonBorderRadius,
                       borderSide: new BorderSide(color: Constants.white)),
                   fillColor: Colors.white,
-                  errorText: state is LoginFailureState
-                      ? state.validateEmail ? state.emailError : null
+                  errorText: state is UserRegUnSuccessfulState
+                      ? state.passwordRepeat ? state.passwordRepeatError : null
                       : null),
             )));
 
     loadingOrError(mainContext) {
-      final bb = BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      final bb = BlocBuilder<UserRegBloc, UserRegState>(builder: (context, state) {
         if (state is LoginLoadingState) {
           return CircularProgressIndicator(
             strokeWidth: 2.0,
           );
-        } else if (state is LoginFailureState) {
+        } else if (state is UserRegUnSuccessfulState) {
           if (state.message != null) {
             return Text("${state.message}");
           }
-        } else if (state is LoginSuccessState) {
+        } else if (state is UserRegSuccessfulState) {
           SchedulerBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => FirstScreen()));
+                MaterialPageRoute(builder: (context) => BasicProfilePage()));
           });
 
           return Text("Success");
@@ -138,11 +139,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Constants.primaryColor,
       body: Center(
-        child: Container(
+        child: SingleChildScrollView(child: Container(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
@@ -169,7 +170,7 @@ class HomePage extends StatelessWidget {
                     Constants.green,
                     Constants.buttonTextStyle.copyWith(color: Constants.white),
                     () => {
-                          loginBloc.add(OnLoginEvent(
+                          userRegBloc.add(SignupButtonPressedEvent(
                               loginType: "EMAIL",
                               email: emailCtrl.text,
                               password: passwordCtrl.text))
@@ -198,8 +199,8 @@ class HomePage extends StatelessWidget {
                           Constants.buttonTextStyle
                               .copyWith(color: Constants.white),
                           () => {
-                                loginBloc.add(
-                                  OnLoginEvent(loginType: "GOOGLE"),
+                                userRegBloc.add(
+                                  SignupButtonPressedEvent(loginType: "GOOGLE"),
                                 ),
                               }),
                     ),
@@ -210,8 +211,8 @@ class HomePage extends StatelessWidget {
                           Constants.buttonTextStyle
                               .copyWith(color: Constants.white),
                           () => {
-                                loginBloc.add(
-                                  OnLoginEvent(loginType: "FACEBOOK"),
+                                userRegBloc.add(
+                                  SignupButtonPressedEvent(loginType: "FACEBOOK"),
                                 ),
                               }),
                     ),
@@ -221,7 +222,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      ),), 
     );
   }
 }
@@ -232,7 +233,7 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(),
+      create: (context) => UserRegBloc(),
       child: HomePage(),
     );
   }

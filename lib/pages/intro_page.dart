@@ -92,10 +92,10 @@ class IntroPage extends StatelessWidget {
                           textAlign: TextAlign.center,
                         )),
 
-                          Button("Login", Constants.white,
+                         Container(width: 300, child: Button("Login", Constants.white,
                               Constants.buttonTextStyle, ()=> {
                             goToLogin(context)
-                          })
+                          }),)
                         ,
                         Button("Signup", Constants.transparent, Constants.buttonTextStyle.copyWith(color:Constants.white),
                                 ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpPage()))),

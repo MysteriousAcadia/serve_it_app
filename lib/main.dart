@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serveit/blocs/auth_bloc/auth_bloc.dart';
 import 'package:serveit/first_page.dart';
+import 'package:serveit/pages/basic_profile_page.dart';
 import 'package:serveit/pages/intro_page.dart';
 import 'package:serveit/pages/onboarding_page.dart';
 import 'package:serveit/pages/signin_page.dart';

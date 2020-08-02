@@ -27,6 +27,12 @@ class UserRegSuccessfulState extends UserRegState {
 
 class UserRegUnSuccessfulState extends UserRegState {
   String message;
+  String emailError;
+  String passwordError;
+  String passwordRepeatError;
+  bool validateEmail = false;
+  bool validatePassword = false;
+  bool passwordRepeat = false;
   UserRegUnSuccessfulState({@required this.message});
   @override
   // TODO: implement props

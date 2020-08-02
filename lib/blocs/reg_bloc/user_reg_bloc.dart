@@ -20,8 +20,15 @@ class UserRegBloc extends Bloc<UserRegEvent, UserRegState> {
     if (event is SignupButtonPressedEvent) {
       yield UserRegLoadingState();
       try {
-        var user =
-            await userRepository.createNewUser(event.email, event.password);
+        var user;
+        if (event.loginType == 'EMAIL') {
+          user =
+              await userRepository.createNewUser(event.email, event.password);
+        } else if (event.loginType == 'GOOGLE') {
+          user = await userRepository.signInWithGoogle();
+        } else if (event.loginType == 'FACEBOOK') {
+          user = await userRepository.signInWithFacebook();
+        }
         yield UserRegSuccessfulState(user: user);
       } catch (e) {
         yield UserRegUnSuccessfulState(message: "null");

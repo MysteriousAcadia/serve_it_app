@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serveit/blocs/auth_bloc/auth_bloc.dart';
 import 'package:serveit/components/button.dart';
+import 'package:serveit/pages/intro_page.dart';
 
 class FirstScreen extends StatelessWidget {
   AuthBloc authBloc;
@@ -23,10 +25,14 @@ class FirstScreen extends StatelessWidget {
 
     });
     return Scaffold(
-      body: Container(
-        color: Colors.blue[100],
-        child: Center(child: Column(children: <Widget>[RaisedButton(onPressed: () {
+      backgroundColor: Colors.blue[100],
+      body: Center(
+        child: Container(child: Column(children: <Widget>[RaisedButton(onPressed: () {
           authBloc.add(LogoutEvent());
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => IntroPage()));
+          });
         },
         child: Text("Logout"),
         ),
