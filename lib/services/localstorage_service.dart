@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:serveit/models/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:serveit/models/user.dart';
 class LocalStorageService {
   static const String UserKey = 'user';
+  static const String SettingsKey = 'settings';
   static LocalStorageService _instance;
   static SharedPreferences _preferences;
   static Future<LocalStorageService> getInstance() async {
@@ -30,6 +32,18 @@ class LocalStorageService {
     print('(TRACE) LocalStorageService:_getFromDisk. key: $key value: $value');
     return value;
   }
+
+Settings get settings {
+    var settingsJson = _getFromDisk(SettingsKey);
+    if (settingsJson == null) {
+      return Settings();
+    }
+    return Settings.fromJson(jsonDecode(settingsJson));
+  }
+  set settings(Settings settingsToSave) {
+    saveStringToDisk(SettingsKey, jsonEncode(settingsToSave.toJson()));
+  }
+
   void saveStringToDisk(String key, String content){
     print('(TRACE) LocalStorageService:_saveStringToDisk. key: $key value: $content');
     _preferences.setString(UserKey, content);
