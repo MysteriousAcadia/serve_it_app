@@ -9,9 +9,15 @@ abstract class SettingsEvent extends Equatable {
 
 class GetSettingsEvent extends SettingsEvent {}
 
-class UpdateSettingsEvent extends SettingsEvent {
-  Settings settings;
-  UpdateSettingsEvent({@required this.settings}){
-
+class UpdateReceiveEvent extends SettingsEvent {
+  final bool value;
+  UpdateReceiveEvent({@required this.value}) {
+  
+  }
+}
+class UpdateProvideEvent extends SettingsEvent {
+  final bool value;
+  UpdateProvideEvent({@required this.value}) {
+  
   }
 }

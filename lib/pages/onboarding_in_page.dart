@@ -1,14 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:serveit/blocs/settings_bloc/settings_bloc_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/components/checkbox.dart';
+import 'package:serveit/models/settings.dart';
 
 import '../constants.dart';
 // import 'package:adobe_xd/specific_rect_clip.dart';
 
 class OnboardingInPage extends StatelessWidget {
+  SettingsBloc settingsBloc;
   @override
   Widget build(BuildContext context) {
+    settingsBloc = BlocProvider.of<SettingsBloc>(context);
+    settingsBloc.add(GetSettingsEvent());
+    final provideServices = BlocBuilder<SettingsBloc,SettingsState>(
+      bloc: settingsBloc,
+      builder: (context, state) {
+        var value = false;
+        var disabled = true;
+        if (state is SettingsLoaded) {
+          value = state.settings.isProvideServicesEnabled;
+          disabled = false;
+        }
+        return (LabeledCheckbox(
+          label: "Provide Services",
+          onChanged: (value) =>
+              {settingsBloc.add(UpdateProvideEvent(value: value))},
+          padding: EdgeInsets.zero,
+          value: value,
+          disabled: disabled,
+        ));
+      },
+    );
+    final receiveServices = BlocBuilder<SettingsBloc,SettingsState>(
+      bloc: settingsBloc,
+      builder: (context, state) {
+        var value = false;
+        var disabled = true;
+        if (state is SettingsLoaded) {
+          value = state.settings.isReceiveServicesEnabled;
+          disabled = false;
+        }
+        return (LabeledCheckbox(
+          label: "Receive Services",
+          onChanged: (value) =>
+              {settingsBloc.add(UpdateReceiveEvent(value: value))},
+          padding: EdgeInsets.zero,
+          value: value,
+          disabled: disabled,
+        ));
+      },
+    );
+
     return Scaffold(
       backgroundColor: const Color(0xff11d68a),
       body: Stack(
@@ -49,18 +94,8 @@ class OnboardingInPage extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                LabeledCheckbox(
-                  label: "Provide Services",
-                  onChanged: (value) => {},
-                  padding: EdgeInsets.zero,
-                  value: false,
-                ),
-                LabeledCheckbox(
-                  label: "Receive Services",
-                  onChanged: (value) => {},
-                  padding: EdgeInsets.zero,
-                  value: false,
-                ),
+                provideServices,
+                receiveServices,
                 Text(
                   'You can change these in Settings later',
                   style: TextStyle(
@@ -84,597 +119,6 @@ class OnboardingInPage extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class XDOnboard_In extends StatelessWidget {
-  XDOnboard_In({
-    Key key,
-  }) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffffffff),
-      body: Stack(
-        children: <Widget>[
-          Container(
-            width: 375.0,
-            height: 812.0,
-            decoration: BoxDecoration(
-              color: const Color(0xff11d68a),
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(51.0, 113.0),
-            child: SizedBox(
-              width: 273.0,
-              child: Text(
-                'You\'re onboard!',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 29,
-                  color: const Color(0xffffffff),
-                  letterSpacing: -0.7250000000000001,
-                  fontWeight: FontWeight.w700,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(47.0, 439.0),
-            child: SizedBox(
-              width: 282.0,
-              child: Text(
-                'Do you want to..',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 29,
-                  color: const Color(0xffffffff),
-                  letterSpacing: -0.7250000000000001,
-                  fontWeight: FontWeight.w700,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(32.86, 111.56),
-            child:
-                // Adobe XD layer: 'undraw_Online_page_…' (group)
-                Stack(
-              children: <Widget>[
-                Transform.translate(
-                  offset: Offset(68.86, 81.53),
-                  child: SvgPicture.string(
-                    _svg_ivuv51,
-                    allowDrawingOutsideViewBox: true,
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(49.14, 97.07),
-                  child: Container(
-                    width: 52.8,
-                    height: 52.8,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.elliptical(26.4, 26.4)),
-                      color: const Color(0xff9bdce7),
-                    ),
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(55.5, 114.02),
-                  child: SvgPicture.string(
-                    _svg_bg30m0,
-                    allowDrawingOutsideViewBox: true,
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(90.58, 114.99),
-                  child: Container(
-                    width: 5.3,
-                    height: 1.0,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff2f2e41),
-                    ),
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(56.8, 80.44),
-                  child: SvgPicture.string(
-                    _svg_170zv1,
-                    allowDrawingOutsideViewBox: true,
-                  ),
-                ),
-                // Transform.translate(
-                //   offset: Offset(136.14, 91.92),
-                //   child: SpecificRectClip(
-                //     rect: Rect.fromLTWH(
-                //         0, 0, 111.6658935546875, 37.98809814453125),
-                //     child: UnconstrainedBox(
-                //       alignment: Alignment.topLeft,
-                //       child: Container(
-                //         width: 112,
-                //         height: 30,
-                //         child: GridView.count(
-                //           primary: false,
-                //           padding: EdgeInsets.all(0),
-                //           mainAxisSpacing: 9,
-                //           crossAxisSpacing: 20,
-                //           crossAxisCount: 1,
-                //           childAspectRatio: 28.0,
-                //           children: [
-                //             {},
-                //             {},
-                //             {},
-                //           ].map((map) {
-                //             return Transform.translate(
-                //               offset: Offset(-138.45, -91.92),
-                //               child: Stack(
-                //                 children: <Widget>[
-                //                   Transform.translate(
-                //                     offset: Offset(138.45, 91.92),
-                //                     child: SvgPicture.string(
-                //                       _svg_afsd0l,
-                //                       allowDrawingOutsideViewBox: true,
-                //                     ),
-                //                   ),
-                //                 ],
-                //               ),
-                //             );
-                //           }).toList(),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-              ],
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(74.0, 487.09),
-            child:
-                // Adobe XD layer: 'field' (group)
-                Stack(
-              children: <Widget>[
-                Transform.translate(
-                  offset: Offset(0.0, 0.0),
-                  child:
-                      // Adobe XD layer: 'field' (group)
-                      Stack(
-                    children: <Widget>[
-                      Transform.translate(
-                        offset: Offset(0.0, -0.09),
-                        child:
-                            // Adobe XD layer: 'navbar-bg' (shape)
-                            Container(
-                          width: 228.0,
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0x0d000000),
-                                offset: Offset(0, 5),
-                                blurRadius: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(5.0, 9.91),
-                  child: SizedBox(
-                    width: 164.0,
-                    child: Text(
-                      'Provide Services',
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 17,
-                        color: const Color(0xffffffff),
-                        letterSpacing: -0.42500000000000004,
-                        fontWeight: FontWeight.w600,
-                        shadows: [
-                          Shadow(
-                            color: const Color(0x29000000),
-                            offset: Offset(1, 1),
-                            blurRadius: 2,
-                          )
-                        ],
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(0.0, 6.0),
-                  child: Stack(
-                    children: <Widget>[
-                      Transform.translate(
-                        offset: Offset(187.0, -0.09),
-                        child:
-                            // Adobe XD layer: 'field' (group)
-                            Stack(
-                          children: <Widget>[
-                            // Adobe XD layer: 'navbar-bg' (shape)
-                            Container(
-                              width: 28.0,
-                              height: 28.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: const Color(0xffbde7ee),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0x0d000000),
-                                    offset: Offset(0, 5),
-                                    blurRadius: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(194.02, 9.17),
-                        child: Stack(
-                          children: <Widget>[
-                            Transform.translate(
-                              offset: Offset(0.0, 0.0),
-                              child:
-                                  // Adobe XD layer: 'Icon/24px/Check' (group)
-                                  Stack(
-                                children: <Widget>[
-                                  Transform.translate(
-                                    offset: Offset(-1.81, -2.38),
-                                    child:
-                                        // Adobe XD layer: 'Color/Solid/Black' (component)
-                                        Container(),
-                                  ),
-                                  Transform.translate(
-                                    offset: Offset(0.0, 0.0),
-                                    child:
-                                        // Adobe XD layer: 'Plus-2' (shape)
-                                        SvgPicture.string(
-                                      _svg_pweslw,
-                                      allowDrawingOutsideViewBox: true,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(74.0, 523.09),
-            child:
-                // Adobe XD layer: 'field' (group)
-                Stack(
-              children: <Widget>[
-                Transform.translate(
-                  offset: Offset(0.0, 0.0),
-                  child:
-                      // Adobe XD layer: 'field' (group)
-                      Stack(
-                    children: <Widget>[
-                      Transform.translate(
-                        offset: Offset(0.0, -0.09),
-                        child:
-                            // Adobe XD layer: 'navbar-bg' (shape)
-                            Container(
-                          width: 228.0,
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0x0d000000),
-                                offset: Offset(0, 5),
-                                blurRadius: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(18.0, 9.91),
-                  child: Text(
-                    'Receive Services',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 17,
-                      color: const Color(0xffffffff),
-                      letterSpacing: -0.42500000000000004,
-                      fontWeight: FontWeight.w600,
-                      shadows: [
-                        Shadow(
-                          color: const Color(0x29000000),
-                          offset: Offset(1, 1),
-                          blurRadius: 2,
-                        )
-                      ],
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(0.0, 6.0),
-                  child: Stack(
-                    children: <Widget>[
-                      Transform.translate(
-                        offset: Offset(187.0, -0.09),
-                        child:
-                            // Adobe XD layer: 'field' (group)
-                            Stack(
-                          children: <Widget>[
-                            // Adobe XD layer: 'navbar-bg' (shape)
-                            Container(
-                              width: 28.0,
-                              height: 28.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: const Color(0xffbde7ee),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0x0d000000),
-                                    offset: Offset(0, 5),
-                                    blurRadius: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(194.02, 9.17),
-                        child: Stack(
-                          children: <Widget>[
-                            Transform.translate(
-                              offset: Offset(0.0, 0.0),
-                              child:
-                                  // Adobe XD layer: 'Icon/24px/Check' (group)
-                                  Stack(
-                                children: <Widget>[
-                                  Transform.translate(
-                                    offset: Offset(-1.81, -2.38),
-                                    child:
-                                        // Adobe XD layer: 'Color/Solid/Black' (component)
-                                        Container(),
-                                  ),
-                                  Transform.translate(
-                                    offset: Offset(0.0, 0.0),
-                                    child:
-                                        // Adobe XD layer: 'Plus-2' (shape)
-                                        SvgPicture.string(
-                                      _svg_pweslw,
-                                      allowDrawingOutsideViewBox: true,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(74.0, 557.09),
-            child:
-                // Adobe XD layer: 'field' (group)
-                Stack(
-              children: <Widget>[
-                Transform.translate(
-                  offset: Offset(0.0, 0.0),
-                  child:
-                      // Adobe XD layer: 'field' (group)
-                      Stack(
-                    children: <Widget>[
-                      Transform.translate(
-                        offset: Offset(0.0, -0.09),
-                        child:
-                            // Adobe XD layer: 'navbar-bg' (shape)
-                            Container(
-                          width: 228.0,
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0x0d000000),
-                                offset: Offset(0, 5),
-                                blurRadius: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(18.0, 9.91),
-                  child: Text(
-                    'Both',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 17,
-                      color: const Color(0xffffffff),
-                      letterSpacing: -0.42500000000000004,
-                      fontWeight: FontWeight.w600,
-                      shadows: [
-                        Shadow(
-                          color: const Color(0x29000000),
-                          offset: Offset(1, 1),
-                          blurRadius: 2,
-                        )
-                      ],
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Transform.translate(
-                  offset: Offset(0.0, 6.0),
-                  child: Stack(
-                    children: <Widget>[
-                      Transform.translate(
-                        offset: Offset(187.0, -0.09),
-                        child:
-                            // Adobe XD layer: 'field' (group)
-                            Stack(
-                          children: <Widget>[
-                            // Adobe XD layer: 'navbar-bg' (shape)
-                            Container(
-                              width: 28.0,
-                              height: 28.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10.0),
-                                color: const Color(0xffbde7ee),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0x0d000000),
-                                    offset: Offset(0, 5),
-                                    blurRadius: 10,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Transform.translate(
-                        offset: Offset(194.02, 9.17),
-                        child: Stack(
-                          children: <Widget>[
-                            Transform.translate(
-                              offset: Offset(0.0, 0.0),
-                              child:
-                                  // Adobe XD layer: 'Icon/24px/Check' (group)
-                                  Stack(
-                                children: <Widget>[
-                                  Transform.translate(
-                                    offset: Offset(-1.81, -2.38),
-                                    child:
-                                        // Adobe XD layer: 'Color/Solid/Black' (component)
-                                        Container(),
-                                  ),
-                                  Transform.translate(
-                                    offset: Offset(0.0, 0.0),
-                                    child:
-                                        // Adobe XD layer: 'Plus-2' (shape)
-                                        SvgPicture.string(
-                                      _svg_pweslw,
-                                      allowDrawingOutsideViewBox: true,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(72.0, 626.0),
-            child:
-                // Adobe XD layer: 'Lorem ipsum dolor si' (text)
-                SizedBox(
-              width: 232.0,
-              child: Text(
-                'You can change these in Settings later',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 10,
-                  color: const Color(0xffffffff),
-                  fontStyle: FontStyle.italic,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(30.0, 668.0),
-            child:
-                // Adobe XD layer: 'button-dark' (group)
-                Stack(
-              children: <Widget>[
-                // Adobe XD layer: 'button' (group)
-                Stack(
-                  children: <Widget>[
-                    // Adobe XD layer: 'Rectangle 3' (shape)
-                    Container(
-                      width: 315.0,
-                      height: 60.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: const Color(0xff9bdce7),
-                      ),
-                    ),
-                    Transform.translate(
-                      offset: Offset(71.5, 21.0),
-                      child:
-                          // Adobe XD layer: 'sign up' (text)
-                          SizedBox(
-                        width: 172.0,
-                        child: Text(
-                          'Setup your Profile',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 16,
-                            color: const Color(0xffffffff),
-                            shadows: [
-                              Shadow(
-                                color: const Color(0x29000000),
-                                offset: Offset(1, 1),
-                                blurRadius: 2,
-                              )
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Transform.translate(
-            offset: Offset(184.8, 767.31),
-            child:
-                // Adobe XD layer: 'Path' (shape)
-                SvgPicture.string(
-              _svg_1i58gx,
-              allowDrawingOutsideViewBox: true,
             ),
           ),
         ],

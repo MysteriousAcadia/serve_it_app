@@ -13,7 +13,7 @@ import 'package:serveit/sign_in.dart';
 
 import '../first_page.dart';
 
-class HomePage extends StatelessWidget {
+class SignUpPage extends StatelessWidget {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
@@ -227,14 +227,4 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class SignUpPage extends StatelessWidget {
-  SignUpPage({Key key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => UserRegBloc(),
-      child: HomePage(),
-    );
-  }
-}

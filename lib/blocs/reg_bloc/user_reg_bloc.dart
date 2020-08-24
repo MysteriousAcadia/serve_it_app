@@ -11,7 +11,10 @@ part 'user_reg_state.dart';
 
 class UserRegBloc extends Bloc<UserRegEvent, UserRegState> {
   UserRegBloc() : super(UserRegInitial());
-  UserRepository userRepository = UserRepository();
+  UserRepository userRepository;
+  void init(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   @override
   Stream<UserRegState> mapEventToState(

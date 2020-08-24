@@ -1,25 +1,44 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:serveit/services/serveit_api_service.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserRepository {
   FirebaseAuth _fAuth;
   GoogleSignIn _googleSignIn;
   FacebookLogin _facebookSignIn;
+  UserApiClient _userApiClient;
+  SharedPreferences _preferences;
 
   UserRepository() {
     this._fAuth = FirebaseAuth.instance;
     this._googleSignIn = GoogleSignIn();
     this._facebookSignIn = new FacebookLogin();
+    this._userApiClient = UserApiClient(httpClient: http.Client());
+    intializePrefs();
+  }
+  intializePrefs() async {
+    _preferences = await SharedPreferences.getInstance();
   }
 
   Future<bool> isSignedIn() async {
     var currentUser = await _fAuth.currentUser();
-    var token = await currentUser.getIdToken();
     if (currentUser == null || currentUser.isAnonymous) {
       return false;
     }
-    return true;
+    try {
+      var token = await _userApiClient.getToken(currentUser.uid);
+      if (token != null) {
+        return true;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+
+    return false;
   }
 
   Future<FirebaseUser> getCurrentUser() async {
@@ -32,6 +51,7 @@ class UserRepository {
     try {
       var result = await _fAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      var token = _userApiClient.getToken(result.user.uid);
       return (result.user);
     } catch (e) {
       throw e;
@@ -41,6 +61,7 @@ class UserRepository {
   Future<FirebaseUser> signInWithEmail(String email, String password) async {
     var result = await _fAuth.signInWithEmailAndPassword(
         email: email, password: password);
+    var token = _userApiClient.getToken(result.user.uid);
   }
 
   Future<String> signInWithGoogle() async {
@@ -60,13 +81,12 @@ class UserRepository {
     try {
       final AuthResult authResult =
           await _fAuth.signInWithCredential(credential);
-          user = authResult.user;
-    print(authResult.user);
-    return 'signInWithGoogle succeeded: $user';
+      user = authResult.user;
+      print(authResult.user);
+      return 'signInWithGoogle succeeded: $user';
     } catch (e) {
       throw e;
     }
-    
   }
 
   Future<String> signInWithFacebook() async {

@@ -6,12 +6,14 @@ class LabeledCheckbox extends StatelessWidget {
     this.label,
     this.padding,
     this.value,
+    this.disabled,
     this.onChanged,
   });
 
   final String label;
   final EdgeInsets padding;
   final bool value;
+  final bool disabled;
   final Function onChanged;
 
   @override

@@ -8,7 +8,7 @@ abstract class SettingsState extends Equatable {
 }
 
 class SettingsLoaded extends SettingsState {
-  Settings settings;
+  final Settings settings;
   SettingsLoaded({@required this.settings});
 }
 
