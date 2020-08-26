@@ -1,21 +1,22 @@
-import 'package:equatable/equatable.dart';
 
-class Token extends Equatable {
+class Token {
   final bool success;
   final String token;
   final bool newUser;
 
   const Token({this.success, this.token, this.newUser});
 
-  @override
-  List<Object> get props => [success, token, newUser];
+  Token.fromJson(Map<String, dynamic> json)
+      : success = json['success'],
+        token = json['token'],
+        newUser = json['newUser'];
 
-  static Token fromJson(dynamic json) {
-    return Token(
-      success: json['success'],
-      token: json['authToken'],
-      newUser: json['newUser'],
-    );
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['success'] = this.success;
+    data['token'] = this.token;
+    data['newUser'] = this.newUser;
+    return data;
   }
 
   @override

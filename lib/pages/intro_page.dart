@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/constants.dart';
-import 'package:serveit/pages/signin_page.dart';
-import 'package:serveit/pages/signup_page.dart';
+import 'package:serveit/pages/auth/signin_page.dart';
+import 'package:serveit/pages/auth/signup_page.dart';
 
 class IntroPage extends StatelessWidget {
   IntroPage({

@@ -6,13 +6,14 @@ import 'package:serveit/components/button.dart';
 import 'package:serveit/components/checkbox.dart';
 import 'package:serveit/models/settings.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 // import 'package:adobe_xd/specific_rect_clip.dart';
 
 class OnboardingInPage extends StatelessWidget {
   SettingsBloc settingsBloc;
   @override
   Widget build(BuildContext context) {
+    
     settingsBloc = BlocProvider.of<SettingsBloc>(context);
     settingsBloc.add(GetSettingsEvent());
     final provideServices = BlocBuilder<SettingsBloc,SettingsState>(

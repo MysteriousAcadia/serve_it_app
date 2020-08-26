@@ -10,8 +10,12 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  UserRepository userRepository = UserRepository();
+  UserRepository userRepository;
   LoginBloc() : super(LoginInitial());
+
+  void init(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   @override
   Stream<LoginState> mapEventToState(
@@ -24,19 +28,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           var user =
               await userRepository.signInWithEmail(event.email, event.password);
         } else if (event.loginType == 'GOOGLE') {
+          print("reached here");
           var user = await userRepository.signInWithGoogle();
+          print(user);
         } else if (event.loginType == 'FACEBOOK') {
           var user = await userRepository.signInWithFacebook();
         }
         yield LoginSuccessState();
+      } on PlatformException catch (error) {
+        print("catch Exception");
 
-      } on PlatformException catch(error){
-                print(error);
+        print(error);
         yield LoginFailureState(message: error.toString());
-
-      } 
-      catch (error) {
+      } catch (error) {
         String errorMessage;
+        print("catch Exception");
         print(error);
         // switch (error.code) {
         //   case "ERROR_INVALID_EMAIL":

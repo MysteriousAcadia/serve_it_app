@@ -9,39 +9,38 @@ class FirstScreen extends StatelessWidget {
   AuthBloc authBloc;
   @override
   Widget build(BuildContext context) {
-         authBloc = BlocProvider.of<AuthBloc>(context);
+    authBloc = BlocProvider.of<AuthBloc>(context);
 
-    final loadingOrError =
-        BlocBuilder(
-          bloc: authBloc ,
-          builder: (context, state) {
-      if (state is AuthenticatedState) {
-        print(state.user.uid);
-        return (Text(state.user.displayName+"llll"));
-      } else {
-        return (Text("This is not even possible"));
-      }
-
-
-    });
+    final loadingOrError = BlocBuilder(
+        bloc: authBloc,
+        builder: (context, state) {
+          if (state is AuthenticatedState) {
+            print(state.user.uid);
+            return (Text(state.user.displayName + "llll"));
+          } else {
+            return (Text("This is not even possible"));
+          }
+        });
     return Scaffold(
-      backgroundColor: Colors.blue[100],
-      body: Center(
-        child: Container(child: Column(children: <Widget>[RaisedButton(onPressed: () {
-          authBloc.add(LogoutEvent());
-          SchedulerBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => IntroPage()));
-          });
-        },
-        child: Text("Logout"),
-        ),
-        loadingOrError
-        ]
-        ,
-        ),
-      ),
-    )
-    );
+        backgroundColor: Colors.blue[100],
+        body: Center(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                RaisedButton(
+                  onPressed: () {
+                    authBloc.add(LogoutEvent());
+                    SchedulerBinding.instance.addPostFrameCallback((_) {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => IntroPage()));
+                    });
+                  },
+                  child: Text("Logout"),
+                ),
+                loadingOrError
+              ],
+            ),
+          ),
+        ));
   }
 }

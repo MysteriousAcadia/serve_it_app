@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:serveit/services/localstorage_service.dart';
 import 'package:serveit/services/serveit_api_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,17 +11,14 @@ class UserRepository {
   GoogleSignIn _googleSignIn;
   FacebookLogin _facebookSignIn;
   UserApiClient _userApiClient;
-  SharedPreferences _preferences;
+  LocalStorageService _localStorageService;
 
-  UserRepository() {
+  UserRepository(LocalStorageService ls) {
     this._fAuth = FirebaseAuth.instance;
     this._googleSignIn = GoogleSignIn();
     this._facebookSignIn = new FacebookLogin();
     this._userApiClient = UserApiClient(httpClient: http.Client());
-    intializePrefs();
-  }
-  intializePrefs() async {
-    _preferences = await SharedPreferences.getInstance();
+    this._localStorageService = ls;
   }
 
   Future<bool> isSignedIn() async {
@@ -30,11 +28,12 @@ class UserRepository {
     }
     try {
       var token = await _userApiClient.getToken(currentUser.uid);
+      _localStorageService.authToken = token;
       if (token != null) {
         return true;
       }
     } catch (e) {
-      print(e);
+      print("failed to get token" + e);
       return false;
     }
 
@@ -62,6 +61,7 @@ class UserRepository {
     var result = await _fAuth.signInWithEmailAndPassword(
         email: email, password: password);
     var token = _userApiClient.getToken(result.user.uid);
+    return result.user;
   }
 
   Future<String> signInWithGoogle() async {

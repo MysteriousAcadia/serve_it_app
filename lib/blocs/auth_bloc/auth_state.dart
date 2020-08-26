@@ -23,3 +23,8 @@ class UnAuthenticated extends AuthState {
   // TODO: implement props
   List<Object> get props => null;
 }
+class NewUserState extends AuthState {
+  @override
+  // TODO: implement props
+  List<Object> get props => null;
+}

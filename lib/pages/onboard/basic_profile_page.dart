@@ -10,10 +10,9 @@ import 'package:serveit/blocs/login_bloc/login_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/constants.dart';
-import 'package:serveit/pages/onboarding_page.dart';
-import 'package:serveit/sign_in.dart';
+import 'package:serveit/pages/onboard/onboarding_page.dart';
 
-import '../first_page.dart';
+import '../../first_page.dart';
 
 class HomePage extends StatelessWidget {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
