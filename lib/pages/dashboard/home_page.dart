@@ -112,6 +112,8 @@ class _HomePageState extends State<HomePage> {
           );
         }
         return BottomNavigationBar(
+          fixedColor: Constants.primaryColor,
+          unselectedItemColor: Colors.grey,
           currentIndex: _currentIndex,
           onTap: (int index) {
             setState(() {
@@ -128,3 +130,5 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+

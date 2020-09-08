@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:serveit/models/settings.dart';
-import 'package:serveit/models/token_response.dart';
+import 'package:serveit/models/response/token_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:serveit/models/user.dart';
 

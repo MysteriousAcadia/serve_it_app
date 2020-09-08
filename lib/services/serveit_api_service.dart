@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
-import 'package:serveit/models/get_token_body.dart';
-import 'package:serveit/models/token_response.dart';
+import 'package:serveit/models/request/get_token_body.dart';
+import 'package:serveit/models/response/token_response.dart';
 
 class UserApiClient {
   final _baseUrl = 'https://serve-it.herokuapp.com/api/v1';

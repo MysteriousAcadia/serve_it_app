@@ -6,18 +6,103 @@ import 'package:serveit/pages/auth/signin_page.dart';
 import 'package:serveit/pages/auth/signup_page.dart';
 
 class DeliverPage extends StatelessWidget {
-  DeliverPage({
-    Key key,
-  }) : super(key: key);
-
-  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //Main Stack
-      backgroundColor: Colors.blue,
+    return SafeArea(
+      child: ListView(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(30),
+            child: Text(
+              'What services are you providing?',
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 30,
+                color: const Color(0xff606060),
+                letterSpacing: -0.675,
+                fontWeight: FontWeight.w700,
+                height: 1.1851851851851851,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SearchWidget<String>(
+            dataList: ["A", "B", "BC", "CD"],
+            hideSearchBoxWhenItemSelected: false,
+            listContainerHeight: MediaQuery.of(context).size.height / 4,
+            queryBuilder: (String query, List<dynamic> list) {
+              return list
+                  .where((dynamic item) =>
+                      item.toLowerCase().contains(query.toLowerCase()))
+                  .toList();
+            },
+            popupListItemBuilder: (dynamic item) {
+              return Text(item);
+            },
+            selectedItemBuilder:
+                (dynamic selectedItem, VoidCallback deleteSelectedItem) {
+              return Text(selectedItem);
+            },
+            // widget customization
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 10, 0, 20),
+              child: Text(
+                'Scheduled',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 27,
+                  color: const Color(0xff606060),
+                  letterSpacing: -0.525,
+                  fontWeight: FontWeight.w700,
+                  height: 1.1904761904761905,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+          Container(
+            height: 200,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                RecentsCard(),
+                RecentsCard(),
+                RecentsCard(),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(20, 10, 0, 20),
+              child: Text(
+                'Explore other services',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 27,
+                  color: const Color(0xff606060),
+                  letterSpacing: -0.525,
+                  fontWeight: FontWeight.w700,
+                  height: 1.1904761904761905,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ),
+          ServicesCard(),
+          ServicesCard(),
+
+        ],
+      ),
     );
   }
 }
+
+
+
+
 
 

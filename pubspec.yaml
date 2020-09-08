@@ -44,6 +44,9 @@ dependencies:
   adobe_xd: ^1.0.0+1
   http: ^0.12.2
   meta: ^1.1.8
+  dropdown_search: ^0.4.4
+  search_widget: ^1.0.2
+  expandable: ^4.1.4
 
 dev_dependencies:
   flutter_test:

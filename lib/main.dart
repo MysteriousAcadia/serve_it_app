@@ -11,6 +11,7 @@ import 'package:serveit/pages/intro_page.dart';
 import 'package:serveit/pages/onboard/onboarding_in_page.dart';
 import 'package:serveit/pages/onboard/onboarding_page.dart';
 import 'package:serveit/pages/auth/signin_page.dart';
+import 'package:serveit/pages/services.dart';
 import 'package:serveit/pages/splash.dart';
 import 'package:serveit/repositories/user_repository.dart';
 import 'package:serveit/services/localstorage_service.dart';
@@ -77,7 +78,8 @@ class App extends StatelessWidget {
     authBloc = BlocProvider.of<AuthBloc>(context);
     authBloc.add(AppStartedEvent());
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      print("State, came here:"+state.toString());
+      return ServicePage();
+      print("State, came here:" + state.toString());
       if (state is AuthInitial) {
         return Splash();
       } else if (state is AuthenticatedState) {
