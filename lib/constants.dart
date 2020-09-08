@@ -11,6 +11,14 @@ class Constants {
   static Color primaryText = const Color(0xff000000);
   static Color accentText = const Color(0xffffffff);
   static Color transparent = const Color(0x00000000);
+  static List<Color> cardColors = [
+    Color(0xffe8ebfe),
+    Color(0xfff9e8e9),
+    Color(0xffe8d8eb),
+    Color(0xffdde5f2),
+    Color(0xfff3d6e8),
+    Color(0xfff9edda),
+  ];
 
   //DEFINE DIMENSIONS
   static BorderRadius buttonBorderRadius = BorderRadius.circular(10.0);

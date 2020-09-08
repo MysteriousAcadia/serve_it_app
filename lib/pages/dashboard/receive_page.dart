@@ -65,13 +65,13 @@ class ReceivePage extends StatelessWidget {
             ),
           ),
           Container(
-            height: 200,
+            height: 190,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
-                RecentsCard(),
-                RecentsCard(),
-                RecentsCard(),
+                RecentsCard(Constants.cardColors[0]),
+                RecentsCard(Constants.cardColors[1]),
+                RecentsCard(Constants.cardColors[2]),
               ],
             ),
           ),
@@ -93,9 +93,9 @@ class ReceivePage extends StatelessWidget {
               ),
             ),
           ),
-          ServicesCard(),
-          ServicesCard(),
-
+          ServicesCard(Constants.cardColors[0]),
+          ServicesCard(Constants.cardColors[1]),
+          ServicesCard(Constants.cardColors[2]),
         ],
       ),
     );

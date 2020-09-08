@@ -13,176 +13,82 @@ class FinancesPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(30),
-            child: Text(
-              'What services are you looking for?',
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 30,
-                color: const Color(0xff606060),
-                letterSpacing: -0.675,
-                fontWeight: FontWeight.w700,
-                height: 1.1851851851851851,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          SearchWidget<String>(
-            dataList: ["A", "B", "BC", "CD"],
-            hideSearchBoxWhenItemSelected: false,
-            listContainerHeight: MediaQuery.of(context).size.height / 4,
-            queryBuilder: (String query, List<dynamic> list) {
-              return list
-                  .where((dynamic item) =>
-                      item.toLowerCase().contains(query.toLowerCase()))
-                  .toList();
-            },
-            popupListItemBuilder: (dynamic item) {
-              return Text(item);
-            },
-            selectedItemBuilder:
-                (dynamic selectedItem, VoidCallback deleteSelectedItem) {
-              return Text(selectedItem);
-            },
-            // widget customization
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(20, 10, 0, 20),
-              child: Text(
-                'Recents',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 27,
-                  color: const Color(0xff606060),
-                  letterSpacing: -0.525,
-                  fontWeight: FontWeight.w700,
-                  height: 1.1904761904761905,
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
-          ),
           Container(
-            height: 200,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+                    height: 247.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(54.0),bottomRight:  Radius.circular(54.0)),
+                      color: const Color(0xffdcf3e9),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0x0d000000),
+                          offset: Offset(0, 7),
+                          blurRadius: 14,
+                        ),
+                      ],
+                    ),
+                  
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  width: 300,
-                  height: 200,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    color: Colors.pink,
-                    elevation: 10,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Flexible(
-                                flex: 2,
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        'Housekeeping Housekeeping Housekeeping',
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: TextStyle(
-                                          backgroundColor:
-                                              Constants.accentColor,
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 21,
-                                          color: const Color(0xff005c7e),
-                                          letterSpacing: -0.4,
-                                          fontWeight: FontWeight.w700,
-                                          height: 1.125,
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text.rich(
-                                        TextSpan(
-                                          style: TextStyle(
-                                            backgroundColor:
-                                                Constants.accentColor,
-                                            fontFamily: 'Montserrat',
-                                            fontSize: 15,
-                                            color: const Color(0xff005c7e),
-                                            height: 1.3636363636363635,
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                              text: 'Accepted by\n',
-                                            ),
-                                            TextSpan(
-                                              text:
-                                                  'The best anshuman singh is actually',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        textAlign: TextAlign.left,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 3,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Flexible(
-                                flex: 1,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "1-2PM",
-                                    ),
-                                    Icon(Icons.album, size: 60),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: 100,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.elliptical(27.5, 27.5),
-                                ),
-                              ),
-                              color: const Color(0xffffffff),
-                              child: Text("WOOOW"),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                Text(
+                  'Your Finances',
+                  style: TextStyle(
+                    fontFamily: 'Ubuntu',
+                    fontSize: 28,
+                    color: const Color(0xff005c7e),
+                    fontWeight: FontWeight.w700,
                   ),
+                  textAlign: TextAlign.left,
+                ),
+                Icon(Icons.album, size: 120),
+                SizedBox(
+                  width: 20,
+                ),
+                
+                SvgPicture.string(
+                  _svg_gj78bz,
+                  allowDrawingOutsideViewBox: true,
                 ),
               ],
             ),
           ),
+         Align(alignment: Alignment.center,child: Text("Coming soon!"),)
         ],
+      ),
+    );
+  }
+
+  generateOptions(String text, Color color) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.0),
+      child: Container(
+        width: double.infinity,
+        height: 60.0,
+        decoration: BoxDecoration(
+          color: color,
+        ),
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(100, 2, 10, 2),
+          child: Row(
+            children: <Widget>[
+              Text(
+                text,
+                style: TextStyle(
+                  fontFamily: 'Ubuntu',
+                  fontSize: 17,
+                  color: const Color(0xff005c7e),
+                  letterSpacing: -0.42500000000000004,
+                  height: 1.4705882352941178,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
+const String _svg_gj78bz =
+    '<svg viewBox="299.0 149.6 13.4 16.4" ><path transform="translate(294.5, 148.06)" d="M 11.22351169586182 1.5 L 4.5 4.488226890563965 L 4.5 8.97056770324707 C 4.5 13.11673259735107 7.368698120117188 16.99395751953125 11.22351169586182 17.93524932861328 C 15.07832431793213 16.99395751953125 17.947021484375 13.11673259735107 17.947021484375 8.97056770324707 L 17.947021484375 4.488226890563965 L 11.22351169586182 1.5 Z M 9.729397773742676 13.45290851593018 L 6.741170883178711 10.46468067169189 L 7.794520378112793 9.411331176757812 L 9.729397773742676 11.33873748779297 L 14.65250205993652 6.415633201599121 L 15.70585155487061 7.47645378112793 L 9.729397773742676 13.45290851593018 Z" fill="#005c7e" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

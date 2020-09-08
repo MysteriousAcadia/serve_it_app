@@ -27,7 +27,8 @@ class ServicePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         color: const Color(0xff9eeecb),
-        elevation: 10,
+        elevation: 5,
+        shadowColor: Color(0x14000000),
         child: Padding(
           padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
           child: Column(
@@ -64,7 +65,8 @@ class ServicePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         color: const Color(0xff9eeecb),
-        elevation: 10,
+         elevation: 5,
+        shadowColor: Color(0x14000000),
         child: Padding(
           padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
           child: Column(
@@ -120,7 +122,8 @@ class ServicePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         color: const Color(0xff9eeecb),
-        elevation: 10,
+         elevation: 5,
+        shadowColor: Color(0x14000000),
         child: Padding(
           padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
           child: Column(
@@ -194,6 +197,7 @@ class ServicePage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
+            onDemandCard,
             scheduleCard,
           ],
         ),
@@ -223,7 +227,13 @@ class ServicePage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(5.0),
       child: ChoiceChip(
-        label: Text(label),
+        selected: false,
+        label: Text(
+          label,
+          style: TextStyle(
+            color: const Color(0xff005c7e),
+          ),
+        ),
         labelPadding: EdgeInsets.all(5.0),
         backgroundColor: color,
         padding: EdgeInsets.all(5.0),

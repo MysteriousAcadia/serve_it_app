@@ -78,7 +78,7 @@ class App extends StatelessWidget {
     authBloc = BlocProvider.of<AuthBloc>(context);
     authBloc.add(AppStartedEvent());
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      return ServicePage();
+      return HomePage.HomePage();
       print("State, came here:" + state.toString());
       if (state is AuthInitial) {
         return Splash();
