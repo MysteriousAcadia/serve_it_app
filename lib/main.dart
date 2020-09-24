@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serveit/blocs/auth_bloc/auth_bloc.dart';
 import 'package:serveit/blocs/login_bloc/login_bloc.dart';
+import 'package:serveit/blocs/profile_bloc/profile_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/blocs/settings_bloc/settings_bloc_bloc.dart';
 import 'package:serveit/first_page.dart';
@@ -58,7 +59,14 @@ class MyApp extends StatelessWidget {
             loginBloc.init(userRepository);
             return loginBloc;
           },
-        )
+        ),
+         BlocProvider<ProfileBloc>(
+          create: (c) {
+            ProfileBloc profileBloc = ProfileBloc();
+            return profileBloc;
+          },
+        ),
+        
       ],
       child: MaterialApp(
         title: 'Flutter Login',
@@ -78,7 +86,7 @@ class App extends StatelessWidget {
     authBloc = BlocProvider.of<AuthBloc>(context);
     authBloc.add(AppStartedEvent());
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      return HomePage.HomePage();
+      return BasicProfilePage ();
       print("State, came here:" + state.toString());
       if (state is AuthInitial) {
         return Splash();
