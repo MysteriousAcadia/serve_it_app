@@ -1,15 +1,16 @@
-
 import 'package:serveit/models/service.dart';
 
 class ServicesResponse {
-  final bool success;
-  final List<Service> services;
+  bool success;
+  List<Service> services;
 
-  const ServicesResponse({this.success, this.services});
+  ServicesResponse({this.success, this.services});
 
-  ServicesResponse.fromJson(Map<String, dynamic> json)
-      : success = json['success'],
-        services = json['services'] as List;
+  ServicesResponse.fromJson(Map<String, dynamic> json) {
+    this.success = json['success'];
+    var _services = json['services'] as List;
+    services = _services.map((e) => Service.fromJson(e)).toList();
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -19,5 +20,6 @@ class ServicesResponse {
   }
 
   @override
-  String toString() => 'ServicesResponse { success: $success, services: $services }';
+  String toString() =>
+      'ServicesResponse { success: $success, services: $services }';
 }

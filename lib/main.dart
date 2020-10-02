@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serveit/blocs/auth_bloc/auth_bloc.dart';
 import 'package:serveit/blocs/login_bloc/login_bloc.dart';
 import 'package:serveit/blocs/profile_bloc/profile_bloc.dart';
+import 'package:serveit/blocs/receive_bloc/receive_page_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
+import 'package:serveit/blocs/request_service_bloc/request_service_bloc.dart';
 import 'package:serveit/blocs/settings_bloc/settings_bloc_bloc.dart';
 import 'package:serveit/first_page.dart';
 import 'package:serveit/pages/dashboard/home_page.dart' as HomePage;
+import 'package:serveit/pages/dashboard/receive_page.dart';
 import 'package:serveit/pages/onboard/basic_profile_page.dart';
 import 'package:serveit/pages/intro_page.dart';
 import 'package:serveit/pages/onboard/onboarding_in_page.dart';
@@ -22,6 +26,7 @@ import 'service_locator.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupLocator();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   runApp(MyApp());
 }
@@ -60,13 +65,22 @@ class MyApp extends StatelessWidget {
             return loginBloc;
           },
         ),
-         BlocProvider<ProfileBloc>(
+        BlocProvider<ProfileBloc>(
           create: (c) {
             ProfileBloc profileBloc = ProfileBloc();
             return profileBloc;
           },
         ),
-        
+        BlocProvider<ReceivePageBloc>(
+          create: (c) {
+            ReceivePageBloc receivePageBloc = ReceivePageBloc();
+            receivePageBloc.init(localStorageService);
+            return receivePageBloc;
+          },
+        ),
+        BlocProvider<RequestServiceBloc>(
+          create: (c) => RequestServiceBloc(localStorageService),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Login',
@@ -86,7 +100,6 @@ class App extends StatelessWidget {
     authBloc = BlocProvider.of<AuthBloc>(context);
     authBloc.add(AppStartedEvent());
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      return BasicProfilePage ();
       print("State, came here:" + state.toString());
       if (state is AuthInitial) {
         return Splash();

@@ -126,9 +126,7 @@ RecentsCard(Constants.cardColors[2]),
               ),
             ),
           ),
-          ServicesCard(Constants.cardColors[0]),
-          ServicesCard(Constants.cardColors[1]),
-          ServicesCard(Constants.cardColors[2]),
+         
         ],
       ),
     );

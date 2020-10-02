@@ -40,6 +40,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } catch (e) {
         throw Exception("Failed to Logout");
       }
+    } else if(event is RefreshLoginToken){
+      var isSignedIn = await userRepository.isSignedIn();
+        if (isSignedIn) {
+          yield AuthenticatedState(user: await userRepository.getCurrentUser());
+        } else {
+          yield UnAuthenticated();
+        }
     }
   }
 }

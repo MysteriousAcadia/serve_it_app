@@ -1,132 +1,65 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:serveit/models/service.dart';
-import 'package:serveit/pages/services.dart';
+import 'package:serveit/models/service_question.dart';
 
 import '../constants.dart';
 
-class ServicesCard extends StatelessWidget {
-  final Service service;
-  Color backgroundColor = Constants.cardColors[0];
-  ServicesCard(this.service,this.backgroundColor);
+class QuestionAnswer extends StatelessWidget {
+  ServiceQuestion serviceQuestion;
+  TextEditingController controller;
+  QuestionAnswer(this.serviceQuestion);
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-      child: Container(
-        width: double.infinity,
-        height: 170,
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          color: backgroundColor,
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        service.name,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 21,
-                          color: const Color(0xff005c7e),
-                          letterSpacing: -0.4,
-                          fontWeight: FontWeight.w700,
-                          height: 1.125,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 22.0,
-                      ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            fontSize: 15,
-                            color: const Color(0xff005c7e),
-                            height: 1.3636363636363635,
-                          ),
-                          children: [
-                            TextSpan(
-                              text:
-                                  service.description+service.id,
-                            ),
-                            TextSpan(
-                              text: '',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 3,
-                      ),
-                    ],
-                  ),
-                  flex: 3,
-                ),
-                Flexible(
-                  flex: 2,
-                  child: Stack(
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.center,
-                        child: SvgPicture.string(
-                          _svg_tax2sh,
-                          allowDrawingOutsideViewBox: true,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          width: 150,
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.elliptical(27.5, 27.5),
-                              ),
-                            ),
-                            color: const Color(0xffffffff),
-                            child: InkWell(
-                              onTap: () {
-                                SchedulerBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => RequestServicePage(service)));
-                                });
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Text("+      Subscribe"),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+    controller = TextEditingController();
+    final answerField = Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: const Color(0xffffffff),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x0d000000),
+              offset: Offset(0, 5),
+              blurRadius: 10,
             ),
-          ),
+          ],
         ),
-      ),
-    );
+        child: TextField(
+          controller: controller,
+          obscureText: true,
+          style: Constants.buttonTextStyle
+              .copyWith(color: const Color(0xff8ac4cf)),
+          decoration: InputDecoration(
+              filled: true,
+              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+              hintText: "Answer",
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: Constants.buttonBorderRadius,
+                  borderSide: new BorderSide(color: Constants.white)),
+              fillColor: Colors.white,
+            ),
+        ));
+    return Padding(
+        padding: EdgeInsets.all(5.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text(
+              serviceQuestion.question,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                fontSize: 11,
+                color: const Color(0xff005c7e),
+                letterSpacing: -0.275,
+                fontWeight: FontWeight.w700,
+                height: 1.1818181818181819,
+              ),
+              textAlign: TextAlign.left,
+            ),
+            answerField
+          ],
+        ));
   }
 }
 

@@ -30,10 +30,12 @@ class FirstScreen extends StatelessWidget {
                 RaisedButton(
                   onPressed: () {
                     authBloc.add(LogoutEvent());
-                    SchedulerBinding.instance.addPostFrameCallback((_) {
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => IntroPage()));
-                    });
+                    SchedulerBinding.instance.addPostFrameCallback(
+                      (_) {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => IntroPage()));
+                      },
+                    );
                   },
                   child: Text("Logout"),
                 ),
