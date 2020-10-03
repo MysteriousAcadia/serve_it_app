@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:serveit/models/profile.dart';
 import 'package:serveit/models/service_question.dart';
 
@@ -11,8 +13,9 @@ class ServiceRecents {
   List<ServiceQuestion> answers;
   ServiceRecents.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    time = DateTime.parse(json['createdAt']);
-    var _answers = (json['answers'] as List);
+    time = DateTime.parse(json['created_at']);
+    print("THE CURRNET"+json['answers']);
+    var _answers = jsonEncode(json["answers"].toString()) as List;
     if (_answers != null) {
       answers = _answers.map((e) => ServiceQuestion.fromJson(e)).toList();
     }
@@ -20,5 +23,4 @@ class ServiceRecents {
     user = Profile.fromJson(json['provider']);
     serviceID = json['service_id'];
   }
-
 }

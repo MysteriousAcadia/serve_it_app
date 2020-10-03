@@ -5,10 +5,17 @@ class Service {
   String description;
   String id;
   List<ServiceQuestion> questions;
+  Service.empty() {
+    name = "NOT DEFINED";
+    description = 'not defined';
+    id = 'not defined';
+    questions = [];
+  }
   Service({this.name, this.description, this.id, this.questions});
   Service.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     description = json['description'];
+    print("THE CURRNET" + json['questions']);
     var _questions = (json['questions'] as List);
     print(_questions);
     if (_questions != null) {

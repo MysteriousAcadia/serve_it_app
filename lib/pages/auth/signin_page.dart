@@ -97,10 +97,10 @@ class HomePage extends StatelessWidget {
           }
         } else if (state is LoginSuccessState) {
           authBloc.add(RefreshLoginToken());
-          // SchedulerBinding.instance.addPostFrameCallback((_) {
-          //   Navigator.of(context).pushReplacement(
-          //       MaterialPageRoute(builder: (context) => HomePage()));
-          // });
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => HomePage()));
+          });
 
           return Text("Success");
         }

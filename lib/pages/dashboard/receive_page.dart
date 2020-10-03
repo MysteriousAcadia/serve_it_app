@@ -6,6 +6,7 @@ import 'package:search_widget/search_widget.dart';
 import 'package:serveit/blocs/receive_bloc/receive_page_bloc.dart';
 import 'package:serveit/components/recents_card.dart';
 import 'package:serveit/components/services_card.dart';
+import 'package:serveit/models/service_recents.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/service.dart';
 
@@ -14,8 +15,9 @@ class ReceivePage extends StatelessWidget {
   Widget build(BuildContext context) {
     ReceivePageBloc bloc = BlocProvider.of<ReceivePageBloc>(context);
     bloc.add(ReceivePageReload());
-    Future<void> _refreshPage() {
+    Future<String> _refreshPage() async {
       bloc.add(ReceivePageReload());
+      return ("Success");
     }
 
     Widget page = BlocBuilder<ReceivePageBloc, ReceivePageState>(
@@ -44,7 +46,8 @@ class ReceivePage extends StatelessWidget {
     );
   }
 
-  Widget _body(List<Service> services, List<Service> recents, var context) {
+  Widget _body(List<Service> services, List<ServiceRecents> recents, var context) {
+    List<RecentsCard> recentsCard = _buildRecents(recents);
     return ListView(
       children: <Widget>[
         Padding(
@@ -79,7 +82,7 @@ class ReceivePage extends StatelessWidget {
           },
           selectedItemBuilder:
               (dynamic selectedItem, VoidCallback deleteSelectedItem) {
-            return ServicesCard(selectedItem,Constants.cardColors[1]);
+            return ServicesCard(selectedItem, Constants.cardColors[1]);
           },
           // widget customization
         ),
@@ -103,14 +106,8 @@ class ReceivePage extends StatelessWidget {
         ),
         Container(
           height: 190,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              RecentsCard(Constants.cardColors[0]),
-              RecentsCard(Constants.cardColors[1]),
-              RecentsCard(Constants.cardColors[2]),
-            ],
-          ),
+          child:
+              ListView(scrollDirection: Axis.horizontal, children: <Widget>[]),
         ),
         SizedBox(
           width: double.infinity,
@@ -144,6 +141,17 @@ class ReceivePage extends StatelessWidget {
                 })),
       ],
     );
+  }
+
+  List<RecentsCard> _buildRecents(List<ServiceRecents> recents) {
+    List<RecentsCard> recentsCard = [];
+    for (int i = 0; i < recents.length; i++) {
+      recentsCard.add(RecentsCard(
+        serviceRecents: recents[i],
+        service: Service.empty(),
+        backgroundColor: Constants.cardColors[i%Constants.cardColors.length],
+      ));
+    }
   }
 }
 

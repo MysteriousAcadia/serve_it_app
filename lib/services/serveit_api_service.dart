@@ -6,6 +6,7 @@ import 'package:serveit/models/request/get_token_body.dart';
 import 'package:serveit/models/request/request_service.dart';
 import 'package:serveit/models/request/update_profile_body.dart';
 import 'package:serveit/models/response/service_provider_response.dart';
+import 'package:serveit/models/response/service_recents_response.dart';
 import 'package:serveit/models/response/services_response.dart';
 import 'package:serveit/models/response/token_response.dart';
 import 'package:serveit/models/service.dart';
@@ -59,14 +60,14 @@ class UserApiClient {
   
   //TODO: BE IMPLEMENTED
   Future<List<ServiceRecents>> getServiceRecents(String token) async{
-    final url = '$_baseUrl/showServiceReceiver';
+    final url = '$_baseUrl/showServiceReciever';
     final response = await this.httpClient.get(
       url,
       headers: {"token": token},
     );
     final json = jsonDecode(response.body);
     print(json);
-    return ServicesProviderResponse.fromJson(json).services;
+    return ServicesRecentsResponse.fromJson(json).services;
     
   }
 

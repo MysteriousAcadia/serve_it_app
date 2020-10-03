@@ -14,8 +14,6 @@ import 'package:serveit/components/button.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/onboard/onboarding_page.dart';
 
-import '../../first_page.dart';
-
 class BasicProfilePage extends StatelessWidget {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   TextEditingController firstNameCtrl = TextEditingController();
@@ -192,11 +190,10 @@ class BasicProfilePage extends StatelessWidget {
                     Constants.buttonTextStyle.copyWith(color: Constants.white),
                     () {
                   profileBloc.add(ProfileUpload());
-                  // SchedulerBinding.instance.addPostFrameCallback((_) {
-                  //   Navigator.of(context).pushReplacement(
-                  //       MaterialPageRoute(
-                  //           builder: (context) => OnboardingPage()));
-                  // })
+                  SchedulerBinding.instance.addPostFrameCallback((_) {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => OnboardingPage()));
+                  });
                 }),
               ],
             ),

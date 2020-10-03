@@ -10,7 +10,6 @@ import 'package:serveit/components/button.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/onboard/basic_profile_page.dart';
 
-import '../../first_page.dart';
 
 class SignUpPage extends StatelessWidget {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);

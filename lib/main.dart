@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serveit/blocs/auth_bloc/auth_bloc.dart';
 import 'package:serveit/blocs/login_bloc/login_bloc.dart';
 import 'package:serveit/blocs/profile_bloc/profile_bloc.dart';
+import 'package:serveit/blocs/provide_bloc/provide_page_bloc.dart';
 import 'package:serveit/blocs/receive_bloc/receive_page_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/blocs/request_service_bloc/request_service_bloc.dart';
@@ -72,17 +73,20 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ReceivePageBloc>(
           create: (c) {
-            ReceivePageBloc receivePageBloc = ReceivePageBloc();
-            receivePageBloc.init(localStorageService);
+            ReceivePageBloc receivePageBloc =
+                ReceivePageBloc(localStorageService);
             return receivePageBloc;
           },
         ),
         BlocProvider<RequestServiceBloc>(
           create: (c) => RequestServiceBloc(localStorageService),
         ),
+        BlocProvider<ProvidePageBloc>(
+          create: (c) => ProvidePageBloc(localStorageService),
+        ),
       ],
       child: MaterialApp(
-        title: 'Flutter Login',
+        title: 'ServeIt',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

@@ -13,7 +13,7 @@ class ReceivePageLoading extends ReceivePageState {}
 
 class ReceivePageSuccess extends ReceivePageState {
   final List<Service> services;
-  final List<Service> recents;
+  final List<ServiceRecents> recents;
 
   ReceivePageSuccess(this.services, this.recents);
 }

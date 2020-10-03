@@ -9,7 +9,7 @@ import '../utils/constants.dart';
 
 class RecentsCard extends StatelessWidget {
   final Service service;
-  final ServiceRecents serviceRecents;
+  ServiceRecents serviceRecents;
   final Color backgroundColor;
 
   RecentsCard(
