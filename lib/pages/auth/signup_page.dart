@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:serveit/blocs/login_bloc/login_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/components/button.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/onboard/basic_profile_page.dart';
 
 import '../../first_page.dart';

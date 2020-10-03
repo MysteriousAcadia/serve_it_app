@@ -4,11 +4,11 @@ import 'package:search_widget/search_widget.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/components/recents_card.dart';
 import 'package:serveit/components/services_card.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/auth/signin_page.dart';
 import 'package:serveit/pages/auth/signup_page.dart';
 
-class DeliverPage extends StatelessWidget {
+class ProvidePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

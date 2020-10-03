@@ -8,7 +8,6 @@ import 'package:serveit/blocs/receive_bloc/receive_page_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/blocs/request_service_bloc/request_service_bloc.dart';
 import 'package:serveit/blocs/settings_bloc/settings_bloc_bloc.dart';
-import 'package:serveit/first_page.dart';
 import 'package:serveit/pages/dashboard/home_page.dart' as HomePage;
 import 'package:serveit/pages/dashboard/receive_page.dart';
 import 'package:serveit/pages/onboard/basic_profile_page.dart';
@@ -21,7 +20,7 @@ import 'package:serveit/pages/splash.dart';
 import 'package:serveit/repositories/user_repository.dart';
 import 'package:serveit/services/localstorage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'service_locator.dart';
+import 'utils/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

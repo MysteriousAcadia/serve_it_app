@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:serveit/models/service.dart';
 import 'package:serveit/pages/services.dart';
 
-import '../constants.dart';
+import '../utils/constants.dart';
 
 class ServicesCard extends StatelessWidget {
   final Service service;

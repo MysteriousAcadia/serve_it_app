@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:serveit/models/service_question.dart';
 
-import '../constants.dart';
+import '../utils/constants.dart';
 
 class QuestionAnswer extends StatelessWidget {
   ServiceQuestion serviceQuestion;

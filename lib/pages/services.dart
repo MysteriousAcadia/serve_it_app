@@ -9,7 +9,7 @@ import 'package:serveit/components/button.dart';
 import 'package:serveit/components/question_answer.dart';
 import 'package:serveit/components/recents_card.dart';
 import 'package:serveit/components/services_card.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/request/request_service.dart';
 import 'package:serveit/models/service.dart';
 import 'package:serveit/models/service_question.dart';

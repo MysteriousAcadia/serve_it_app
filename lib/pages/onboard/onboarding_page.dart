@@ -2,8 +2,9 @@ import 'package:fancy_on_boarding/fancy_on_boarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serveit/components/button.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/utils/constants.dart';
 import 'package:serveit/first_page.dart';
+import 'package:serveit/pages/dashboard/home_page.dart';
 
 class OnboardingPage extends StatelessWidget {
   final pageList = [
@@ -69,9 +70,9 @@ class OnboardingPage extends StatelessWidget {
         skipButtonText: "Skip",
         pageList: pageList,
         onDoneButtonPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => FirstScreen())),
+            MaterialPageRoute(builder: (context) => HomePage())),
         onSkipButtonPressed: () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => FirstScreen())),
+            MaterialPageRoute(builder: (context) =>  HomePage())),
       ),
     );
   }

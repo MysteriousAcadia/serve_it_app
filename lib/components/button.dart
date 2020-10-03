@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/utils/constants.dart';
 
 class Button extends StatelessWidget {
   String text;

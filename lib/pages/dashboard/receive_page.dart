@@ -6,7 +6,7 @@ import 'package:search_widget/search_widget.dart';
 import 'package:serveit/blocs/receive_bloc/receive_page_bloc.dart';
 import 'package:serveit/components/recents_card.dart';
 import 'package:serveit/components/services_card.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/service.dart';
 
 class ReceivePage extends StatelessWidget {

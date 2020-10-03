@@ -11,7 +11,7 @@ import 'package:serveit/blocs/login_bloc/login_bloc.dart';
 import 'package:serveit/blocs/profile_bloc/profile_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/components/button.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/onboard/onboarding_page.dart';
 
 import '../../first_page.dart';
