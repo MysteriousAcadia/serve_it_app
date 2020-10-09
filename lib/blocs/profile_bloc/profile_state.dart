@@ -12,7 +12,7 @@ class ProfileLoadingState extends ProfileState {}
 class ProfileUploaded extends ProfileState {}
 
 class ProfileLoaded extends ProfileState {
-  String name, address, picURL;
+  String name, address, picURL,phoneNo;
   File picture;
-  ProfileLoaded({name, address, picURL, picture});
+  ProfileLoaded({name, address, picURL, picture,phoneNo});
 }

@@ -9,21 +9,21 @@ import 'package:serveit/components/button.dart';
 import 'package:serveit/components/question_answer.dart';
 import 'package:serveit/components/recents_card.dart';
 import 'package:serveit/components/services_card.dart';
+import 'package:serveit/models/service_recents.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/request/request_service.dart';
 import 'package:serveit/models/service.dart';
 import 'package:serveit/models/service_question.dart';
 
 class RequestServicePage extends StatelessWidget {
-  final Service service;
+  Service service;
+  ServiceRecents serviceRecents;
   RequestServiceBloc requestServiceBloc;
-  RequestServicePage(this.service);
+  RequestServicePage({this.service, this.serviceRecents});
   @override
   Widget build(BuildContext context) {
     requestServiceBloc = BlocProvider.of<RequestServiceBloc>(context);
     DateTime date;
-    print(service);
-    print(service.questions);
     _pickDate() async {
       date = await showDatePicker(
         context: context,
@@ -32,7 +32,9 @@ class RequestServicePage extends StatelessWidget {
         initialDate: DateTime.now(),
       );
     }
-
+  if(serviceRecents!=null){
+    
+  }
     List<QuestionAnswer> questionAnswers = questionBuilder(service.questions);
 
     Widget optionsCard = Container(

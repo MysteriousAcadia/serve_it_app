@@ -6,16 +6,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:serveit/repositories/user_repository.dart';
+import 'package:serveit/services/localstorage_service.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  UserRepository userRepository;
-  AuthBloc(AuthState initialState) : super(initialState);
-  init(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+  final UserRepository userRepository;
+  final LocalStorageService localStorageService;
+
+  AuthBloc(
+      AuthState initialState, this.userRepository, this.localStorageService)
+      : super(initialState);
 
   @override
   Stream<AuthState> mapEventToState(
@@ -24,8 +26,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is AppStartedEvent) {
       try {
         var isSignedIn = await userRepository.isSignedIn();
+        var isNewUser = localStorageService.authToken.newUser;
+        var isVerified = localStorageService.authToken.verified;
         if (isSignedIn) {
-          yield AuthenticatedState(user: await userRepository.getCurrentUser());
+          if (isNewUser) {
+            yield NewUserState();
+          } else if (!isVerified) {
+            yield UnverifiedState();
+          } else {
+            yield AuthenticatedState(
+              user: await userRepository.getCurrentUser());
+          }
         } else {
           yield UnAuthenticated();
         }
@@ -40,13 +51,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } catch (e) {
         throw Exception("Failed to Logout");
       }
-    } else if(event is RefreshLoginToken){
+    } else if (event is RefreshLoginToken) {
       var isSignedIn = await userRepository.isSignedIn();
-        if (isSignedIn) {
-          yield AuthenticatedState(user: await userRepository.getCurrentUser());
-        } else {
-          yield UnAuthenticated();
-        }
+      if (isSignedIn) {
+        yield AuthenticatedState(user: await userRepository.getCurrentUser());
+      } else {
+        yield UnAuthenticated();
+      }
     }
   }
 }

@@ -42,11 +42,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (BuildContext context) {
-            AuthBloc authBloc = AuthBloc(AuthInitial());
-            authBloc.init(userRepository);
-            return authBloc;
-          },
+          create: (BuildContext context) =>
+              AuthBloc(AuthInitial(), userRepository, localStorageService),
         ),
         BlocProvider<SettingsBloc>(create: (BuildContext context) {
           SettingsBloc settingsBloc = SettingsBloc();

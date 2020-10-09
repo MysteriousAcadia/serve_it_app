@@ -29,7 +29,7 @@ class RecentsCard extends StatelessWidget {
     void onClick() {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => RequestServicePage(service)));
+            builder: (context) => RequestServicePage()));
       });
     }
 

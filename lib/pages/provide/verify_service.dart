@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:expandable/expandable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,6 +19,19 @@ class VerifyServicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     requestServiceBloc = BlocProvider.of<RequestServiceBloc>(context);
+    Future getImage() async {
+      FilePickerResult result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        allowedExtensions: ['jpg', 'pdf', 'doc'],
+      );
+      if (result != null) {
+        File file = File(result.files.single.path);
+      }
+      // profileBloc.add(ProfileUpdate(
+      //   picture: compressedFile,
+      // ));
+    }
+
     Widget button = Button(
       "Verify Now",
       Constants.white,

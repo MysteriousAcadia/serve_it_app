@@ -8,10 +8,10 @@ abstract class ProfileEvent extends Equatable {
 }
 
  class ProfileUpdate extends ProfileEvent {
-  final String name, address;
+  final String name, locality,phone;
   final File picture;
 
-  ProfileUpdate({this.name, this.address, this.picture});
+  ProfileUpdate({this.phone ,this.name, this.locality, this.picture});
 }
 
  class ProfileUpload extends ProfileEvent {
@@ -20,3 +20,4 @@ abstract class ProfileEvent extends Equatable {
 }
 
  class GetProfile extends ProfileEvent {}
+ class GetLocation extends ProfileEvent {}

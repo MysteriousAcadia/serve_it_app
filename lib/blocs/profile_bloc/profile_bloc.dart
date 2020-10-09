@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:geolocator/geolocator.dart';
 import 'package:path/path.dart' as Path;
 import 'package:http/http.dart' as http;
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:serveit/models/request/update_profile_body.dart';
-import 'package:serveit/repositories/user_repository.dart';
 import 'package:serveit/services/localstorage_service.dart';
 import 'package:serveit/services/serveit_api_service.dart';
 
@@ -23,9 +21,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   String name = "";
-  String address = "";
+  String locality = "";
   String picUrl = "";
+  String phoneNo = "";
   File picture;
+  Position position;
 
   @override
   Stream<ProfileState> mapEventToState(
@@ -33,19 +33,26 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async* {
     if (event is GetProfile) {
       yield ProfileLoaded(
-          name: name, address: address, picURL: picUrl, picture: picture);
+          name: name,
+          address: locality,
+          picURL: picUrl,
+          picture: picture,
+          phoneNo: phoneNo);
     } else if (event is ProfileUpdate) {
       if (event.picture != null) {
         picture = event.picture;
       }
-      if (event.address != null) {
-        address = event.address;
+      if (event.locality != null) {
+        locality = event.locality;
       }
       if (event.name != null) {
         name = event.name;
       }
+      if (event.phone != null) {
+        phoneNo = event.phone;
+      }
       yield ProfileLoaded(
-          name: name, address: address, picURL: picUrl, picture: picture);
+          name: name, address: locality, picURL: picUrl, picture: picture);
     } else if (event is ProfileUpload) {
       yield ProfileLoadingState();
       if (picture != null) {
@@ -57,12 +64,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         print('File Uploaded');
         picUrl = await storageReference.getDownloadURL();
       }
-      UpdateProfileBody body =
-          UpdateProfileBody(name: name, address: address, profile_url: picUrl);
+      UpdateProfileBody body = UpdateProfileBody(
+          name: name, address: locality, mobile: phoneNo, profilePic: picUrl);
       UserApiClient client = UserApiClient(httpClient: http.Client());
-      client.updateProfile(body,localStorageService.authToken.token);
+      client.updateProfile(body, localStorageService.authToken.token);
       yield ProfileUploaded();
-      yield ProfileLoaded(name: name, address: address, picURL: picUrl);
+      yield ProfileLoaded(name: name, address: locality, picURL: picUrl);
+    } else if (event is GetLocation) {
+      LocationPermission permission = await checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await requestPermission();
+      }
+      if (permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse) {
+        position =
+            await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      }
     }
   }
 }
