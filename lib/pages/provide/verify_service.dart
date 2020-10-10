@@ -8,17 +8,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:search_widget/search_widget.dart';
 import 'package:serveit/blocs/request_service_bloc/request_service_bloc.dart';
+import 'package:serveit/blocs/verify_service_bloc/verify_service_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/service.dart';
 
 class VerifyServicePage extends StatelessWidget {
   final Service service;
-  RequestServiceBloc requestServiceBloc;
+  VerifyServiceBloc verifyServiceBloc;
   VerifyServicePage(this.service);
   @override
   Widget build(BuildContext context) {
-    requestServiceBloc = BlocProvider.of<RequestServiceBloc>(context);
+    verifyServiceBloc = BlocProvider.of<VerifyServiceBloc>(context);
     Future getImage() async {
       FilePickerResult result = await FilePicker.platform.pickFiles(
         allowMultiple: false,
@@ -27,16 +28,27 @@ class VerifyServicePage extends StatelessWidget {
       if (result != null) {
         File file = File(result.files.single.path);
       }
-      // profileBloc.add(ProfileUpdate(
-      //   picture: compressedFile,
-      // ));
     }
+
+    Widget addFileButton =
+        IconButton(icon: Icon(Icons.add_circle), onPressed: getImage);
 
     Widget button = Button(
       "Verify Now",
       Constants.white,
       Constants.buttonTextStyle,
       () {},
+    );
+    Widget body = BlocBuilder<VerifyServiceBloc, VerifyServiceState>(
+      builder: (context, state) {
+        if (state is VerifyServiceInitial) {
+          return addFileButton;
+        } else if (state is VerifyServiceFileAdded) {
+          return button;
+        } else if (state is VerifyServiceSuccess) {
+          return Text("Success");
+        }
+      },
     );
 
     return Scaffold(
@@ -73,7 +85,7 @@ class VerifyServicePage extends StatelessWidget {
                 textAlign: TextAlign.left,
               ),
             ),
-            button,
+            body,
           ],
         ),
       ),

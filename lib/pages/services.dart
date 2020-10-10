@@ -8,7 +8,7 @@ import 'package:serveit/blocs/request_service_bloc/request_service_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/components/question_answer.dart';
 import 'package:serveit/components/recents_card.dart';
-import 'package:serveit/components/services_card.dart';
+import 'package:serveit/components/services_provide_card.dart';
 import 'package:serveit/models/service_recents.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/request/request_service.dart';

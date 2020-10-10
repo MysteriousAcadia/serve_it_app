@@ -5,7 +5,7 @@ import 'package:search_widget/search_widget.dart';
 import 'package:serveit/blocs/provide_bloc/provide_page_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/components/recents_card.dart';
-import 'package:serveit/components/services_card.dart';
+import 'package:serveit/components/services_provide_card.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/auth/signin_page.dart';
 import 'package:serveit/pages/auth/signup_page.dart';

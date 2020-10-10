@@ -9,6 +9,7 @@ import 'package:serveit/blocs/receive_bloc/receive_page_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/blocs/request_service_bloc/request_service_bloc.dart';
 import 'package:serveit/blocs/settings_bloc/settings_bloc_bloc.dart';
+import 'package:serveit/blocs/verify_service_bloc/verify_service_bloc.dart';
 import 'package:serveit/pages/dashboard/home_page.dart' as HomePage;
 import 'package:serveit/pages/dashboard/receive_page.dart';
 import 'package:serveit/pages/onboard/basic_profile_page.dart';
@@ -80,6 +81,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ProvidePageBloc>(
           create: (c) => ProvidePageBloc(localStorageService),
+        ),
+        BlocProvider<VerifyServiceBloc>(
+          create: (c) => VerifyServiceBloc(),
         ),
       ],
       child: MaterialApp(

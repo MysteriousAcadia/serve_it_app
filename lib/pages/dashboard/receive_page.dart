@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:search_widget/search_widget.dart';
 import 'package:serveit/blocs/receive_bloc/receive_page_bloc.dart';
 import 'package:serveit/components/recents_card.dart';
-import 'package:serveit/components/services_card.dart';
+import 'package:serveit/components/services_provide_card.dart';
 import 'package:serveit/models/service_recents.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/service.dart';
@@ -78,11 +78,11 @@ class ReceivePage extends StatelessWidget {
                 .toList();
           },
           popupListItemBuilder: (Service item) {
-            return ServicesCard(item, Constants.cardColors[0]);
+            return ServicesProvideCard(item, Constants.cardColors[0]);
           },
           selectedItemBuilder:
               (dynamic selectedItem, VoidCallback deleteSelectedItem) {
-            return ServicesCard(selectedItem, Constants.cardColors[1]);
+            return ServicesProvideCard(selectedItem, Constants.cardColors[1]);
           },
           // widget customization
         ),
@@ -134,7 +134,7 @@ class ReceivePage extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: services.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ServicesCard(
+                  return ServicesProvideCard(
                     services[index],
                     Constants.cardColors[index % Constants.cardColors.length],
                   );
