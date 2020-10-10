@@ -1,24 +1,41 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:search_widget/search_widget.dart';
+import 'package:serveit/blocs/request_service_bloc/request_service_bloc.dart';
 import 'package:serveit/components/button.dart';
+import 'package:serveit/components/question_answer.dart';
 import 'package:serveit/components/recents_card.dart';
-import 'package:serveit/components/services_card.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/components/services_provide_card.dart';
+import 'package:serveit/models/service_recents.dart';
+import 'package:serveit/utils/constants.dart';
+import 'package:serveit/models/request/request_service.dart';
+import 'package:serveit/models/service.dart';
+import 'package:serveit/models/service_question.dart';
 
-class ServicePage extends StatelessWidget {
+class RequestServicePage extends StatelessWidget {
+  Service service;
+  ServiceRecents serviceRecents;
+  RequestServiceBloc requestServiceBloc;
+  RequestServicePage({this.service, this.serviceRecents});
   @override
   Widget build(BuildContext context) {
+    requestServiceBloc = BlocProvider.of<RequestServiceBloc>(context);
+    DateTime date;
     _pickDate() async {
-      DateTime date = await showDatePicker(
+      date = await showDatePicker(
         context: context,
-        firstDate: DateTime(DateTime.now().year - 5),
-        lastDate: DateTime(DateTime.now().year + 5),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(DateTime.now().day + 5),
         initialDate: DateTime.now(),
       );
     }
+  if(serviceRecents!=null){
+    
+  }
+    List<QuestionAnswer> questionAnswers = questionBuilder(service.questions);
 
     Widget optionsCard = Container(
       width: double.infinity,
@@ -37,7 +54,7 @@ class ServicePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Text(
-                'Select options',
+                'Answer Questions',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 20,
@@ -49,9 +66,7 @@ class ServicePage extends StatelessWidget {
                 textAlign: TextAlign.left,
               ),
               Column(
-                children: <Widget>[
-                  row(),
-                ],
+                children: <Widget>[...questionAnswers],
               ),
             ],
           ),
@@ -65,7 +80,7 @@ class ServicePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         color: const Color(0xff9eeecb),
-         elevation: 5,
+        elevation: 5,
         shadowColor: Color(0x14000000),
         child: Padding(
           padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
@@ -74,18 +89,18 @@ class ServicePage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Text(
-                'On Demand',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 20,
-                  color: const Color(0xff005c7e),
-                  letterSpacing: -0.42500000000000004,
-                  fontWeight: FontWeight.w700,
-                  height: 1.1764705882352942,
-                ),
-                textAlign: TextAlign.left,
-              ),
+              // Text(
+              //   'On Demand',
+              //   style: TextStyle(
+              //     fontFamily: 'Montserrat',
+              //     fontSize: 20,
+              //     color: const Color(0xff005c7e),
+              //     letterSpacing: -0.42500000000000004,
+              //     fontWeight: FontWeight.w700,
+              //     height: 1.1764705882352942,
+              //   ),
+              //   textAlign: TextAlign.left,
+              // ),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
@@ -95,18 +110,27 @@ class ServicePage extends StatelessWidget {
                       "Book Now",
                       Constants.white,
                       Constants.buttonTextStyle,
-                      () => {},
+                      () {
+                        RequestServiceBody body = RequestServiceBody(
+                            service.id,
+                            questionAnswers
+                                .map((e) => ServiceQuestion(
+                                    id: e.serviceQuestion.id,
+                                    answer: e.controller.text))
+                                .toList());
+                        requestServiceBloc.add(SendRequestServiceEvent(body));
+                      },
                     ),
                   ),
-                  Flexible(
-                    flex: 1,
-                    child: Button(
-                      "Pay 150",
-                      Constants.white,
-                      Constants.buttonTextStyle,
-                      () => {},
-                    ),
-                  ),
+                  // Flexible(
+                  //   flex: 1,
+                  //   child: Button(
+                  //     "Pay 150",
+                  //     Constants.white,
+                  //     Constants.buttonTextStyle,
+                  //     () => {},
+                  //   ),
+                  // ),
                 ],
               )
             ],
@@ -122,7 +146,7 @@ class ServicePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         color: const Color(0xff9eeecb),
-         elevation: 5,
+        elevation: 5,
         shadowColor: Color(0x14000000),
         child: Padding(
           padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
@@ -169,7 +193,7 @@ class ServicePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(30),
               child: Text(
-                'Huge Service Heading',
+                service.name,
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 30,
@@ -203,6 +227,14 @@ class ServicePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<QuestionAnswer> questionBuilder(List<ServiceQuestion> questions) {
+    List<QuestionAnswer> questionWidgets = [];
+    for (int i = 0; i < questions.length; i++) {
+      questionWidgets.add(QuestionAnswer(questions[i]));
+    }
+    return questionWidgets;
   }
 
   Widget row() {

@@ -1,143 +1,128 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:serveit/models/service.dart';
-import 'package:serveit/models/service_recents.dart';
+import 'package:serveit/pages/provide/verify_service.dart';
 import 'package:serveit/pages/services.dart';
 
 import '../utils/constants.dart';
 
-class RecentsCard extends StatelessWidget {
+class ServicesReceiveCard extends StatelessWidget {
   final Service service;
-  ServiceRecents serviceRecents;
-  final Color backgroundColor;
-
-  RecentsCard(
-      {Key key, this.service, this.serviceRecents, this.backgroundColor})
-      : super(key: key);
-
+  Color backgroundColor = Constants.cardColors[0];
+  ServicesReceiveCard(this.service,this.backgroundColor);
   @override
   Widget build(BuildContext context) {
-    String statusText = "Not defined";
-    if (serviceRecents.status == 0) {
-      statusText = "Not confirmed";
-    } else if (serviceRecents.status == 1) {
-      statusText = "Confirmed";
-    } else if (serviceRecents.status == 2) {
-      statusText = "Completed";
-    }
-    void onClick() {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => RequestServicePage()));
-      });
-    }
-
     return Padding(
-      padding: EdgeInsets.all(5.0),
+      padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
       child: Container(
-        width: 300,
-        height: 300,
-        child: InkWell(
-          onTap: onClick,
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            color: backgroundColor,
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+        width: double.infinity,
+        height: 170,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          color: backgroundColor,
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Flexible(
-                        flex: 2,
-                        child: Column(
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                service.name,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 21,
-                                  color: const Color(0xff005c7e),
-                                  letterSpacing: -0.4,
-                                  fontWeight: FontWeight.w700,
-                                  height: 1.125,
-                                ),
-                              ),
+                      Text(
+                        service.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 21,
+                          color: const Color(0xff005c7e),
+                          letterSpacing: -0.4,
+                          fontWeight: FontWeight.w700,
+                          height: 1.125,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 22.0,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 15,
+                            color: const Color(0xff005c7e),
+                            height: 1.3636363636363635,
+                          ),
+                          children: [
+                            TextSpan(
+                              text:
+                                  service.description+service.id,
                             ),
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: Text.rich(
-                                TextSpan(
-                                  style: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontSize: 15,
-                                    color: const Color(0xff005c7e),
-                                    height: 1.3636363636363635,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: 'Accepted by\n',
-                                    ),
-                                    TextSpan(
-                                      text: serviceRecents.user.name,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                textAlign: TextAlign.left,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
+                            TextSpan(
+                              text: '',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ],
                         ),
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
                       ),
-                      Flexible(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              serviceRecents.time.toString(),
+                    ],
+                  ),
+                  flex: 3,
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Stack(
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.center,
+                        child: SvgPicture.string(
+                          _svg_tax2sh,
+                          allowDrawingOutsideViewBox: true,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: 150,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.elliptical(27.5, 27.5),
+                              ),
                             ),
-                            Icon(Icons.album, size: 60),
-                          ],
+                            color: const Color(0xffffffff),
+                            child: InkWell(
+                              onTap: () {
+                               SchedulerBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => VerifyServicePage(service)));
+                                });
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Text("+      Subscribe"),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    width: 150,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.elliptical(27.5, 27.5),
-                        ),
-                      ),
-                      color: const Color(0xffffffff),
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(statusText),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
         ),

@@ -6,7 +6,7 @@ import 'package:serveit/components/button.dart';
 import 'package:serveit/components/checkbox.dart';
 import 'package:serveit/models/settings.dart';
 
-import '../../constants.dart';
+import '../../utils/constants.dart';
 // import 'package:adobe_xd/specific_rect_clip.dart';
 
 class OnboardingInPage extends StatelessWidget {

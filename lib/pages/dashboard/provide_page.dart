@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:search_widget/search_widget.dart';
+import 'package:serveit/blocs/provide_bloc/provide_page_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/components/recents_card.dart';
-import 'package:serveit/components/services_card.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/components/services_provide_card.dart';
+import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/auth/signin_page.dart';
 import 'package:serveit/pages/auth/signup_page.dart';
 
-class DeliverPage extends StatelessWidget {
+class ProvidePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final ProvidePageBloc providePageBloc =
+        BlocProvider.of<ProvidePageBloc>(context);
+    
     return SafeArea(
       child: ListView(
         children: <Widget>[
@@ -71,11 +76,9 @@ class DeliverPage extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
-               RecentsCard(Constants.cardColors[0]),
-RecentsCard(Constants.cardColors[1]),
-RecentsCard(Constants.cardColors[2]),
-               
-               
+                RecentsCard(backgroundColor: Constants.cardColors[0]),
+                RecentsCard(backgroundColor: Constants.cardColors[1]),
+                RecentsCard(backgroundColor: Constants.cardColors[2]),
               ],
             ),
           ),
@@ -102,9 +105,9 @@ RecentsCard(Constants.cardColors[2]),
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
-                RecentsCard(Constants.cardColors[0]),
-                RecentsCard(Constants.cardColors[1]),
-                RecentsCard(Constants.cardColors[2]),
+                RecentsCard(backgroundColor: Constants.cardColors[0]),
+                RecentsCard(backgroundColor: Constants.cardColors[1]),
+                RecentsCard(backgroundColor: Constants.cardColors[2]),
               ],
             ),
           ),
@@ -126,9 +129,6 @@ RecentsCard(Constants.cardColors[2]),
               ),
             ),
           ),
-          ServicesCard(Constants.cardColors[0]),
-          ServicesCard(Constants.cardColors[1]),
-          ServicesCard(Constants.cardColors[2]),
         ],
       ),
     );

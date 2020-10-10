@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:serveit/blocs/settings_bloc/settings_bloc_bloc.dart';
 import 'package:serveit/components/button.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/auth/signin_page.dart';
 import 'package:serveit/pages/auth/signup_page.dart';
-import 'package:serveit/pages/dashboard/deliver_page.dart';
+import 'package:serveit/pages/dashboard/provide_page.dart';
 import 'package:serveit/pages/dashboard/finances_page.dart';
 import 'package:serveit/pages/dashboard/receive_page.dart';
 import 'package:serveit/pages/dashboard/settings_page.dart';
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
         var widgetList = <Widget>[];
         if (state is SettingsLoaded) {
           if (state.settings.isProvideServicesEnabled) {
-            widgetList.add(DeliverPage());
+            widgetList.add(ProvidePage());
           }
           if (state.settings.isReceiveServicesEnabled) {
             widgetList.add(ReceivePage());

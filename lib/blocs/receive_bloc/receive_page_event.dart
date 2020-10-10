@@ -6,3 +6,4 @@ abstract class ReceivePageEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+class ReceivePageReload extends ReceivePageEvent{}

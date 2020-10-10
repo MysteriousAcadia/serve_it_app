@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:search_widget/search_widget.dart';
 import 'package:serveit/components/button.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/auth/signin_page.dart';
 import 'package:serveit/pages/auth/signup_page.dart';
 

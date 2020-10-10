@@ -4,23 +4,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:serveit/blocs/auth_bloc/auth_bloc.dart';
 import 'package:serveit/blocs/login_bloc/login_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/components/button.dart';
-import 'package:serveit/constants.dart';
+import 'package:serveit/utils/constants.dart';
+import 'package:serveit/pages/dashboard/home_page.dart';
 import 'package:serveit/pages/onboard/onboarding_page.dart';
 
-import '../../first_page.dart';
 
 class HomePage extends StatelessWidget {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
   LoginBloc loginBloc;
+  AuthBloc authBloc;
 
   @override
   Widget build(BuildContext context) {
     loginBloc = BlocProvider.of<LoginBloc>(context);
+    authBloc = BlocProvider.of<AuthBloc>(context);
 
     final emailField = BlocBuilder<LoginBloc, LoginState>(
         builder: (context, state) => Container(
@@ -93,9 +96,10 @@ class HomePage extends StatelessWidget {
             return Text("${state.message}");
           }
         } else if (state is LoginSuccessState) {
+          authBloc.add(RefreshLoginToken());
           SchedulerBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => FirstScreen()));
+                MaterialPageRoute(builder: (context) => HomePage()));
           });
 
           return Text("Success");
@@ -108,87 +112,91 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Constants.primaryColor,
       body: Center(
-        child: SingleChildScrollView(child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Sign In",
-                  textAlign: TextAlign.center,
-                  style: Constants.buttonTextStyle.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 33,
-                    color: Constants.white,
-                  ),
-                ),
-                loadingOrError(context),
-                SizedBox(height: 70.0),
-                emailField,
-                SizedBox(height: 25.0),
-                passwordField,
-                SizedBox(
-                  height: 35.0,
-                ),
-                Button(
-                    "Login",
-                    Constants.green,
-                    Constants.buttonTextStyle.copyWith(color: Constants.white),
-                    () => {
-                          loginBloc.add(OnLoginEvent(
-                              loginType: "EMAIL",
-                              email: emailCtrl.text,
-                              password: passwordCtrl.text))
-                        }),
-                SizedBox(
-                  height: 45.0,
-                ),
-                Text(
-                  "Or Continue up with:",
-                  textAlign: TextAlign.center,
-                  style: Constants.buttonTextStyle.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Constants.white,
-                  ),
-                ),
-                SizedBox(
-                  height: 15.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Expanded(
-                      child: Button(
-                          "Google",
-                          Colors.red[300],
-                          Constants.buttonTextStyle
-                              .copyWith(color: Constants.white),
-                          () => {
-                                loginBloc.add(
-                                  OnLoginEvent(loginType: "GOOGLE"),
-                                ),
-                              }),
+        child: SingleChildScrollView(
+          child: Container(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "Sign In",
+                    textAlign: TextAlign.center,
+                    style: Constants.buttonTextStyle.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 33,
+                      color: Constants.white,
                     ),
-                    Expanded(
-                      child: Button(
-                          "Facebook",
-                          Colors.blue[300],
-                          Constants.buttonTextStyle
-                              .copyWith(color: Constants.white),
-                          () => {loginBloc.add(
-                                  OnLoginEvent(loginType: "FACEBOOK"),
-                                ),}),
+                  ),
+                  loadingOrError(context),
+                  SizedBox(height: 70.0),
+                  emailField,
+                  SizedBox(height: 25.0),
+                  passwordField,
+                  SizedBox(
+                    height: 35.0,
+                  ),
+                  Button(
+                      "Login",
+                      Constants.green,
+                      Constants.buttonTextStyle
+                          .copyWith(color: Constants.white),
+                      () => {
+                            loginBloc.add(OnLoginEvent(
+                                loginType: "EMAIL",
+                                email: emailCtrl.text,
+                                password: passwordCtrl.text))
+                          }),
+                  SizedBox(
+                    height: 45.0,
+                  ),
+                  Text(
+                    "Or Continue up with:",
+                    textAlign: TextAlign.center,
+                    style: Constants.buttonTextStyle.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Constants.white,
                     ),
-                  ],
-                ),
-                
-              ],
+                  ),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Expanded(
+                        child: Button(
+                            "Google",
+                            Colors.red[300],
+                            Constants.buttonTextStyle
+                                .copyWith(color: Constants.white),
+                            () => {
+                                  loginBloc.add(
+                                    OnLoginEvent(loginType: "GOOGLE"),
+                                  ),
+                                }),
+                      ),
+                      Expanded(
+                        child: Button(
+                            "Facebook",
+                            Colors.blue[300],
+                            Constants.buttonTextStyle
+                                .copyWith(color: Constants.white),
+                            () => {
+                                  loginBloc.add(
+                                    OnLoginEvent(loginType: "FACEBOOK"),
+                                  ),
+                                }),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),),
+      ),
     );
   }
 }
@@ -198,6 +206,6 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  HomePage();
+    return HomePage();
   }
 }
