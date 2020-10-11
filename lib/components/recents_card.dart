@@ -29,7 +29,7 @@ class RecentsCard extends StatelessWidget {
     void onClick() {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => RequestServicePage()));
+            builder: (context) => RequestServicePage(service: service,)));
       });
     }
 
@@ -63,7 +63,7 @@ class RecentsCard extends StatelessWidget {
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
-                                service.name,
+                                serviceRecents.service.name,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 style: TextStyle(

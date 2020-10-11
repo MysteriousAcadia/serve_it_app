@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:search_widget/search_widget.dart';
@@ -8,7 +9,7 @@ import 'package:serveit/blocs/request_service_bloc/request_service_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/components/question_answer.dart';
 import 'package:serveit/components/recents_card.dart';
-import 'package:serveit/components/services_card.dart';
+import 'package:serveit/components/services_provide_card.dart';
 import 'package:serveit/models/service_recents.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/request/request_service.dart';
@@ -24,17 +25,30 @@ class RequestServicePage extends StatelessWidget {
   Widget build(BuildContext context) {
     requestServiceBloc = BlocProvider.of<RequestServiceBloc>(context);
     DateTime date;
+    TimeOfDay timeOfDay;
     _pickDate() async {
       date = await showDatePicker(
         context: context,
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().day + 5),
+        lastDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().day + 5),
         initialDate: DateTime.now(),
       );
+      timeOfDay = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+      date = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        timeOfDay.hour,
+        timeOfDay.minute,
+      );
+      requestServiceBloc.add(UpdateData());
+      print(date.toIso8601String());
     }
-  if(serviceRecents!=null){
-    
-  }
+
+    if (serviceRecents != null) {}
     List<QuestionAnswer> questionAnswers = questionBuilder(service.questions);
 
     Widget optionsCard = Container(
@@ -103,25 +117,41 @@ class RequestServicePage extends StatelessWidget {
               // ),
               Row(
                 mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Flexible(
-                    flex: 1,
-                    child: Button(
-                      "Book Now",
-                      Constants.white,
-                      Constants.buttonTextStyle,
-                      () {
-                        RequestServiceBody body = RequestServiceBody(
-                            service.id,
-                            questionAnswers
-                                .map((e) => ServiceQuestion(
-                                    id: e.serviceQuestion.id,
-                                    answer: e.controller.text))
-                                .toList());
-                        requestServiceBloc.add(SendRequestServiceEvent(body));
-                      },
-                    ),
+                  BlocBuilder<RequestServiceBloc, RequestServiceState>(
+                    builder: (context, state) {
+                      if (state is RequestServiceSuccess) {
+                        SchedulerBinding.instance.addPostFrameCallback((_) {
+                          Navigator.of(context).pop();
+                       
+                        });
+                      }
+                      return state is RequestServiceLoading
+                          ? CircularProgressIndicator()
+                          : Flexible(
+                              flex: 1,
+                              child: Button(
+                                "Book Now",
+                                Constants.white,
+                                Constants.buttonTextStyle,
+                                () {
+                                  RequestServiceBody body = RequestServiceBody(
+                                      service.id,
+                                      questionAnswers
+                                          .map((e) => ServiceQuestion(
+                                              id: e.serviceQuestion.id,
+                                              answer: e.controller.text))
+                                          .toList());
+                                  requestServiceBloc
+                                      .add(SendRequestServiceEvent(body));
+                                },
+                              ),
+                            );
+                    },
                   ),
+
                   // Flexible(
                   //   flex: 1,
                   //   child: Button(
@@ -171,7 +201,14 @@ class RequestServicePage extends StatelessWidget {
                 expanded: Column(
                   children: <Widget>[
                     ListTile(
-                      title: Text("Date Widget soon"),
+                      title:
+                          BlocBuilder<RequestServiceBloc, RequestServiceState>(
+                        builder: (context, state) {
+                          return Text(date == null
+                              ? "Please select a time"
+                              : date.toIso8601String());
+                        },
+                      ),
                       trailing: Icon(Icons.keyboard_arrow_down),
                       onTap: _pickDate,
                     ),
@@ -209,7 +246,7 @@ class RequestServicePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(30),
               child: Text(
-                'How do you want the service?',
+                'When do you want the service?',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 30,
@@ -221,8 +258,8 @@ class RequestServicePage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            onDemandCard,
             scheduleCard,
+            onDemandCard,
           ],
         ),
       ),
@@ -235,41 +272,5 @@ class RequestServicePage extends StatelessWidget {
       questionWidgets.add(QuestionAnswer(questions[i]));
     }
     return questionWidgets;
-  }
-
-  Widget row() {
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      child: Wrap(
-        children: <Widget>[
-          chipForRow("TEST1", Colors.blue),
-          chipForRow("TEST1", Colors.blue),
-          chipForRow("TEST1", Colors.blue),
-          chipForRow("TEST1", Colors.blue),
-          chipForRow("TEST1", Colors.blue),
-          chipForRow("TEST1", Colors.blue),
-          chipForRow("TEST1", Colors.blue),
-          chipForRow("TEST1", Colors.blue),
-        ],
-      ),
-    );
-  }
-
-  Widget chipForRow(String label, Color color) {
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      child: ChoiceChip(
-        selected: false,
-        label: Text(
-          label,
-          style: TextStyle(
-            color: const Color(0xff005c7e),
-          ),
-        ),
-        labelPadding: EdgeInsets.all(5.0),
-        backgroundColor: color,
-        padding: EdgeInsets.all(5.0),
-      ),
-    );
   }
 }

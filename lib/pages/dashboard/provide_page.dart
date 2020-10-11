@@ -5,19 +5,26 @@ import 'package:search_widget/search_widget.dart';
 import 'package:serveit/blocs/provide_bloc/provide_page_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/components/recents_card.dart';
-import 'package:serveit/components/services_card.dart';
+import 'package:serveit/components/services_provide_card.dart';
+import 'package:serveit/models/service.dart';
+import 'package:serveit/models/service_provider.dart';
+import 'package:serveit/models/verify_service.dart';
 import 'package:serveit/utils/constants.dart';
-import 'package:serveit/pages/auth/signin_page.dart';
-import 'package:serveit/pages/auth/signup_page.dart';
 
 class ProvidePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProvidePageBloc providePageBloc =
         BlocProvider.of<ProvidePageBloc>(context);
-    
-    return SafeArea(
-      child: ListView(
+    providePageBloc.add(ProvidePageReload());
+    Future<String> _refreshPage() async {
+      providePageBloc.add(ProvidePageReload());
+      return ("Success");
+    }
+
+    Widget _body(List<Service> service, List<Service> offers,
+        List<Service> scheduled, var context) {
+      return ListView(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(30),
@@ -34,22 +41,22 @@ class ProvidePage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          SearchWidget<String>(
-            dataList: ["A", "B", "BC", "CD"],
+          SearchWidget<Service>(
+            dataList: service,
             hideSearchBoxWhenItemSelected: false,
             listContainerHeight: MediaQuery.of(context).size.height / 4,
-            queryBuilder: (String query, List<dynamic> list) {
+            queryBuilder: (String query, List<Service> list) {
               return list
-                  .where((dynamic item) =>
-                      item.toLowerCase().contains(query.toLowerCase()))
+                  .where((Service item) =>
+                      item.name.toLowerCase().contains(query.toLowerCase()))
                   .toList();
             },
-            popupListItemBuilder: (dynamic item) {
-              return Text(item);
+            popupListItemBuilder: (Service item) {
+              return ServicesProvideCard(item, Constants.cardColors[0]);
             },
             selectedItemBuilder:
                 (dynamic selectedItem, VoidCallback deleteSelectedItem) {
-              return Text(selectedItem);
+              return ServicesProvideCard(selectedItem, Constants.cardColors[1]);
             },
             // widget customization
           ),
@@ -75,11 +82,9 @@ class ProvidePage extends StatelessWidget {
             height: 205,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                RecentsCard(backgroundColor: Constants.cardColors[0]),
-                RecentsCard(backgroundColor: Constants.cardColors[1]),
-                RecentsCard(backgroundColor: Constants.cardColors[2]),
-              ],
+              children: scheduled
+                  .map((e) => ServicesProvideCard(e, Constants.cardColors[0]))
+                  .toList(),
             ),
           ),
           SizedBox(
@@ -104,11 +109,9 @@ class ProvidePage extends StatelessWidget {
             height: 205,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                RecentsCard(backgroundColor: Constants.cardColors[0]),
-                RecentsCard(backgroundColor: Constants.cardColors[1]),
-                RecentsCard(backgroundColor: Constants.cardColors[2]),
-              ],
+              children: scheduled
+                  .map((e) => ServicesProvideCard(e, Constants.cardColors[0]))
+                  .toList(),
             ),
           ),
           SizedBox(
@@ -129,7 +132,39 @@ class ProvidePage extends StatelessWidget {
               ),
             ),
           ),
+          ...scheduled
+              .map((e) => ServicesProvideCard(e, Constants.cardColors[0]))
+              .toList(),
         ],
+      );
+    }
+
+    Widget page = BlocBuilder<ProvidePageBloc, ProvidePageState>(
+        builder: (context, state) {
+      if (state is ProvidePageBloc) {
+        providePageBloc.add(ProvidePageReload());
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      if (state is ProvidePageLoading) {
+        return CircularProgressIndicator();
+      } else if (state is ProvidePageSuccess) {
+        return _body(state.services, state.offers, state.scheduled, context);
+      } else if (state is ProvidePageFailure) {
+        return Center(
+          child: Text("SOmething went wrong"),
+        );
+      }
+      print(state.toString());
+      return Center(
+        child: Text("SOmething DEFFF wrong"),
+      );
+    });
+
+    return SafeArea(
+      child: Center(
+        child: RefreshIndicator(child: page, onRefresh: _refreshPage),
       ),
     );
   }

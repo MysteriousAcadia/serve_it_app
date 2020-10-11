@@ -8,25 +8,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:search_widget/search_widget.dart';
 import 'package:serveit/blocs/request_service_bloc/request_service_bloc.dart';
-import 'package:serveit/blocs/verify_service_bloc/verify_service_bloc.dart';
+import 'package:serveit/blocs/verify_community_bloc/verify_community_bloc.dart';
 import 'package:serveit/components/button.dart';
+import 'package:serveit/models/community.dart';
+import 'package:serveit/pages/dashboard/home_page.dart';
+import 'package:serveit/pages/onboard/verify_waiting_page.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/service.dart';
 
-class VerifyServicePage extends StatelessWidget {
-  final Service service;
-  VerifyServiceBloc verifyServiceBloc;
-  VerifyServicePage(this.service);
+class VerifyCommunityPage extends StatelessWidget {
+  final Community community;
+  VerifyCommunityBloc verifyCommunityBloc;
+  VerifyCommunityPage(this.community);
   @override
   Widget build(BuildContext context) {
-    verifyServiceBloc = BlocProvider.of<VerifyServiceBloc>(context);
+    verifyCommunityBloc = BlocProvider.of<VerifyCommunityBloc>(context);
     Future getImage() async {
       FilePickerResult result = await FilePicker.platform.pickFiles(
         allowMultiple: false,
-        allowedExtensions: ['jpg', 'pdf', 'doc'],
       );
       if (result != null) {
         File file = File(result.files.single.path);
+        verifyCommunityBloc.add(AddDocumentEvent(file));
       }
     }
 
@@ -37,17 +40,37 @@ class VerifyServicePage extends StatelessWidget {
       "Verify Now",
       Constants.white,
       Constants.buttonTextStyle,
-      () {},
+      () {
+        verifyCommunityBloc.add(UploadDocumentEvent(community.id));
+      },
     );
-    Widget body = BlocBuilder<VerifyServiceBloc, VerifyServiceState>(
+    Widget body = BlocBuilder<VerifyCommunityBloc, VerifyCommunityState>(
       builder: (context, state) {
-        if (state is VerifyServiceInitial) {
+        if (state is VerifyCommunityInitial) {
           return addFileButton;
-        } else if (state is VerifyServiceFileAdded) {
-          return button;
-        } else if (state is VerifyServiceSuccess) {
+        } else if (state is VerifyCommunityFileAdded) {
+          return Column(
+            children: <Widget>[
+              Text("File added successfully"),
+              addFileButton,
+              button,
+            ],
+          );
+        } else if(state is VerifyCommunityFileUploading){
+          return Column(
+            children: <Widget>[
+              Text("Uploading File..."),
+              addFileButton,
+              CircularProgressIndicator(),
+            ],
+          );
+        } 
+        else if (state is VerifyCommunitySuccess) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => VerifyWaitingPage()));
           return Text("Success");
         }
+        return Text("state is " + state.toString());
       },
     );
 
@@ -58,7 +81,7 @@ class VerifyServicePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(30),
               child: Text(
-                'Verify your skills',
+                'Upload Documents for verification',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 27,
@@ -73,7 +96,7 @@ class VerifyServicePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(30),
               child: Text(
-                'Cerifications',
+                'Documents',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 21,

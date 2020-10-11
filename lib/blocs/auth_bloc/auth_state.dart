@@ -29,6 +29,16 @@ class NewUserState extends AuthState {
   List<Object> get props => null;
 }
 class UnverifiedState extends AuthState {
+  final Community community;
+
+  UnverifiedState(this.community);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => null;
+}
+
+class NoCommunityState extends AuthState {
   @override
   // TODO: implement props
   List<Object> get props => null;

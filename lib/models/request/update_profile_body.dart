@@ -1,17 +1,24 @@
+import 'package:serveit/models/adress.dart';
+
 class UpdateProfileBody {
   final String name;
-  final String address;
   final String profilePic;
   final String mobile;
   final String email;
+  final Address address;
 
-  const UpdateProfileBody(
-      {this.mobile, this.email, this.name, this.address, this.profilePic});
+  const UpdateProfileBody({
+    this.mobile,
+    this.email,
+    this.name,
+    this.address,
+    this.profilePic,
+  });
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.name != null) {
-      data['first_name'] = this.name;
+      data['name'] = this.name;
     }
     if (this.profilePic != null) {
       data['profile_pic'] = this.profilePic;
@@ -19,9 +26,11 @@ class UpdateProfileBody {
     if (this.mobile != null) {
       data['mobile'] = this.mobile;
     }
-    if(this.email!=null){
-    data['email'] = this.email;
-
+    if (this.email != null) {
+      data['email'] = this.email;
+    }
+    if (this.address != null) {
+      data['address'] = this.address!=null?this.address.toJson():null;
     }
     return data;
   }

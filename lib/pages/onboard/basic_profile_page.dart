@@ -8,12 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:serveit/blocs/login_bloc/login_bloc.dart';
 import 'package:serveit/blocs/profile_bloc/profile_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/components/button.dart';
+import 'package:serveit/pages/onboard/select_community_page.dart';
 import 'package:serveit/utils/constants.dart';
-import 'package:serveit/pages/onboard/onboarding_page.dart';
 
 class BasicProfilePage extends StatelessWidget {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
@@ -21,11 +20,13 @@ class BasicProfilePage extends StatelessWidget {
   TextEditingController mobileCtrl = TextEditingController();
   TextEditingController locality = TextEditingController();
   ProfileBloc profileBloc;
+  var compressedFile;
+
   final picker = ImagePicker();
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    final compressedFile = await ImageCropper.cropImage(
+    compressedFile = await ImageCropper.cropImage(
       sourcePath: pickedFile.path,
       aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
       compressQuality: 75,
@@ -33,14 +34,17 @@ class BasicProfilePage extends StatelessWidget {
       maxWidth: 700,
       compressFormat: ImageCompressFormat.jpg,
     );
-    profileBloc.add(ProfileUpdate(
-      picture: compressedFile,
-    ));
+    profileBloc.add(
+      ProfileUpdate(
+        picture: compressedFile,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     profileBloc = BlocProvider.of<ProfileBloc>(context);
+    profileBloc.add(GetLocation());
 
     final nameField = BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) => Container(
@@ -56,41 +60,62 @@ class BasicProfilePage extends StatelessWidget {
           ],
         ),
         child: TextField(
-          onEditingComplete: () {
-            profileBloc.add(ProfileUpdate(name:nameCtrl.text));
-          },
+          onChanged: (value) =>
+              profileBloc.add(ProfileUpdate(name: nameCtrl.text)),
           controller: nameCtrl,
           obscureText: false,
+          decoration: InputDecoration(
+            filled: true,
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Name",
+            enabledBorder: OutlineInputBorder(
+                borderRadius: Constants.buttonBorderRadius,
+                borderSide: new BorderSide(color: Constants.white)),
+            fillColor: Colors.white,
+            errorText: state.nameError,
+          ),
           style: Constants.buttonTextStyle
               .copyWith(color: const Color(0xff8ac4cf)),
         ),
       ),
     );
 
-    final mobileField = BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) => Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: const Color(0xffffffff),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0x0d000000),
-                  offset: Offset(0, 5),
-                  blurRadius: 10,
-                ),
-              ],
+    final mobileField = BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: const Color(0xffffffff),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x0d000000),
+              offset: Offset(0, 5),
+              blurRadius: 10,
             ),
-            child: TextField(
-              keyboardType: TextInputType.number,
-              controller: mobileCtrl,
-              onEditingComplete: () {
-            profileBloc.add(ProfileUpdate(phone:mobileCtrl.text));
-          },
-              style: Constants.buttonTextStyle
-                  .copyWith(color: const Color(0xff8ac4cf)),
-            )));
+          ],
+        ),
+        child: TextField(
+          keyboardType: TextInputType.number,
+          controller: mobileCtrl,
+          onChanged: (value) =>
+              profileBloc.add(ProfileUpdate(phone: mobileCtrl.text)),
+          decoration: InputDecoration(
+            filled: true,
+            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            hintText: "Mobile No.",
+            enabledBorder: OutlineInputBorder(
+                borderRadius: Constants.buttonBorderRadius,
+                borderSide: new BorderSide(color: Constants.white)),
+            fillColor: Colors.white,
+            errorText: state.phoneError,
+          ),
+          style: Constants.buttonTextStyle.copyWith(
+            color: const Color(0xff8ac4cf),
+          ),
+        ),
+      ),
+    );
 
-    final localityField = BlocBuilder<LoginBloc, LoginState>(
+    final localityField = BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) => Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
@@ -105,9 +130,8 @@ class BasicProfilePage extends StatelessWidget {
         ),
         child: TextField(
           controller: locality,
-          onEditingComplete: () {
-            profileBloc.add(ProfileUpdate(locality:locality.text));
-          },
+          onChanged: (value) =>
+              profileBloc.add(ProfileUpdate(locality: locality.text)),
           style: Constants.buttonTextStyle
               .copyWith(color: const Color(0xff8ac4cf)),
           decoration: InputDecoration(
@@ -118,16 +142,15 @@ class BasicProfilePage extends StatelessWidget {
                   borderRadius: Constants.buttonBorderRadius,
                   borderSide: new BorderSide(color: Constants.white)),
               fillColor: Colors.white,
-              errorText: state is LoginFailureState
-                  ? state.validateEmail ? state.emailError : null
-                  : null),
+              errorText: state.localityError),
         ),
       ),
     );
 
     final profilePic = BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
-        String url;
+        String url = "";
+        print("Here" + state.toString());
         if (state is ProfileLoaded && state.picture != null) {
           return GestureDetector(
             onTap: getImage,
@@ -143,10 +166,45 @@ class BasicProfilePage extends StatelessWidget {
               ),
             ),
           );
-        } else if (state is ProfileLoaded && state.picURL == null) {
-          url = "https://picsum.photos/200";
+        } else if (state is ProfileLoaded && state.picURL == "") {
+          url =
+              "https://firebasestorage.googleapis.com/v0/b/serve-it-281307.appspot.com/o/various%2Fprofile_add.png?alt=media&token=5aa34120-f8c8-416f-bdb3-c52e90643932";
+          return GestureDetector(
+            onTap: getImage,
+            child: Container(
+              width: 150.0,
+              height: 150.0,
+              decoration: new BoxDecoration(
+                // shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: NetworkImage(url),
+                ),
+              ),
+            ),
+          );
+        } else if(compressedFile!=null){
+          return GestureDetector(
+            onTap: getImage,
+            child: Container(
+              width: 150.0,
+              height: 150.0,
+              decoration: new BoxDecoration(
+                shape: BoxShape.circle,
+                image: new DecorationImage(
+                  fit: BoxFit.fill,
+                  image: FileImage(compressedFile),
+                ),
+              ),
+            ),
+          );
+        }
+        else if (state is ProfileUploaded) {
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => SelectCommunityPage()));
+          });
         } else {
-          url = "https://picsum.photos/200";
+          url = "https://firebasestorage.googleapis.com/v0/b/serve-it-281307.appspot.com/o/various%2Fprofile_add.png?alt=media&token=5aa34120-f8c8-416f-bdb3-c52e90643932";
         }
         return GestureDetector(
           onTap: getImage,
@@ -172,6 +230,11 @@ class BasicProfilePage extends StatelessWidget {
           return CircularProgressIndicator(
             strokeWidth: 2.0,
           );
+        } else {
+          return Button("Next", Constants.green,
+              Constants.buttonTextStyle.copyWith(color: Constants.white), () {
+            profileBloc.add(ProfileUpload());
+          });
         }
         return Container();
       });
@@ -200,7 +263,6 @@ class BasicProfilePage extends StatelessWidget {
                 SizedBox(height: 35.0),
                 profilePic,
                 SizedBox(height: 35.0),
-                loadingOrError(context),
                 SizedBox(height: 30.0),
                 nameField,
                 SizedBox(height: 25.0),
@@ -210,15 +272,7 @@ class BasicProfilePage extends StatelessWidget {
                 SizedBox(
                   height: 35.0,
                 ),
-                Button("Next", Constants.green,
-                    Constants.buttonTextStyle.copyWith(color: Constants.white),
-                    () {
-                  profileBloc.add(ProfileUpload());
-                  SchedulerBinding.instance.addPostFrameCallback((_) {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => OnboardingPage()));
-                  });
-                }),
+                loadingOrError(context),
               ],
             ),
           ),

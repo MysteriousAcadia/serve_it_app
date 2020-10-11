@@ -10,7 +10,7 @@ class LocalStorageService {
   static const String UserKey = 'user';
   static const String SettingsKey = 'settings';
   static const String AuthTokenKey = 'auth_token_key';
-  
+
   static LocalStorageService _instance;
   static SharedPreferences _preferences;
   static Future<LocalStorageService> getInstance() async {
@@ -35,19 +35,18 @@ class LocalStorageService {
     _saveStringToDisk(UserKey, jsonEncode(userToSave.toJson()));
   }
 
-Token get authToken {
+  Token get authToken {
     var authToken = _getFromDisk(AuthTokenKey);
     if (authToken == null) {
       return null;
     }
+    print("OOOOO"+jsonDecode(authToken).toString());
     return Token.fromJson(jsonDecode(authToken));
   }
 
   set authToken(Token token) {
     _saveStringToDisk(AuthTokenKey, jsonEncode(token.toJson()));
   }
-
-  
 
   Settings get settings {
     var settingsJson = _getFromDisk(SettingsKey);
@@ -62,17 +61,15 @@ Token get authToken {
     _saveStringToDisk(SettingsKey, jsonEncode(settingsToSave.toJson()));
   }
 
-
   void _saveStringToDisk(String key, String content) async {
     print(
         '(TRACE) LocalStorageService:_saveStringToDisk. key: $key value: $content');
     await _preferences.setString(key, content);
   }
+
   dynamic _getFromDisk(String key) {
     var value = _preferences.getString(key);
     print('(TRACE) LocalStorageService:_getFromDisk. key: $key value: $value');
     return value;
   }
-
-
 }

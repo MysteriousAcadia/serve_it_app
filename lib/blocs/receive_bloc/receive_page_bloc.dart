@@ -28,7 +28,7 @@ class ReceivePageBloc extends Bloc<ReceivePageEvent, ReceivePageState> {
           client.getServiceRecents(localStorageService.authToken.token),
         ],
       );
-      yield (ReceivePageSuccess(responses[0], []));
+      yield (ReceivePageSuccess(responses[0], responses[1]));
     }
   }
 }

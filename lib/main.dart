@@ -8,7 +8,10 @@ import 'package:serveit/blocs/provide_bloc/provide_page_bloc.dart';
 import 'package:serveit/blocs/receive_bloc/receive_page_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/blocs/request_service_bloc/request_service_bloc.dart';
+import 'package:serveit/blocs/select_community_bloc/select_community_bloc.dart';
 import 'package:serveit/blocs/settings_bloc/settings_bloc_bloc.dart';
+import 'package:serveit/blocs/verify_community_bloc/verify_community_bloc.dart';
+import 'package:serveit/blocs/verify_service_bloc/verify_service_bloc.dart';
 import 'package:serveit/pages/dashboard/home_page.dart' as HomePage;
 import 'package:serveit/pages/dashboard/receive_page.dart';
 import 'package:serveit/pages/onboard/basic_profile_page.dart';
@@ -16,6 +19,9 @@ import 'package:serveit/pages/intro_page.dart';
 import 'package:serveit/pages/onboard/onboarding_in_page.dart';
 import 'package:serveit/pages/onboard/onboarding_page.dart';
 import 'package:serveit/pages/auth/signin_page.dart';
+import 'package:serveit/pages/onboard/select_community_page.dart';
+import 'package:serveit/pages/onboard/verify_community_page.dart';
+import 'package:serveit/pages/onboard/verify_waiting_page.dart';
 import 'package:serveit/pages/services.dart';
 import 'package:serveit/pages/splash.dart';
 import 'package:serveit/repositories/user_repository.dart';
@@ -64,7 +70,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ProfileBloc>(
           create: (c) {
-            ProfileBloc profileBloc = ProfileBloc();
+            ProfileBloc profileBloc = ProfileBloc(localStorageService);
             return profileBloc;
           },
         ),
@@ -80,6 +86,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ProvidePageBloc>(
           create: (c) => ProvidePageBloc(localStorageService),
+        ),
+        BlocProvider<VerifyServiceBloc>(
+          create: (c) => VerifyServiceBloc(),
+        ),
+        BlocProvider<SelectCommunityBloc>(
+          create: (c) => SelectCommunityBloc(localStorageService),
+        ),
+        BlocProvider<VerifyCommunityBloc>(
+          create: (c) => VerifyCommunityBloc(localStorageService),
         ),
       ],
       child: MaterialApp(
@@ -101,6 +116,7 @@ class App extends StatelessWidget {
     authBloc.add(AppStartedEvent());
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
       print("State, came here:" + state.toString());
+      return HomePage.HomePage();
       if (state is AuthInitial) {
         return Splash();
       } else if (state is AuthenticatedState) {
@@ -109,6 +125,11 @@ class App extends StatelessWidget {
         return IntroPage();
       } else if (state is NewUserState) {
         return BasicProfilePage();
+      } else if (state is NoCommunityState) {
+        return SelectCommunityPage();
+      } else if (state is UnverifiedState) {
+        return VerifyWaitingPage();
+        return VerifyCommunityPage(state.community);
       }
     });
   }

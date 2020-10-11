@@ -1,11 +1,9 @@
 part of 'request_service_bloc.dart';
 
-abstract class RequestServiceEvent extends Equatable {
+abstract class RequestServiceEvent  {
   const RequestServiceEvent();
-
-  @override
-  List<Object> get props => [];
 }
+class UpdateData extends RequestServiceEvent{}
 
 class SendRequestServiceEvent extends RequestServiceEvent {
   final RequestServiceBody requestServiceBody;

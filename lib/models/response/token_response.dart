@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:serveit/models/community.dart';
 
 class Token {
@@ -5,7 +7,7 @@ class Token {
   final String token;
   final bool newUser;
   final int role;
-  final bool verified;
+  final int verified;
   final List<Community> communities;
   final Community currentCommunity;
 
@@ -18,8 +20,10 @@ class Token {
         newUser = json['newUser'],
         role = json['role'],
         verified = json['verified'],
-        currentCommunity = json['default_community'],
-        communities = (json['communities'] as List)
+        currentCommunity = Community.fromJson(json['default_community']),
+        communities = (json['communities'] as List == null
+                ? []
+                : json['communities'] as List)
             .map((e) => Community.fromJson(e))
             .toList();
 
@@ -28,6 +32,10 @@ class Token {
     data['success'] = this.success;
     data['authToken'] = this.token;
     data['newUser'] = this.newUser;
+    data['role'] = this.role;
+    data['verified'] = this.verified;
+    data['default_community'] = this.currentCommunity.toJson();
+    data['communities'] = (this.communities.map((e) => e.toJson()).toList());
     return data;
   }
 

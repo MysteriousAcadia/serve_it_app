@@ -9,4 +9,6 @@ abstract class VerifyServiceState extends Equatable {
 
 class VerifyServiceInitial extends VerifyServiceState {}
 
+class VerifyServiceFileAdded extends VerifyServiceState {}
+
 class VerifyServiceSuccess extends VerifyServiceState {}

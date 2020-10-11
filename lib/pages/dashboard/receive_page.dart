@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:search_widget/search_widget.dart';
 import 'package:serveit/blocs/receive_bloc/receive_page_bloc.dart';
 import 'package:serveit/components/recents_card.dart';
-import 'package:serveit/components/services_card.dart';
+import 'package:serveit/components/services_provide_card.dart';
 import 'package:serveit/models/service_recents.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/service.dart';
@@ -24,7 +24,10 @@ class ReceivePage extends StatelessWidget {
         builder: (context, state) {
       if (state is ReceivePageInitial) {
         bloc.add(ReceivePageReload());
-        return CircularProgressIndicator();
+        return Center(
+          heightFactor: 1,
+          child: CircularProgressIndicator(),
+        );
       }
       if (state is ReceivePageLoading) {
         return CircularProgressIndicator();
@@ -42,12 +45,18 @@ class ReceivePage extends StatelessWidget {
     });
 
     return SafeArea(
-      child: RefreshIndicator(child: page, onRefresh: _refreshPage),
+      child: Center(
+        child: RefreshIndicator(child: page, onRefresh: _refreshPage),
+      ),
     );
   }
 
-  Widget _body(List<Service> services, List<ServiceRecents> recents, var context) {
+  Widget _body(
+      List<Service> services, List<ServiceRecents> recents, var context) {
+    print("WOWOOWOWOW" + recents.length.toString());
     List<RecentsCard> recentsCard = _buildRecents(recents);
+    print("WOWOOWOWOW" + recentsCard.length.toString());
+
     return ListView(
       children: <Widget>[
         Padding(
@@ -78,11 +87,11 @@ class ReceivePage extends StatelessWidget {
                 .toList();
           },
           popupListItemBuilder: (Service item) {
-            return ServicesCard(item, Constants.cardColors[0]);
+            return ServicesProvideCard(item, Constants.cardColors[0]);
           },
           selectedItemBuilder:
               (dynamic selectedItem, VoidCallback deleteSelectedItem) {
-            return ServicesCard(selectedItem, Constants.cardColors[1]);
+            return ServicesProvideCard(selectedItem, Constants.cardColors[1]);
           },
           // widget customization
         ),
@@ -107,7 +116,7 @@ class ReceivePage extends StatelessWidget {
         Container(
           height: 190,
           child:
-              ListView(scrollDirection: Axis.horizontal, children: <Widget>[]),
+              ListView(scrollDirection: Axis.horizontal, children: <Widget>[...recentsCard]),
         ),
         SizedBox(
           width: double.infinity,
@@ -134,7 +143,7 @@ class ReceivePage extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: services.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return ServicesCard(
+                  return ServicesProvideCard(
                     services[index],
                     Constants.cardColors[index % Constants.cardColors.length],
                   );
@@ -149,9 +158,10 @@ class ReceivePage extends StatelessWidget {
       recentsCard.add(RecentsCard(
         serviceRecents: recents[i],
         service: Service.empty(),
-        backgroundColor: Constants.cardColors[i%Constants.cardColors.length],
+        backgroundColor: Constants.cardColors[i % Constants.cardColors.length],
       ));
     }
+    return recentsCard;
   }
 }
 

@@ -7,10 +7,10 @@ import 'package:serveit/pages/services.dart';
 
 import '../utils/constants.dart';
 
-class ServicesCard extends StatelessWidget {
+class ServicesProvideCard extends StatelessWidget {
   final Service service;
   Color backgroundColor = Constants.cardColors[0];
-  ServicesCard(this.service,this.backgroundColor);
+  ServicesProvideCard(this.service,this.backgroundColor);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -107,7 +107,7 @@ class ServicesCard extends StatelessWidget {
                                 SchedulerBinding.instance
                                     .addPostFrameCallback((_) {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => RequestServicePage()));
+                                      builder: (context) => RequestServicePage(service: service,)));
                                 });
                               },
                               child: Padding(

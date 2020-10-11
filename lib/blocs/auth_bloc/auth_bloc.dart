@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:serveit/models/community.dart';
 import 'package:serveit/repositories/user_repository.dart';
 import 'package:serveit/services/localstorage_service.dart';
 
@@ -28,20 +29,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         var isSignedIn = await userRepository.isSignedIn();
         var isNewUser = localStorageService.authToken.newUser;
         var isVerified = localStorageService.authToken.verified;
+        var community = localStorageService.authToken.currentCommunity;
         if (isSignedIn) {
           if (isNewUser) {
             yield NewUserState();
-          } else if (!isVerified) {
-            yield UnverifiedState();
+          } else if (community == null) {
+            yield NoCommunityState();
+          } else if (isVerified <= 0) {
+            yield UnverifiedState(community);
           } else {
             yield AuthenticatedState(
-              user: await userRepository.getCurrentUser());
+                user: await userRepository.getCurrentUser());
           }
         } else {
+          print('this was?? error');
+
           yield UnAuthenticated();
         }
       } catch (e) {
-        print(e);
+        print('this was error');
+        print(e.toString());
+        print(localStorageService.authToken);
         yield UnAuthenticated();
       }
     } else if (event is LogoutEvent) {

@@ -8,7 +8,6 @@ class ServicesRecentsResponse {
   ServicesRecentsResponse({this.success, this.services});
 
   ServicesRecentsResponse.fromJson(Map<String, dynamic> json) {
-    print("THE CURRNET" + json.toString());
     this.success = json['success'];
     var _services = json['request'] as List;
     services = _services.map((e) => ServiceRecents.fromJson(e)).toList();

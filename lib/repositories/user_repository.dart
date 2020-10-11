@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:serveit/models/response/token_response.dart';
 import 'package:serveit/services/localstorage_service.dart';
 import 'package:serveit/services/serveit_api_service.dart';
 import 'package:http/http.dart' as http;
@@ -27,8 +28,11 @@ class UserRepository {
       return false;
     }
     try {
-      var token = await _userApiClient.getToken(currentUser.uid);
+      print("work");
+      Token token = await _userApiClient.getToken(currentUser.uid);
+      print("work2");
       _localStorageService.authToken = token;
+      print("TRY" + token.toJson().toString());
       if (token != null) {
         return true;
       }

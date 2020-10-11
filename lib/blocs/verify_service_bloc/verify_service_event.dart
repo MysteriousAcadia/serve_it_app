@@ -8,7 +8,13 @@ abstract class VerifyServiceEvent extends Equatable {
 }
 
 class UploadDocumentEvent extends VerifyServiceEvent {
+  final String serviceId;
+
+  UploadDocumentEvent(this.serviceId);
+}
+
+class AddDocumentEvent extends VerifyServiceEvent {
   final File file;
 
-  UploadDocumentEvent(this.file);
+  AddDocumentEvent(this.file);
 }

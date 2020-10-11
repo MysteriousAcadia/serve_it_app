@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart';
+import 'package:serveit/models/community.dart';
 import 'package:serveit/models/request/get_token_body.dart';
 import 'package:serveit/models/request/request_service.dart';
 import 'package:serveit/models/request/update_profile_body.dart';
+import 'package:serveit/models/response/communities_response.dart';
 import 'package:serveit/models/response/service_provider_response.dart';
 import 'package:serveit/models/response/service_recents_response.dart';
 import 'package:serveit/models/response/services_response.dart';
@@ -12,14 +14,15 @@ import 'package:serveit/models/response/token_response.dart';
 import 'package:serveit/models/service.dart';
 import 'package:serveit/models/service_provider.dart';
 import 'package:serveit/models/service_recents.dart';
+import 'package:serveit/repositories/user_repository.dart';
+import 'package:serveit/services/localstorage_service.dart';
 
 class UserApiClient {
   final _baseUrl = 'https://serve-it.herokuapp.com/api/v1';
   final http.Client httpClient;
-
-  UserApiClient({
-    @required this.httpClient,
-  }) : assert(httpClient != null);
+  final LocalStorageService localStorageService;
+  UserApiClient({@required this.httpClient, @required this.localStorageService})
+      : assert(httpClient != null);
   //GET Requests
   //IMPLEMENTED
   Future<Token> getToken(String uid) async {
@@ -33,6 +36,21 @@ class UserApiClient {
     final json = jsonDecode(response.body);
     return Token.fromJson(json);
   }
+
+  Future<List<Community>> getCommunities(String token, String query) async {
+    final url = '$_baseUrl/showCommunities';
+    final response = await this.httpClient.get(
+      url,
+      headers: {
+        "token": token,
+        "query": query,
+      },
+    );
+    final json = jsonDecode(response.body);
+    print(json);
+    return CommunitiesResponse.fromJson(json).communities;
+  }
+
   //IMPLEMENTED
   Future<List<Service>> getServices(String token) async {
     final url = '$_baseUrl/services';
@@ -44,22 +62,24 @@ class UserApiClient {
     print(json);
     return ServicesResponse.fromJson(json).services;
   }
+
   //TODO BE IMPLEMENTED PROPERLY
   Future<http.Response> updateProfile(
       UpdateProfileBody body, String token) async {
     final url = '$_baseUrl/update';
+    print(body.toJson());
     final response = await this
         .httpClient
-        .post(url, headers: {"token": token}, body: body.toJson());
-    print(response.statusCode);
-    print(response.body);
+        .post(url, headers: {"token": token}, body: jsonEncode(body.toJson()));
+    if (response.statusCode != 200) {
+      throw new Exception("Something went Wrong, please try again");
+    }
+
     return response;
   }
-  
- 
-  
+
   //TODO: BE IMPLEMENTED
-  Future<List<ServiceRecents>> getServiceRecents(String token) async{
+  Future<List<ServiceRecents>> getServiceRecents(String token) async {
     final url = '$_baseUrl/showServiceReciever';
     final response = await this.httpClient.get(
       url,
@@ -68,11 +88,10 @@ class UserApiClient {
     final json = jsonDecode(response.body);
     print(json);
     return ServicesRecentsResponse.fromJson(json).services;
-    
   }
 
   //TODO: BE IMPLEMENTED
-Future<List<ServiceProvider>> getServiceProdiver(String token) async{
+  Future<List<ServiceProvider>> getServiceProvider(String token) async {
     final url = '$_baseUrl/showServiceProvider';
     final response = await this.httpClient.get(
       url,
@@ -81,11 +100,21 @@ Future<List<ServiceProvider>> getServiceProdiver(String token) async{
     final json = jsonDecode(response.body);
     print(json);
     return ServicesProviderResponse.fromJson(json).services;
-    
+  }
+
+  Future<List<ServiceProvider>> getProviderServices(String token) async {
+    final url = '$_baseUrl/providerServices';
+    final response = await this.httpClient.get(
+      url,
+      headers: {"token": token},
+    );
+    final json = jsonDecode(response.body);
+    print(json);
+    return ServicesProviderResponse.fromJson(json).services;
   }
 
   //POST REQUESTS
-   //TODO: BE IMPLEMENTED
+  //TODO: BE IMPLEMENTED
   Future<http.Response> requestService(
     RequestServiceBody body,
     String token,
@@ -108,10 +137,10 @@ Future<List<ServiceProvider>> getServiceProdiver(String token) async{
   ) async {
     final url = '$_baseUrl/cancelServiceReciever';
     final response = await this.httpClient.post(
-          url,
-          headers: {"token": token},
-          body: {"request_id":requestID},
-        );
+      url,
+      headers: {"token": token},
+      body: {"request_id": jsonEncode(requestID)},
+    );
     print(response.statusCode);
     print(response.body);
     return response;
@@ -124,13 +153,44 @@ Future<List<ServiceProvider>> getServiceProdiver(String token) async{
   ) async {
     final url = '$_baseUrl/cancelServiceProvider';
     final response = await this.httpClient.post(
-          url,
-          headers: {"token": token},
-          body: {"request_id":requestID},
-        );
+      url,
+      headers: {"token": token},
+      body: {"request_id": requestID},
+    );
     print(response.statusCode);
     print(response.body);
     return response;
   }
 
+  Future<http.Response> joinCommunity(
+    String community_id,
+    String token,
+    String doc,
+  ) async {
+    final url = '$_baseUrl/joinCommunity';
+    var response = await this.httpClient.post(
+      url,
+      headers: {"token": token},
+      body: {"community_id": community_id},
+    );
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
+
+  Future<http.Response> joinCommunity1(
+    String community_id,
+    String token,
+    String doc,
+  ) async {
+    final url = '$_baseUrl/joinCommunity';
+    var response = await this.httpClient.post(
+      url,
+      headers: {"token": token},
+      body: {"community_id": community_id},
+    );
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
 }

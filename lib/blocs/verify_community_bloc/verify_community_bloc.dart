@@ -4,25 +4,29 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:serveit/services/serveit_api_service.dart';
 import 'package:path/path.dart' as Path;
 import 'package:http/http.dart' as http;
+import 'package:serveit/services/localstorage_service.dart';
 
-part 'verify_service_event.dart';
-part 'verify_service_state.dart';
+part 'verify_community_event.dart';
+part 'verify_community_state.dart';
 
-class VerifyServiceBloc extends Bloc<VerifyServiceEvent, VerifyServiceState> {
-  VerifyServiceBloc() : super(VerifyServiceInitial());
+class VerifyCommunityBloc
+    extends Bloc<VerifyCommunityEvent, VerifyCommunityState> {
+  VerifyCommunityBloc(this.localStorageService)
+      : super(VerifyCommunityInitial());
   File document;
+  final LocalStorageService localStorageService;
 
   @override
-  Stream<VerifyServiceState> mapEventToState(
-    VerifyServiceEvent event,
+  Stream<VerifyCommunityState> mapEventToState(
+    VerifyCommunityEvent event,
   ) async* {
     if (event is AddDocumentEvent) {
       document = event.file;
-      yield VerifyServiceFileAdded();
+      yield VerifyCommunityFileAdded();
     } else if (event is UploadDocumentEvent) {
+      yield VerifyCommunityFileUploading();
       if (document != null) {
         StorageReference storageReference = FirebaseStorage.instance
             .ref()
@@ -32,7 +36,7 @@ class VerifyServiceBloc extends Bloc<VerifyServiceEvent, VerifyServiceState> {
         print('File Uploaded');
         var url = await storageReference.getDownloadURL();
         //TODO send document for verification
-        yield VerifyServiceSuccess();
+        yield VerifyCommunitySuccess();
       }
     }
   }

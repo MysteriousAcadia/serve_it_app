@@ -20,12 +20,18 @@ class RequestServiceBloc
   Stream<RequestServiceState> mapEventToState(
     RequestServiceEvent event,
   ) async* {
+    if (event is UpdateData) {
+      yield RequestServiceInitial();
+    }
     if (event is SendRequestServiceEvent) {
+      yield RequestServiceLoading();
       UserApiClient client = UserApiClient(httpClient: http.Client());
+      print(event.requestServiceBody);
       List<dynamic> responses = await Future.wait([
         client.requestService(
             event.requestServiceBody, localStorageService.authToken.token)
       ]);
+      yield RequestServiceSuccess();
     }
   }
 }

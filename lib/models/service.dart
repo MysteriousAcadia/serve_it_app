@@ -15,7 +15,6 @@ class Service {
   Service.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     description = json['description'];
-    print("THE CURRNET" + json['questions'].toString());
     var _questions = (json['questions'] as List);
     print(_questions);
     if (_questions != null) {
