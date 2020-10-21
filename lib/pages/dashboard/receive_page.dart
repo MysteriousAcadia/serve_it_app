@@ -24,7 +24,10 @@ class ReceivePage extends StatelessWidget {
         builder: (context, state) {
       if (state is ReceivePageInitial) {
         bloc.add(ReceivePageReload());
-        return CircularProgressIndicator();
+        return Center(
+          heightFactor: 1,
+          child: CircularProgressIndicator(),
+        );
       }
       if (state is ReceivePageLoading) {
         return CircularProgressIndicator();
@@ -42,12 +45,18 @@ class ReceivePage extends StatelessWidget {
     });
 
     return SafeArea(
-      child: RefreshIndicator(child: page, onRefresh: _refreshPage),
+      child: Center(
+        child: RefreshIndicator(child: page, onRefresh: _refreshPage),
+      ),
     );
   }
 
-  Widget _body(List<Service> services, List<ServiceRecents> recents, var context) {
+  Widget _body(
+      List<Service> services, List<ServiceRecents> recents, var context) {
+    print("WOWOOWOWOW" + recents.length.toString());
     List<RecentsCard> recentsCard = _buildRecents(recents);
+    print("WOWOOWOWOW" + recentsCard.length.toString());
+
     return ListView(
       children: <Widget>[
         Padding(
@@ -107,7 +116,7 @@ class ReceivePage extends StatelessWidget {
         Container(
           height: 190,
           child:
-              ListView(scrollDirection: Axis.horizontal, children: <Widget>[]),
+              ListView(scrollDirection: Axis.horizontal, children: <Widget>[...recentsCard]),
         ),
         SizedBox(
           width: double.infinity,
@@ -149,9 +158,10 @@ class ReceivePage extends StatelessWidget {
       recentsCard.add(RecentsCard(
         serviceRecents: recents[i],
         service: Service.empty(),
-        backgroundColor: Constants.cardColors[i%Constants.cardColors.length],
+        backgroundColor: Constants.cardColors[i % Constants.cardColors.length],
       ));
     }
+    return recentsCard;
   }
 }
 

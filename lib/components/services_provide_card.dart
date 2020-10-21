@@ -107,7 +107,7 @@ class ServicesProvideCard extends StatelessWidget {
                                 SchedulerBinding.instance
                                     .addPostFrameCallback((_) {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => RequestServicePage()));
+                                      builder: (context) => RequestServicePage(service: service,)));
                                 });
                               },
                               child: Padding(

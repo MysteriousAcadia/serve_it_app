@@ -12,7 +12,6 @@ import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/dashboard/home_page.dart';
 import 'package:serveit/pages/onboard/onboarding_page.dart';
 
-
 class HomePage extends StatelessWidget {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   TextEditingController emailCtrl = TextEditingController();
@@ -55,35 +54,37 @@ class HomePage extends StatelessWidget {
                         : null))));
 
     final passwordField = BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) => Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: const Color(0xffffffff),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0x0d000000),
-                  offset: Offset(0, 5),
-                  blurRadius: 10,
-                ),
-              ],
+      builder: (context, state) => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: const Color(0xffffffff),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x0d000000),
+              offset: Offset(0, 5),
+              blurRadius: 10,
             ),
-            child: TextField(
-              controller: passwordCtrl,
-              obscureText: true,
-              style: Constants.buttonTextStyle
-                  .copyWith(color: const Color(0xff8ac4cf)),
-              decoration: InputDecoration(
-                  filled: true,
-                  contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  hintText: "Password",
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: Constants.buttonBorderRadius,
-                      borderSide: new BorderSide(color: Constants.white)),
-                  fillColor: Colors.white,
-                  errorText: state is LoginFailureState
-                      ? state.validateEmail ? state.emailError : null
-                      : null),
-            )));
+          ],
+        ),
+        child: TextField(
+          controller: passwordCtrl,
+          obscureText: true,
+          style: Constants.buttonTextStyle
+              .copyWith(color: const Color(0xff8ac4cf)),
+          decoration: InputDecoration(
+              filled: true,
+              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+              hintText: "Password",
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: Constants.buttonBorderRadius,
+                  borderSide: new BorderSide(color: Constants.white)),
+              fillColor: Colors.white,
+              errorText: state is LoginFailureState
+                  ? state.validateEmail ? state.emailError : null
+                  : null),
+        ),
+      ),
+    );
 
     loadingOrError(mainContext) {
       final bb = BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {

@@ -1,14 +1,15 @@
 part of 'request_service_bloc.dart';
 
-abstract class RequestServiceState extends Equatable {
+abstract class RequestServiceState  {
   const RequestServiceState();
 
-  @override
-  List<Object> get props => [];
+ 
 }
 
 class RequestServiceInitial extends RequestServiceState {}
 
 class RequestServiceSuccess extends RequestServiceState {}
+
+class RequestServiceLoading extends RequestServiceState {}
 
 class RequestServiceError extends RequestServiceState {}

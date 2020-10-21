@@ -13,7 +13,7 @@ class RequestServiceBody {
     Map<String, dynamic> data = new Map<String, dynamic>();
     data['service_id'] = this.service_id;
     data['answers'] = this.answers != null
-        ? this.answers.map((e) => e.toJson()).toList().toString()
+        ? jsonEncode(this.answers.map((e) => e.toJson()).toList())
         : [];
     print(data['answers']);
     return data;

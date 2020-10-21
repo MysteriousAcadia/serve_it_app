@@ -11,7 +11,7 @@ import '../utils/constants.dart';
 class ServicesReceiveCard extends StatelessWidget {
   final Service service;
   Color backgroundColor = Constants.cardColors[0];
-  ServicesReceiveCard(this.service,this.backgroundColor);
+  ServicesReceiveCard(this.service, this.backgroundColor);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -62,8 +62,7 @@ class ServicesReceiveCard extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text:
-                                  service.description+service.id,
+                              text: service.description + service.id,
                             ),
                             TextSpan(
                               text: '',
@@ -105,10 +104,12 @@ class ServicesReceiveCard extends StatelessWidget {
                             color: const Color(0xffffffff),
                             child: InkWell(
                               onTap: () {
-                               SchedulerBinding.instance
+                                print("DCLCCL");
+                                SchedulerBinding.instance
                                     .addPostFrameCallback((_) {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => VerifyServicePage(service)));
+                                      builder: (context) =>
+                                          VerifyServicePage(service)));
                                 });
                               },
                               child: Padding(

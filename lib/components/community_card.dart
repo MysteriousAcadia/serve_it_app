@@ -1,74 +1,145 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:serveit/models/service_question.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:serveit/blocs/select_community_bloc/select_community_bloc.dart';
+import 'package:serveit/models/community.dart';
+import 'package:serveit/models/service.dart';
+import 'package:serveit/models/service_recents.dart';
+import 'package:serveit/pages/onboard/verify_community_page.dart';
+import 'package:serveit/pages/services.dart';
 
 import '../utils/constants.dart';
 
-class QuestionAnswer extends StatelessWidget {
-  ServiceQuestion serviceQuestion;
-  TextEditingController controller;
-  QuestionAnswer(this.serviceQuestion);
+class CommunityCard extends StatelessWidget {
+  final Community community;
+  final Color backgroundColor;
+  final SelectCommunityBloc selectCommunityBloc;
+
+  CommunityCard(
+      {Key key, this.community, this.backgroundColor, this.selectCommunityBloc})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    controller = TextEditingController();
-    final answerField = Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: const Color(0xffffffff),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0x0d000000),
-              offset: Offset(0, 5),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: TextField(
-          controller: controller,
-          
-          style: Constants.buttonTextStyle
-              .copyWith(color: const Color(0xff8ac4cf)),
-          decoration: InputDecoration(
-            filled: true,
-            contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            hintText: "Answer",
-            enabledBorder: OutlineInputBorder(
-                borderRadius: Constants.buttonBorderRadius,
-                borderSide: new BorderSide(color: Constants.white)),
-            fillColor: Colors.white,
-          ),
-        ));
+    String statusText = "Select Community";
+    if (community.status == 0) {
+      statusText = "Not confirmed";
+    } else if (community.status == 1) {
+      statusText = "Confirmed";
+    } else if (community.status == 2) {
+      statusText = "Completed";
+    }
+    statusText = "Select";
+    void onClick() {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        selectCommunityBloc.add(AddCommunityEvent(community.id));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => VerifyCommunityPage(community)));
+      });
+    }
+
     return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SizedBox(
-              height: 10,
+      padding: EdgeInsets.all(5.0),
+      child: Container(
+        width: 300,
+        height: 150,
+        child: InkWell(
+          onTap: onClick,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
             ),
-            Text(
-              serviceQuestion.question,
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                fontSize: 18,
-                color: const Color(0xff005c7e),
-                letterSpacing: -0.275,
-                fontWeight: FontWeight.w700,
-                height: 1.1818181818181819,
+            color: backgroundColor,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(15, 15, 0, 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Flexible(
+                        flex: 2,
+                        child: Column(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                community.name,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 21,
+                                  color: const Color(0xff005c7e),
+                                  letterSpacing: -0.4,
+                                  fontWeight: FontWeight.w700,
+                                  height: 1.125,
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text.rich(
+                                TextSpan(
+                                  style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 15,
+                                    color: const Color(0xff005c7e),
+                                    height: 1.3636363636363635,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: community.description,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: 150,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.elliptical(27.5, 27.5),
+                        ),
+                      ),
+                      color: const Color(0xffffffff),
+                      child: Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Text(statusText),
+                      ),
+                    ),
+                  )
+                ],
               ),
-              textAlign: TextAlign.left,
             ),
-            SizedBox(
-              height: 10,
-            ),
-            answerField,
-            SizedBox(
-              height: 10,
-            ),
-          ],
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }
 
