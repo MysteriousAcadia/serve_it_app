@@ -1,10 +1,12 @@
 import 'package:serveit/models/profile.dart';
+import 'package:serveit/models/service.dart';
 import 'package:serveit/models/service_question.dart';
 
 class ServiceProvider {
   String name;
   DateTime time;
   Profile user;
+  Service service;
   String serviceID;
   int status;
   String id;
@@ -20,7 +22,7 @@ class ServiceProvider {
       answers = [];
     }
     id = json['id'];
-    user = Profile.fromJson(json['provider']==null?{}:json['provider']);
+    user = Profile.fromJson(json['provider'] == null ? {} : json['provider']);
     serviceID = json['service_id'];
     rate = json['rate'];
   }

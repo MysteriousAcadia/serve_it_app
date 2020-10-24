@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
           create: (c) => ProvidePageBloc(localStorageService),
         ),
         BlocProvider<VerifyServiceBloc>(
-          create: (c) => VerifyServiceBloc(),
+          create: (c) => VerifyServiceBloc(localStorageService),
         ),
         BlocProvider<SelectCommunityBloc>(
           create: (c) => SelectCommunityBloc(localStorageService),

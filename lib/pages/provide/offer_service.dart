@@ -10,26 +10,24 @@ import 'package:serveit/components/button.dart';
 import 'package:serveit/components/question_answer.dart';
 import 'package:serveit/components/recents_card.dart';
 import 'package:serveit/components/services_provide_card.dart';
+import 'package:serveit/models/service_provider.dart';
 import 'package:serveit/models/service_recents.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/request/request_service.dart';
 import 'package:serveit/models/service.dart';
 import 'package:serveit/models/service_question.dart';
 
-class RequestServicePage extends StatelessWidget {
-  Service service;
-  bool editable = true;
-  ServiceRecents serviceRecents;
+class OfferServicePage extends StatelessWidget {
+  ServiceProvider service;
+  bool editable = false;
   RequestServiceBloc requestServiceBloc;
-  RequestServicePage({this.service, this.serviceRecents});
+  OfferServicePage({this.service});
   @override
   Widget build(BuildContext context) {
         DateTime date;
 
-    if (serviceRecents != null) {
-      service = serviceRecents.service;
+    if (service.status != null) {
       editable = false;
-      date = serviceRecents.time;
     }
     requestServiceBloc = BlocProvider.of<RequestServiceBloc>(context);
     TimeOfDay timeOfDay;
@@ -56,7 +54,7 @@ class RequestServicePage extends StatelessWidget {
     }
 
     List<QuestionAnswer> questionAnswers =
-        questionBuilder(service.questions, editable);
+        questionBuilder(service.service.questions, editable);
 
     Widget optionsCard = Container(
       width: double.infinity,

@@ -15,6 +15,7 @@ import 'package:serveit/models/service.dart';
 
 class VerifyServicePage extends StatelessWidget {
   final Service service;
+  File file;
   VerifyServiceBloc verifyServiceBloc;
   VerifyServicePage(this.service);
   @override
@@ -26,7 +27,8 @@ class VerifyServicePage extends StatelessWidget {
         allowedExtensions: ['jpg', 'pdf', 'doc'],
       );
       if (result != null) {
-        File file = File(result.files.single.path);
+        file = File(result.files.single.path);
+        verifyServiceBloc.add(AddDocumentEvent(file));
       }
     }
 
@@ -37,7 +39,9 @@ class VerifyServicePage extends StatelessWidget {
       "Verify Now",
       Constants.white,
       Constants.buttonTextStyle,
-      () {},
+      () {
+        verifyServiceBloc.add(AddDocumentEvent(file));
+      },
     );
     Widget body = BlocBuilder<VerifyServiceBloc, VerifyServiceState>(
       builder: (context, state) {

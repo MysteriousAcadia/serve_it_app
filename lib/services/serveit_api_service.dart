@@ -178,16 +178,19 @@ class UserApiClient {
     return response;
   }
 
-  Future<http.Response> joinCommunity1(
-    String community_id,
+  Future<http.Response> verifyServiceDoc(
+    String service_id,
     String token,
     String doc,
   ) async {
-    final url = '$_baseUrl/joinCommunity';
+    final url = '$_baseUrl/joinServices';
     var response = await this.httpClient.post(
       url,
       headers: {"token": token},
-      body: {"community_id": community_id},
+      body: {
+        "service_id": service_id,
+        "doc": {"doc": doc}
+      },
     );
     print(response.statusCode);
     print(response.body);

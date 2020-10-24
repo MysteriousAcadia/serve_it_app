@@ -6,12 +6,13 @@ import '../utils/constants.dart';
 
 class QuestionAnswer extends StatelessWidget {
   ServiceQuestion serviceQuestion;
+  bool editable;
   TextEditingController controller;
-  QuestionAnswer(this.serviceQuestion);
+  QuestionAnswer(this.serviceQuestion, this.editable);
 
   @override
   Widget build(BuildContext context) {
-    controller = TextEditingController();
+    controller = TextEditingController( text: serviceQuestion.answer);
     final answerField = Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
@@ -26,10 +27,10 @@ class QuestionAnswer extends StatelessWidget {
         ),
         child: TextField(
           controller: controller,
-          
           style: Constants.buttonTextStyle
               .copyWith(color: const Color(0xff8ac4cf)),
           decoration: InputDecoration(
+            enabled: editable,
             filled: true,
             contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
             hintText: "Answer",
