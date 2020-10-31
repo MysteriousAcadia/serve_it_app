@@ -27,25 +27,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is AppStartedEvent) {
       try {
         var isSignedIn = await userRepository.isSignedIn();
-        var isNewUser = localStorageService.authToken.newUser;
-        var isVerified = localStorageService.authToken.verified;
-        var community = localStorageService.authToken.currentCommunity;
-        if (isSignedIn) {
-          if (isNewUser) {
-            yield NewUserState();
-          } else if (community == null) {
-            yield NoCommunityState();
-          } else if (isVerified <= 0) {
-            yield UnverifiedState(community);
-          } else {
-            yield AuthenticatedState(
+        // var isNewUser = localStorageService.authToken.newUser;
+        // var isVerified = localStorageService.authToken.verified;
+        // var community = localStorageService.authToken.currentCommunity;
+        yield AuthenticatedState(
                 user: await userRepository.getCurrentUser());
-          }
-        } else {
-          print('this was?? error');
+        // if (isSignedIn) {
+        //   if (isNewUser) {
+        //     yield NewUserState();
+        //   } else if (community == null) {
+        //     yield NoCommunityState();
+        //   } else if (isVerified <= 0) {
+        //     yield UnverifiedState(community);
+        //   } else {
+            
+        //   }
+        // } else {
+        //   print('this was?? error');
 
-          yield UnAuthenticated();
-        }
+        //   yield UnAuthenticated();
+        // }
       } catch (e) {
         print('this was error');
         print(e.toString());

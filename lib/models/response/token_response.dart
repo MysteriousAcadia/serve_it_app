@@ -19,7 +19,8 @@ class Token {
         token = json['authToken'],
         newUser = json['newUser'],
         role = json['role'],
-        verified = json['verified'],
+        // verified = json['verified'],
+        verified = 1,
         currentCommunity = Community.fromJson(json['default_community']),
         communities = (json['communities'] as List == null
                 ? []

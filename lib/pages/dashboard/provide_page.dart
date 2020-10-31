@@ -80,12 +80,14 @@ class ProvidePage extends StatelessWidget {
           ),
           Container(
             height: 205,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: scheduled
-                  .map((e) => ServicesProvideCard(e, Constants.cardColors[0]))
-                  .toList(),
-            ),
+            child: 
+            // (scheduled!=null ||scheduled.length!=0)?ListView(
+            //   scrollDirection: Axis.horizontal,
+            //   children: scheduled
+            //       .map((e) => ServicesProvideCard(e, Constants.cardColors[0]))
+            //       .toList(),
+            // ):
+            Center(child: Text("Nothing to Show"),),
           ),
           SizedBox(
             width: double.infinity,
@@ -107,12 +109,14 @@ class ProvidePage extends StatelessWidget {
           ),
           Container(
             height: 205,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: scheduled
-                  .map((e) => ServicesProvideCard(e, Constants.cardColors[0]))
-                  .toList(),
-            ),
+            child: (
+            //  ((scheduled!=null|| scheduled.length!=0)?ListView(
+            //   scrollDirection: Axis.horizontal,
+            //   children: (scheduled!=null?scheduled:[])
+            //       .map((e) => ServicesProvideCard(e, Constants.cardColors[0]))
+            //       .toList(),
+            // ):
+            Center(child: Text("Nothing To Show"),)),
           ),
           SizedBox(
             width: double.infinity,

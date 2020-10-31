@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:serveit/models/service.dart';
+import 'package:serveit/pages/provide/verify_service.dart';
 import 'package:serveit/pages/services.dart';
 
 import '../utils/constants.dart';
@@ -107,7 +108,7 @@ class ServicesProvideCard extends StatelessWidget {
                                 SchedulerBinding.instance
                                     .addPostFrameCallback((_) {
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => RequestServicePage(service: service,)));
+                                      builder: (context) => VerifyServicePage( service,),),);
                                 });
                               },
                               child: Padding(

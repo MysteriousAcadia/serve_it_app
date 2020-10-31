@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +14,7 @@ import 'package:serveit/blocs/select_community_bloc/select_community_bloc.dart';
 import 'package:serveit/blocs/settings_bloc/settings_bloc_bloc.dart';
 import 'package:serveit/blocs/verify_community_bloc/verify_community_bloc.dart';
 import 'package:serveit/blocs/verify_service_bloc/verify_service_bloc.dart';
+import 'package:serveit/models/response/token_response.dart';
 import 'package:serveit/pages/dashboard/home_page.dart' as HomePage;
 import 'package:serveit/pages/dashboard/receive_page.dart';
 import 'package:serveit/pages/onboard/basic_profile_page.dart';
@@ -22,6 +25,7 @@ import 'package:serveit/pages/auth/signin_page.dart';
 import 'package:serveit/pages/onboard/select_community_page.dart';
 import 'package:serveit/pages/onboard/verify_community_page.dart';
 import 'package:serveit/pages/onboard/verify_waiting_page.dart';
+import 'package:serveit/pages/payment.dart';
 import 'package:serveit/pages/services.dart';
 import 'package:serveit/pages/splash.dart';
 import 'package:serveit/repositories/user_repository.dart';
@@ -45,6 +49,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
     userRepository = UserRepository(localStorageService);
+    localStorageService.authToken = Token.fromJson(jsonDecode(
+        '{"success":true,"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbl9pZCI6IjkiLCJmaXJlYmFzZV9pZCI6IkRmbHV5Q1BEZHNWbXVVdnlXbGFrTEZacTdUdDIiLCJjcmVhdGVkX2F0IjoiMjAyMC0xMC0yN1QxNzowMToyNS4yNDdaIiwiaWF0IjoxNjAzODE4NDQ5fQ.dbGnOl2D0vzAbtqfLuB2OkLjzSllAJvzx2ES-P-QIJA","newUser":true,"role":0,"verified":-1,"communities":null,"default_community":null}'));
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
@@ -117,6 +123,7 @@ class App extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
       print("State, came here:" + state.toString());
       return HomePage.HomePage();
+      return SelectCommunityPage();
       if (state is AuthInitial) {
         return Splash();
       } else if (state is AuthenticatedState) {

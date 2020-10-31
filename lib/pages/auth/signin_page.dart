@@ -8,11 +8,12 @@ import 'package:serveit/blocs/auth_bloc/auth_bloc.dart';
 import 'package:serveit/blocs/login_bloc/login_bloc.dart';
 import 'package:serveit/blocs/reg_bloc/user_reg_bloc.dart';
 import 'package:serveit/components/button.dart';
+import 'package:serveit/pages/dashboard/home_page.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/dashboard/home_page.dart';
 import 'package:serveit/pages/onboard/onboarding_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage1 extends StatelessWidget {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   TextEditingController emailCtrl = TextEditingController();
   TextEditingController passwordCtrl = TextEditingController();
@@ -207,6 +208,6 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HomePage();
+    return HomePage1();
   }
 }

@@ -24,7 +24,7 @@ class VerifyServicePage extends StatelessWidget {
     Future getImage() async {
       FilePickerResult result = await FilePicker.platform.pickFiles(
         allowMultiple: false,
-        allowedExtensions: ['jpg', 'pdf', 'doc'],
+        // allowedExtensions: ['jpg', 'pdf', 'doc'],
       );
       if (result != null) {
         file = File(result.files.single.path);
@@ -40,7 +40,7 @@ class VerifyServicePage extends StatelessWidget {
       Constants.white,
       Constants.buttonTextStyle,
       () {
-        verifyServiceBloc.add(AddDocumentEvent(file));
+        verifyServiceBloc.add(UploadDocumentEvent(service.id));
       },
     );
     Widget body = BlocBuilder<VerifyServiceBloc, VerifyServiceState>(
@@ -50,7 +50,7 @@ class VerifyServicePage extends StatelessWidget {
         } else if (state is VerifyServiceFileAdded) {
           return button;
         } else if (state is VerifyServiceSuccess) {
-          return Text("Success");
+          return Center(child:Text("Documents Submitted for Verification"),);
         }
       },
     );

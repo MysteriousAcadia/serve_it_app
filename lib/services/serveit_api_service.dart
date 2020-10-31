@@ -91,6 +91,7 @@ class UserApiClient {
   }
 
   //TODO: BE IMPLEMENTED
+  //SCHEDULED
   Future<List<ServiceProvider>> getServiceProvider(String token) async {
     final url = '$_baseUrl/showServiceProvider';
     final response = await this.httpClient.get(
@@ -101,9 +102,20 @@ class UserApiClient {
     print(json);
     return ServicesProviderResponse.fromJson(json).services;
   }
-
+  //LIST of services
   Future<List<ServiceProvider>> getProviderServices(String token) async {
     final url = '$_baseUrl/providerServices';
+    final response = await this.httpClient.get(
+      url,
+      headers: {"token": token},
+    );
+    final json = jsonDecode(response.body);
+    print(json);
+    return ServicesProviderResponse.fromJson(json).services;
+  }
+  //LIST OF OFFERS
+Future<List<ServiceProvider>> serviceOffers(String token) async {
+    final url = '$_baseUrl/availableNow';
     final response = await this.httpClient.get(
       url,
       headers: {"token": token},
@@ -189,11 +201,41 @@ class UserApiClient {
       headers: {"token": token},
       body: {
         "service_id": service_id,
-        "doc": {"doc": doc}
+        "doc": jsonEncode({"doc": doc})
       },
     );
     print(response.statusCode);
     print(response.body);
     return response;
   }
+  Future<http.Response> acceptService( String serviceID)
+  async {
+     final url = '$_baseUrl/accept';
+    var response = await this.httpClient.post(
+      url,
+      headers: {"token": localStorageService.authToken.token},
+      body: {
+        "request_id": serviceID,
+      },
+    );
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
+
+  Future<http.Response> markAsDone( String serviceID)
+  async {
+     final url = '$_baseUrl/done';
+    var response = await this.httpClient.post(
+      url,
+      headers: {"token": localStorageService.authToken.token},
+      body: {
+        "request_id": serviceID,
+      },
+    );
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
+  
 }

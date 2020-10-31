@@ -11,7 +11,12 @@ class ServicesProviderResponse {
   ServicesProviderResponse.fromJson(Map<String, dynamic> json) {
     this.success = json['success'];
     var _services = json['request'] as List;
-    services = _services.map((e) => ServiceProvider.fromJson(e)).toList();
+    print('IIIIII' + _services.toString());
+    if (_services != null && _services.length > 0) {
+      services = _services.map((e) => ServiceProvider.fromJson(e)).toList();
+    } else {
+      services = [];
+    }
   }
 
   Map<String, dynamic> toJson() {
