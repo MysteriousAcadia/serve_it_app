@@ -11,8 +11,17 @@ class Token {
   final List<Community> communities;
   final Community currentCommunity;
 
-  const Token(this.role, this.verified, this.communities, this.currentCommunity,
-      {this.success, this.token, this.newUser});
+   Token.none():
+    this.success = false,
+    this.newUser = true,
+    this.role = -1,
+    this.verified = -1,
+    this.communities = [],
+    this.currentCommunity = Community(),
+    this.token = "";
+
+  const Token({this.role, this.verified, this.communities, this.currentCommunity,
+      this.success, this.token, this.newUser});
 
   Token.fromJson(Map<String, dynamic> json)
       : success = json['success'],

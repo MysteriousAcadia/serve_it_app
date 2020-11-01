@@ -49,8 +49,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
     userRepository = UserRepository(localStorageService);
-    localStorageService.authToken = Token.fromJson(jsonDecode(
-        '{"success":true,"authToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbl9pZCI6IjkiLCJmaXJlYmFzZV9pZCI6IkRmbHV5Q1BEZHNWbXVVdnlXbGFrTEZacTdUdDIiLCJjcmVhdGVkX2F0IjoiMjAyMC0xMC0yN1QxNzowMToyNS4yNDdaIiwiaWF0IjoxNjAzODE4NDQ5fQ.dbGnOl2D0vzAbtqfLuB2OkLjzSllAJvzx2ES-P-QIJA","newUser":true,"role":0,"verified":-1,"communities":null,"default_community":null}'));
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
@@ -122,8 +120,6 @@ class App extends StatelessWidget {
     authBloc.add(AppStartedEvent());
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
       print("State, came here:" + state.toString());
-      return HomePage.HomePage();
-      return SelectCommunityPage();
       if (state is AuthInitial) {
         return Splash();
       } else if (state is AuthenticatedState) {
