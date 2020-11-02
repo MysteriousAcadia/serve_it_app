@@ -20,6 +20,8 @@ class VerifyCommunityPage extends StatelessWidget {
   final Community community;
   VerifyCommunityBloc verifyCommunityBloc;
   VerifyCommunityPage(this.community);
+  File file;
+  String filename = '';
   @override
   Widget build(BuildContext context) {
     verifyCommunityBloc = BlocProvider.of<VerifyCommunityBloc>(context);
@@ -28,8 +30,9 @@ class VerifyCommunityPage extends StatelessWidget {
         allowMultiple: false,
       );
       if (result != null) {
-        File file = File(result.files.single.path);
+        file = File(result.files.single.path);
         verifyCommunityBloc.add(AddDocumentEvent(file));
+        filename = file.path.split('/').last;
       }
     }
 
@@ -56,7 +59,7 @@ class VerifyCommunityPage extends StatelessWidget {
               button,
             ],
           );
-        } else if(state is VerifyCommunityFileUploading){
+        } else if (state is VerifyCommunityFileUploading) {
           return Column(
             children: <Widget>[
               Text("Uploading File..."),
@@ -64,10 +67,9 @@ class VerifyCommunityPage extends StatelessWidget {
               CircularProgressIndicator(),
             ],
           );
-        } 
-        else if (state is VerifyCommunitySuccess) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => VerifyWaitingPage()));
+        } else if (state is VerifyCommunitySuccess) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => VerifyWaitingPage()));
           return Text("Success");
         }
         return Text("state is " + state.toString());
@@ -95,17 +97,34 @@ class VerifyCommunityPage extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.all(30),
-              child: Text(
-                'Documents',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 21,
-                  color: const Color(0xff606060),
-                  letterSpacing: -0.525,
-                  fontWeight: FontWeight.w700,
-                  height: 1.1904761904761905,
+              child: Card(
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      padding: const EdgeInsets.all(18.0),
+                      child: Text(
+                        file != null ? filename : 'Documents',
+                        style: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontSize: 21,
+                          color: const Color(0xff606060),
+                          letterSpacing: -0.525,
+                          fontWeight: FontWeight.w700,
+                          height: 1.1904761904761905,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Spacer(),
+                    Icon(
+                      Icons.picture_as_pdf,
+                    ),
+                    SizedBox(
+                      width: 20,
+                    )
+                  ],
                 ),
-                textAlign: TextAlign.left,
               ),
             ),
             body,

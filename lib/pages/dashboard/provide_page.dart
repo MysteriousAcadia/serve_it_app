@@ -6,6 +6,7 @@ import 'package:serveit/blocs/provide_bloc/provide_page_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/components/recents_card.dart';
 import 'package:serveit/components/services_provide_card.dart';
+import 'package:serveit/components/services_search_card.dart';
 import 'package:serveit/models/service.dart';
 import 'package:serveit/models/service_provider.dart';
 import 'package:serveit/models/verify_service.dart';
@@ -57,7 +58,7 @@ class ProvidePage extends StatelessWidget {
                     .toList();
               },
               popupListItemBuilder: (Service item) {
-                return ServicesProvideCard(item, Constants.cardColors[0]);
+                return ServicesSearchCard(item, Constants.cardColors[0]);
               },
               selectedItemBuilder:
                   (dynamic selectedItem, VoidCallback deleteSelectedItem) {

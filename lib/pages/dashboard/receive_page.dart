@@ -7,6 +7,7 @@ import 'package:serveit/blocs/receive_bloc/receive_page_bloc.dart';
 import 'package:serveit/components/recents_card.dart';
 import 'package:serveit/components/services_provide_card.dart';
 import 'package:serveit/components/services_receive_card.dart';
+import 'package:serveit/components/services_search_card.dart';
 import 'package:serveit/models/service_recents.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/service.dart';
@@ -93,7 +94,7 @@ class ReceivePage extends StatelessWidget {
                   .toList();
             },
             popupListItemBuilder: (Service item) {
-              return ServicesProvideCard(item, Constants.cardColors[0]);
+              return ServicesSearchCard(item, Constants.cardColors[0]);
             },
             selectedItemBuilder:
                 (dynamic selectedItem, VoidCallback deleteSelectedItem) {

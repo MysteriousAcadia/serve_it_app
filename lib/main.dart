@@ -14,7 +14,10 @@ import 'package:serveit/blocs/select_community_bloc/select_community_bloc.dart';
 import 'package:serveit/blocs/settings_bloc/settings_bloc_bloc.dart';
 import 'package:serveit/blocs/verify_community_bloc/verify_community_bloc.dart';
 import 'package:serveit/blocs/verify_service_bloc/verify_service_bloc.dart';
+import 'package:serveit/models/adress.dart';
+import 'package:serveit/models/community.dart';
 import 'package:serveit/models/response/token_response.dart';
+import 'package:serveit/pages/dashboard/all_tasks_page.dart';
 import 'package:serveit/pages/dashboard/home_page.dart' as HomePage;
 import 'package:serveit/pages/dashboard/receive_page.dart';
 import 'package:serveit/pages/onboard/basic_profile_page.dart';
@@ -108,7 +111,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           accentColor: Color(0xFF9BDCE7),
         ),
-        home: HomePage.HomePage(),
+        home: AllTasksPage(),
       ),
     );
   }
