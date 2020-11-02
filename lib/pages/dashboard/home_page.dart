@@ -23,8 +23,10 @@ class _HomePageState extends State<HomePage> {
   SettingsBloc settingsBloc;
 
   static final String deliverIconName = 'assets/icons/deliver.svg';
-  final Widget deliverIcon =
-      SvgPicture.asset(deliverIconName, semanticsLabel: 'Deliver Icon');
+  final Widget deliverIcon = SvgPicture.asset(
+    deliverIconName,
+    semanticsLabel: 'Deliver Icon',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,9 @@ class _HomePageState extends State<HomePage> {
           if (state.settings.isProvideServicesEnabled) {
             navIcons.add(
               BottomNavigationBarItem(
-                icon: Icon(Icons.room_service),
+                icon: Icon(
+                  Icons.room_service,
+                ),
                 title: Text(
                   "Provide",
                 ),

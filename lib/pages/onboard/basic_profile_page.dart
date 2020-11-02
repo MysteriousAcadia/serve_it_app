@@ -243,39 +243,44 @@ class BasicProfilePage extends StatelessWidget {
     }
 
     return Scaffold(
+      // resizeToAvoidBottomPadding: false,
       backgroundColor: Constants.primaryColor,
       body: Center(
         child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Basic Profile!",
-                  textAlign: TextAlign.center,
-                  style: Constants.buttonTextStyle.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 33,
-                    color: Constants.white,
-                  ),
+          child: ListView(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Basic Profile!",
+                      textAlign: TextAlign.center,
+                      style: Constants.buttonTextStyle.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 33,
+                        color: Constants.white,
+                      ),
+                    ),
+                    SizedBox(height: 35.0),
+                    profilePic,
+                    SizedBox(height: 35.0),
+                    SizedBox(height: 30.0),
+                    nameField,
+                    SizedBox(height: 25.0),
+                    mobileField,
+                    SizedBox(height: 25.0),
+                    localityField,
+                    SizedBox(
+                      height: 35.0,
+                    ),
+                    loadingOrError(context),
+                  ],
                 ),
-                SizedBox(height: 35.0),
-                profilePic,
-                SizedBox(height: 35.0),
-                SizedBox(height: 30.0),
-                nameField,
-                SizedBox(height: 25.0),
-                mobileField,
-                SizedBox(height: 25.0),
-                localityField,
-                SizedBox(
-                  height: 35.0,
-                ),
-                loadingOrError(context),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
