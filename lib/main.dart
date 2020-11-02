@@ -103,10 +103,12 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'ServeIt',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          accentColor: Color(0xFF9BDCE7),
         ),
-        home: App(),
+        home: HomePage.HomePage(),
       ),
     );
   }

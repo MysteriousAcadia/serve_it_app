@@ -41,24 +41,31 @@ class ProvidePage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          SearchWidget<Service>(
-            dataList: service,
-            hideSearchBoxWhenItemSelected: false,
-            listContainerHeight: MediaQuery.of(context).size.height / 4,
-            queryBuilder: (String query, List<Service> list) {
-              return list
-                  .where((Service item) =>
-                      item.name.toLowerCase().contains(query.toLowerCase()))
-                  .toList();
-            },
-            popupListItemBuilder: (Service item) {
-              return ServicesProvideCard(item, Constants.cardColors[0]);
-            },
-            selectedItemBuilder:
-                (dynamic selectedItem, VoidCallback deleteSelectedItem) {
-              return ServicesProvideCard(selectedItem, Constants.cardColors[1]);
-            },
-            // widget customization
+          Container(
+            margin: EdgeInsets.only(
+              left: 30,
+              right: 30,
+            ),
+            child: SearchWidget<Service>(
+              dataList: service,
+              hideSearchBoxWhenItemSelected: false,
+              listContainerHeight: MediaQuery.of(context).size.height / 4,
+              queryBuilder: (String query, List<Service> list) {
+                return list
+                    .where((Service item) =>
+                        item.name.toLowerCase().contains(query.toLowerCase()))
+                    .toList();
+              },
+              popupListItemBuilder: (Service item) {
+                return ServicesProvideCard(item, Constants.cardColors[0]);
+              },
+              selectedItemBuilder:
+                  (dynamic selectedItem, VoidCallback deleteSelectedItem) {
+                return ServicesProvideCard(
+                    selectedItem, Constants.cardColors[1]);
+              },
+              // widget customization
+            ),
           ),
           SizedBox(
             width: double.infinity,
@@ -80,14 +87,17 @@ class ProvidePage extends StatelessWidget {
           ),
           Container(
             height: 205,
-            child: 
-            // (scheduled!=null ||scheduled.length!=0)?ListView(
-            //   scrollDirection: Axis.horizontal,
-            //   children: scheduled
-            //       .map((e) => ServicesProvideCard(e, Constants.cardColors[0]))
-            //       .toList(),
-            // ):
-            Center(child: Text("Nothing to Show"),),
+            child: (scheduled != null || scheduled.length != 0)
+                ? ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: scheduled
+                        .map((e) =>
+                            ServicesProvideCard(e, Constants.cardColors[0]))
+                        .toList(),
+                  )
+                : Center(
+                    child: Text("Nothing to Show"),
+                  ),
           ),
           SizedBox(
             width: double.infinity,
@@ -109,14 +119,17 @@ class ProvidePage extends StatelessWidget {
           ),
           Container(
             height: 205,
-            child: (
-            //  ((scheduled!=null|| scheduled.length!=0)?ListView(
-            //   scrollDirection: Axis.horizontal,
-            //   children: (scheduled!=null?scheduled:[])
-            //       .map((e) => ServicesProvideCard(e, Constants.cardColors[0]))
-            //       .toList(),
-            // ):
-            Center(child: Text("Nothing To Show"),)),
+            child: (scheduled != null || scheduled.length != 0)
+                ? ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: scheduled
+                        .map((e) =>
+                            ServicesProvideCard(e, Constants.cardColors[0]))
+                        .toList(),
+                  )
+                : Center(
+                    child: Text("Nothing to Show"),
+                  ),
           ),
           SizedBox(
             width: double.infinity,

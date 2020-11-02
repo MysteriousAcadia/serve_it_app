@@ -75,26 +75,32 @@ class ReceivePage extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
-        SearchWidget<Service>(
-          dataList: services,
-          hideSearchBoxWhenItemSelected: false,
-          listContainerHeight: MediaQuery.of(context).size.height / 4,
-          queryBuilder: (String query, List<Service> list) {
-            return list
-                .where((Service item) => (item.description
-                        .toLowerCase()
-                        .contains(query.toLowerCase()) ||
-                    item.name.toLowerCase().contains(query.toLowerCase())))
-                .toList();
-          },
-          popupListItemBuilder: (Service item) {
-            return ServicesProvideCard(item, Constants.cardColors[0]);
-          },
-          selectedItemBuilder:
-              (dynamic selectedItem, VoidCallback deleteSelectedItem) {
-            return ServicesProvideCard(selectedItem, Constants.cardColors[1]);
-          },
-          // widget customization
+        Container(
+          margin: EdgeInsets.only(
+            left: 30,
+            right: 30,
+          ),
+          child: SearchWidget<Service>(
+            dataList: services,
+            hideSearchBoxWhenItemSelected: false,
+            listContainerHeight: MediaQuery.of(context).size.height / 4,
+            queryBuilder: (String query, List<Service> list) {
+              return list
+                  .where((Service item) => (item.description
+                          .toLowerCase()
+                          .contains(query.toLowerCase()) ||
+                      item.name.toLowerCase().contains(query.toLowerCase())))
+                  .toList();
+            },
+            popupListItemBuilder: (Service item) {
+              return ServicesProvideCard(item, Constants.cardColors[0]);
+            },
+            selectedItemBuilder:
+                (dynamic selectedItem, VoidCallback deleteSelectedItem) {
+              return ServicesProvideCard(selectedItem, Constants.cardColors[1]);
+            },
+            // widget customization
+          ),
         ),
         SizedBox(
           width: double.infinity,
@@ -116,8 +122,9 @@ class ReceivePage extends StatelessWidget {
         ),
         Container(
           height: 190,
-          child:
-              ListView(scrollDirection: Axis.horizontal, children: <Widget>[...recentsCard]),
+          child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[...recentsCard]),
         ),
         SizedBox(
           width: double.infinity,
