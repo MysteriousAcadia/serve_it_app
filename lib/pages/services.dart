@@ -11,6 +11,7 @@ import 'package:serveit/components/question_answer.dart';
 import 'package:serveit/components/recents_card.dart';
 import 'package:serveit/components/services_provide_card.dart';
 import 'package:serveit/models/service_recents.dart';
+import 'package:serveit/services/helperService.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/request/request_service.dart';
 import 'package:serveit/models/service.dart';
@@ -24,11 +25,12 @@ class RequestServicePage extends StatelessWidget {
   RequestServicePage({this.service, this.serviceRecents});
   @override
   Widget build(BuildContext context) {
-        DateTime date;
+    DateTime date;
 
     if (serviceRecents != null) {
       service = serviceRecents.service;
       editable = false;
+      // TODO
       date = serviceRecents.time;
     }
     requestServiceBloc = BlocProvider.of<RequestServiceBloc>(context);
@@ -37,6 +39,7 @@ class RequestServicePage extends StatelessWidget {
       date = await showDatePicker(
         context: context,
         lastDate: DateTime.now(),
+        // TODO date format
         firstDate: DateTime(DateTime.now().day + 5),
         initialDate: DateTime.now(),
       );
@@ -214,7 +217,7 @@ class RequestServicePage extends StatelessWidget {
                         builder: (context, state) {
                           return Text(date == null
                               ? "Please select a time"
-                              : date.toIso8601String());
+                              : HelperService.getFormattedDate(date));
                         },
                       ),
                       trailing: Icon(Icons.keyboard_arrow_down),

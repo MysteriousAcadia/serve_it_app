@@ -29,6 +29,8 @@ import 'package:serveit/pages/onboard/select_community_page.dart';
 import 'package:serveit/pages/onboard/verify_community_page.dart';
 import 'package:serveit/pages/onboard/verify_waiting_page.dart';
 import 'package:serveit/pages/payment.dart';
+import 'package:serveit/pages/provide/offer_service.dart';
+import 'package:serveit/pages/provide_offers.dart';
 import 'package:serveit/pages/services.dart';
 import 'package:serveit/pages/splash.dart';
 import 'package:serveit/repositories/user_repository.dart';
@@ -109,9 +111,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          accentColor: Color(0xFF9BDCE7),
+          accentColor: Color(0xFF9BDCE7), 
         ),
-        home: AllTasksPage(),
+        home: ProvideOffers(),
       ),
     );
   }
