@@ -11,6 +11,43 @@ class Payment extends StatelessWidget {
         padding: EdgeInsets.only(top: 50),
         child: ListView(
           children: <Widget>[
+            Card(
+              margin: EdgeInsets.symmetric(
+                vertical: 18,
+                horizontal: 25,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    'Pay via Google Pay',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Card(
+              margin: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 25,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    'Pay via Apple Pay',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             CreditCardWidget(
               cardNumber: '4265656626161616161',
               expiryDate: '10/24',
