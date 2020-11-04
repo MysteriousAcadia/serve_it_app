@@ -33,6 +33,7 @@ import 'package:serveit/pages/provide/offer_service.dart';
 import 'package:serveit/pages/provide_offers.dart';
 import 'package:serveit/pages/services.dart';
 import 'package:serveit/pages/splash.dart';
+import 'package:serveit/pages/stripe_payment.dart';
 import 'package:serveit/repositories/user_repository.dart';
 import 'package:serveit/services/localstorage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -111,9 +112,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          accentColor: Color(0xFF9BDCE7), 
+          accentColor: Color(0xFF9BDCE7),
         ),
-        home: ProvideOffers(),
+        home: Payment(),
       ),
     );
   }
