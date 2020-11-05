@@ -151,7 +151,14 @@ class BasicProfilePage extends StatelessWidget {
       builder: (context, state) {
         String url = "";
         print("Here" + state.toString());
-        if (state is ProfileLoaded && state.picture != null) {
+        if (state is ProfileUploaded) {
+          print("CAMMMEE");
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => SelectCommunityPage()));
+          });
+        } 
+        else if (state is ProfileLoaded && state.picture != null) {
           return GestureDetector(
             onTap: getImage,
             child: Container(
@@ -183,6 +190,7 @@ class BasicProfilePage extends StatelessWidget {
             ),
           );
         } else if (compressedFile != null) {
+          print("why u do dis?");
           return GestureDetector(
             onTap: getImage,
             child: Container(
@@ -197,12 +205,6 @@ class BasicProfilePage extends StatelessWidget {
               ),
             ),
           );
-        } else if (state is ProfileUploaded) {
-          print("CAMMMEE");
-          SchedulerBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => SelectCommunityPage()));
-          });
         } else {
           url =
               "https://firebasestorage.googleapis.com/v0/b/serve-it-281307.appspot.com/o/various%2Fprofile_add.png?alt=media&token=5aa34120-f8c8-416f-bdb3-c52e90643932";

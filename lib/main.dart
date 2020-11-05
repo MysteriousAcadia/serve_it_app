@@ -111,7 +111,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           accentColor: Color(0xFF9BDCE7),
         ),
-        home: AllTasksPage(),
+        home: App(),
       ),
     );
   }

@@ -72,8 +72,10 @@ class UserApiClient {
         .httpClient
         .post(url, headers: {"token": token}, body: jsonEncode(body.toJson()));
     if (response.statusCode != 200) {
+      print(response.body);
       throw new Exception("Something went Wrong, please try again");
     }
+    print(response.body);
 
     return response;
   }
@@ -102,6 +104,7 @@ class UserApiClient {
     print(json);
     return ServicesProviderResponse.fromJson(json).services;
   }
+
   //LIST of services
   Future<List<ServiceProvider>> getProviderServices(String token) async {
     final url = '$_baseUrl/providerServices';
@@ -113,8 +116,9 @@ class UserApiClient {
     print(json);
     return ServicesProviderResponse.fromJson(json).services;
   }
+
   //LIST OF OFFERS
-Future<List<ServiceProvider>> serviceOffers(String token) async {
+  Future<List<ServiceProvider>> serviceOffers(String token) async {
     final url = '$_baseUrl/availableNow';
     final response = await this.httpClient.get(
       url,
@@ -208,9 +212,9 @@ Future<List<ServiceProvider>> serviceOffers(String token) async {
     print(response.body);
     return response;
   }
-  Future<http.Response> acceptService( String serviceID)
-  async {
-     final url = '$_baseUrl/accept';
+
+  Future<http.Response> acceptService(String serviceID) async {
+    final url = '$_baseUrl/accept';
     var response = await this.httpClient.post(
       url,
       headers: {"token": localStorageService.authToken.token},
@@ -223,9 +227,8 @@ Future<List<ServiceProvider>> serviceOffers(String token) async {
     return response;
   }
 
-  Future<http.Response> markAsDone( String serviceID)
-  async {
-     final url = '$_baseUrl/done';
+  Future<http.Response> markAsDone(String serviceID) async {
+    final url = '$_baseUrl/done';
     var response = await this.httpClient.post(
       url,
       headers: {"token": localStorageService.authToken.token},
@@ -237,5 +240,4 @@ Future<List<ServiceProvider>> serviceOffers(String token) async {
     print(response.body);
     return response;
   }
-  
 }

@@ -23,7 +23,8 @@ class VerifyCommunityBloc
   ) async* {
     if (event is AddDocumentEvent) {
       document = event.file;
-      yield VerifyCommunityFileAdded();
+      yield VerifyCommunityFileAdded(document.path.split('/').last);
+
     } else if (event is UploadDocumentEvent) {
       yield VerifyCommunityFileUploading();
       if (document != null) {
