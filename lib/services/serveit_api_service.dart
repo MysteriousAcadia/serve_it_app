@@ -10,10 +10,12 @@ import 'package:serveit/models/response/communities_response.dart';
 import 'package:serveit/models/response/service_provider_response.dart';
 import 'package:serveit/models/response/service_recents_response.dart';
 import 'package:serveit/models/response/services_response.dart';
+import 'package:serveit/models/response/servicespr_response.dart';
 import 'package:serveit/models/response/token_response.dart';
 import 'package:serveit/models/service.dart';
 import 'package:serveit/models/service_provider.dart';
 import 'package:serveit/models/service_recents.dart';
+import 'package:serveit/models/verify_service.dart';
 import 'package:serveit/repositories/user_repository.dart';
 import 'package:serveit/services/localstorage_service.dart';
 
@@ -94,38 +96,38 @@ class UserApiClient {
 
   //TODO: BE IMPLEMENTED
   //SCHEDULED
-  Future<List<ServiceProvider>> getServiceProvider(String token) async {
+  Future<List<ServiceRecents>> getServiceProvider(String token) async {
     final url = '$_baseUrl/showServiceProvider';
     final response = await this.httpClient.get(
       url,
       headers: {"token": token},
     );
     final json = jsonDecode(response.body);
-    print(json);
+    print("NO:Scheduled"+json.toString());
     return ServicesProviderResponse.fromJson(json).services;
   }
 
   //LIST of services
-  Future<List<ServiceProvider>> getProviderServices(String token) async {
+  Future<List<VerifyService>> getProviderServices(String token) async {
     final url = '$_baseUrl/providerServices';
     final response = await this.httpClient.get(
       url,
       headers: {"token": token},
     );
     final json = jsonDecode(response.body);
-    print(json);
-    return ServicesProviderResponse.fromJson(json).services;
+    print("NO:ListOfService"+json.toString());
+    return ServicesPrResponse.fromJson(json).services;
   }
 
   //LIST OF OFFERS
-  Future<List<ServiceProvider>> serviceOffers(String token) async {
+  Future<List<ServiceRecents>> serviceOffers(String token) async {
     final url = '$_baseUrl/availableNow';
     final response = await this.httpClient.get(
       url,
       headers: {"token": token},
     );
     final json = jsonDecode(response.body);
-    print(json);
+    print("NO:serviceOffers"+json.toString());
     return ServicesProviderResponse.fromJson(json).services;
   }
 

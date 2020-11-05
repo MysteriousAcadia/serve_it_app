@@ -9,6 +9,7 @@ import 'package:serveit/components/services_provide_card.dart';
 import 'package:serveit/components/services_search_card.dart';
 import 'package:serveit/models/service.dart';
 import 'package:serveit/models/service_provider.dart';
+import 'package:serveit/models/service_recents.dart';
 import 'package:serveit/models/verify_service.dart';
 import 'package:serveit/utils/constants.dart';
 
@@ -23,8 +24,12 @@ class ProvidePage extends StatelessWidget {
       return ("Success");
     }
 
-    Widget _body(List<Service> service, List<Service> offers,
-        List<Service> scheduled, var context) {
+    Widget _body(List<VerifyService> service, List<ServiceRecents> offers,
+        List<ServiceRecents> scheduled, var context) {
+      print("WHOT" +
+          service.length.toString() +
+          offers.length.toString() +
+          scheduled.length.toString());
       return ListView(
         children: <Widget>[
           Padding(
@@ -47,18 +52,20 @@ class ProvidePage extends StatelessWidget {
               left: 30,
               right: 30,
             ),
-            child: SearchWidget<Service>(
+            child: SearchWidget<VerifyService>(
               dataList: service,
               hideSearchBoxWhenItemSelected: false,
               listContainerHeight: MediaQuery.of(context).size.height / 4,
-              queryBuilder: (String query, List<Service> list) {
+              queryBuilder: (String query, List<VerifyService> list) {
                 return list
-                    .where((Service item) =>
-                        item.name.toLowerCase().contains(query.toLowerCase()))
+                    .where((VerifyService item) => item.service.name
+                        .toLowerCase()
+                        .contains(query.toLowerCase()))
                     .toList();
               },
-              popupListItemBuilder: (Service item) {
-                return ServicesSearchCard(item, Constants.cardColors[0]);
+              popupListItemBuilder: (VerifyService item) {
+                return ServicesSearchCard(
+                    item.service, Constants.cardColors[0]);
               },
               selectedItemBuilder:
                   (dynamic selectedItem, VoidCallback deleteSelectedItem) {
@@ -120,10 +127,10 @@ class ProvidePage extends StatelessWidget {
           ),
           Container(
             height: 205,
-            child: (scheduled != null || scheduled.length != 0)
+            child: (offers != null || offers.length != 0)
                 ? ListView(
                     scrollDirection: Axis.horizontal,
-                    children: scheduled
+                    children: offers
                         .map((e) =>
                             ServicesProvideCard(e, Constants.cardColors[0]))
                         .toList(),
@@ -168,6 +175,10 @@ class ProvidePage extends StatelessWidget {
       if (state is ProvidePageLoading) {
         return CircularProgressIndicator();
       } else if (state is ProvidePageSuccess) {
+         print("WHOT" +
+          state.services.length.toString() +
+          state.offers.length.toString() +
+          state.scheduled.length.toString());
         return _body(state.services, state.offers, state.scheduled, context);
       } else if (state is ProvidePageFailure) {
         return Center(
