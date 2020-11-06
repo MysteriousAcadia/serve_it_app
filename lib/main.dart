@@ -28,7 +28,9 @@ import 'package:serveit/pages/auth/signin_page.dart';
 import 'package:serveit/pages/onboard/select_community_page.dart';
 import 'package:serveit/pages/onboard/verify_community_page.dart';
 import 'package:serveit/pages/onboard/verify_waiting_page.dart';
+import 'package:serveit/pages/pay_with_stripe.dart';
 import 'package:serveit/pages/payment.dart';
+import 'package:serveit/pages/payment_screen.dart';
 import 'package:serveit/pages/provide/offer_service.dart';
 import 'package:serveit/pages/provide_offers.dart';
 import 'package:serveit/pages/services.dart';
@@ -114,7 +116,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           accentColor: Color(0xFF9BDCE7),
         ),
-        home: Payment(),
+        home: HomePage.HomePage(),
       ),
     );
   }

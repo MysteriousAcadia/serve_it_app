@@ -143,6 +143,7 @@ class RequestServicePage extends StatelessWidget {
                               flex: 1,
                               child: Button(
                                 "Book Now",
+                                // TODO  redirect to /payments
                                 Constants.white,
                                 Constants.buttonTextStyle,
                                 () {

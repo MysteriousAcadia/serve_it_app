@@ -21,7 +21,7 @@ class ReceivePageBloc extends Bloc<ReceivePageEvent, ReceivePageState> {
   ) async* {
     if (event is ReceivePageReload) {
       yield ReceivePageLoading();
-      UserApiClient client = UserApiClient(httpClient: http.Client());
+      UserApiClient client = UserApiClient(httpClient: http.Client(), localStorageService: localStorageService);
       List<dynamic> responses = await Future.wait(
         [
           client.getServices(localStorageService.authToken.token),

@@ -14,13 +14,20 @@ int amount = 0;
 bool showSpinner = false;
 String url = 'https://us-central1-demostripe-b9557.cloudfunctions.net/StripePI';
 
-class ShowDialogToDismiss extends StatelessWidget {
+class ShowDialogToDismiss extends StatefulWidget {
   final String content;
   final String title;
   final String buttonText;
   ShowDialogToDismiss({this.title, this.buttonText, this.content});
 
+  @override
+  _ShowDialogToDismissState createState() => _ShowDialogToDismissState();
+}
+
+class _ShowDialogToDismissState extends State<ShowDialogToDismiss> {
+  @override
   void initState() {
+    super.initState();
     StripePayment.setOptions(
       StripeOptions(
         publishableKey:
@@ -64,11 +71,11 @@ class ShowDialogToDismiss extends StatelessWidget {
       Token token = await StripePayment.paymentRequestWithNativePay(
         androidPayOptions: AndroidPayPaymentRequest(
           totalPrice: (totalCost + tax + tip).toStringAsFixed(2),
-          currencyCode: 'GBP',
+          currencyCode: 'USD',
         ),
         applePayOptions: ApplePayPaymentOptions(
-          countryCode: 'GB',
-          currencyCode: 'GBP',
+          countryCode: 'US',
+          currencyCode: 'USD',
           items: items,
         ),
       );
@@ -128,9 +135,9 @@ class ShowDialogToDismiss extends StatelessWidget {
 
     Future<void> processPaymentAsDirectCharge(
         PaymentMethod paymentMethod) async {
-      // setState(() {
-      //   showSpinner = true;
-      // });
+      setState(() {
+        showSpinner = true;
+      });
       //step 2: request to create PaymentIntent, attempt to confirm the payment & return PaymentIntent
       final http.Response response = await http
           .post('$url?amount=$amount&currency=GBP&paym=${paymentMethod.id}');
@@ -143,11 +150,11 @@ class ShowDialogToDismiss extends StatelessWidget {
         if (status == 'succeeded') {
           //payment was confirmed by the server without need for futher authentification
           StripePayment.completeNativePayRequest();
-          // setState(() {
-          //   text =
-          //       'Payment completed. ${paymentIntentX['paymentIntent']['amount'].toString()}p succesfully charged';
-          //   showSpinner = false;
-          // });
+          setState(() {
+            text =
+                'Payment completed. ${paymentIntentX['paymentIntent']['amount'].toString()}p succesfully charged';
+            showSpinner = false;
+          });
         } else {
           //step 4: there is a need to authenticate
           StripePayment.setStripeAccount(strAccount);
@@ -163,14 +170,14 @@ class ShowDialogToDismiss extends StatelessWidget {
               final statusFinal = paymentIntentResult.status;
               if (statusFinal == 'succeeded') {
                 StripePayment.completeNativePayRequest();
-                // setState(() {
-                //   showSpinner = false;
-                // });
+                setState(() {
+                  showSpinner = false;
+                });
               } else if (statusFinal == 'processing') {
                 StripePayment.cancelNativePayRequest();
-                // setState(() {
-                //   showSpinner = false;
-                // });
+                setState(() {
+                  showSpinner = false;
+                });
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => ShowDialogToDismiss(
@@ -180,9 +187,9 @@ class ShowDialogToDismiss extends StatelessWidget {
                         buttonText: 'CLOSE'));
               } else {
                 StripePayment.cancelNativePayRequest();
-                // setState(() {
-                //   showSpinner = false;
-                // });
+                setState(() {
+                  showSpinner = false;
+                });
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => ShowDialogToDismiss(
@@ -193,27 +200,29 @@ class ShowDialogToDismiss extends StatelessWidget {
               }
             },
             //If Authentication fails, a PlatformException will be raised which can be handled here
-          ).catchError((e) {
-            //case B1
-            StripePayment.cancelNativePayRequest();
-            // setState(() {
-            //   showSpinner = false;
-            // });
-            showDialog(
-                context: context,
-                builder: (BuildContext context) => ShowDialogToDismiss(
-                    title: 'Error',
-                    content:
-                        'There was an error to confirm the payment. Please try again with another card',
-                    buttonText: 'CLOSE'));
-          },);
+          ).catchError(
+            (e) {
+              //case B1
+              StripePayment.cancelNativePayRequest();
+              setState(() {
+                showSpinner = false;
+              });
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => ShowDialogToDismiss(
+                      title: 'Error',
+                      content:
+                          'There was an error to confirm the payment. Please try again with another card',
+                      buttonText: 'CLOSE'));
+            },
+          );
         }
       } else {
         //case A
         StripePayment.cancelNativePayRequest();
-        // setState(() {
-        //   showSpinner = false;
-        // });
+        setState(() {
+          showSpinner = false;
+        });
         showDialog(
             context: context,
             builder: (BuildContext context) => ShowDialogToDismiss(
@@ -227,15 +236,15 @@ class ShowDialogToDismiss extends StatelessWidget {
     if (!Platform.isIOS) {
       return AlertDialog(
         title: new Text(
-          title,
+          widget.title,
         ),
         content: new Text(
-          this.content,
+          this.widget.content,
         ),
         actions: <Widget>[
           new FlatButton(
             child: new Text(
-              buttonText,
+              widget.buttonText,
             ),
             onPressed: () {
               Navigator.of(context).pop();
@@ -246,17 +255,17 @@ class ShowDialogToDismiss extends StatelessWidget {
     } else {
       return CupertinoAlertDialog(
         title: Text(
-          title,
+          widget.title,
         ),
         content: new Text(
-          this.content,
+          this.widget.content,
         ),
         actions: <Widget>[
           CupertinoDialogAction(
             isDefaultAction: true,
             child: new Text(
-              buttonText[0].toUpperCase() +
-                  buttonText.substring(1).toLowerCase(),
+              widget.buttonText[0].toUpperCase() +
+                  widget.buttonText.substring(1).toLowerCase(),
             ),
             onPressed: () {
               Navigator.of(context).pop();

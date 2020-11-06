@@ -168,6 +168,7 @@ class ProvidePage extends StatelessWidget {
       if (state is ProvidePageLoading) {
         return CircularProgressIndicator();
       } else if (state is ProvidePageSuccess) {
+        // TODO
         return _body(state.services, state.offers, state.scheduled, context);
       } else if (state is ProvidePageFailure) {
         return Center(
