@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -5,6 +7,7 @@ import 'package:search_widget/search_widget.dart';
 import 'package:serveit/blocs/provide_bloc/provide_page_bloc.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/components/recents_card.dart';
+import 'package:serveit/components/services_card/accept_offer.dart';
 import 'package:serveit/components/services_provide_card.dart';
 import 'package:serveit/components/services_search_card.dart';
 import 'package:serveit/models/service.dart';
@@ -24,12 +27,28 @@ class ProvidePage extends StatelessWidget {
       return ("Success");
     }
 
+    List _buildOffers(List offers) {
+      List<AcceptServicesCard> offersCard = [];
+      // print('ABCD: ' + jsonEncode(offers));
+      for (int i = 0; i < offers.length; i++) {
+        offersCard.add(AcceptServicesCard(
+          isScheduled: false,
+        ));
+      }
+      return offersCard;
+    }
+
     Widget _body(List<VerifyService> service, List<ServiceRecents> offers,
         List<ServiceRecents> scheduled, var context) {
-      print("WHOT" +
+      print('ABCD: ' + jsonEncode(offers.length));
+      print("ABCD123" +
           service.length.toString() +
+          "??" +
           offers.length.toString() +
+          "!!" +
           scheduled.length.toString());
+      List offersCard = _buildOffers(offers);
+
       return ListView(
         children: <Widget>[
           Padding(
@@ -126,18 +145,11 @@ class ProvidePage extends StatelessWidget {
             ),
           ),
           Container(
-            height: 205,
-            child: (offers != null || offers.length != 0)
-                ? ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: offers
-                        .map((e) =>
-                            ServicesProvideCard(e, Constants.cardColors[0]))
-                        .toList(),
-                  )
-                : Center(
-                    child: Text("Nothing to Show"),
-                  ),
+            height: 250,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[...offersCard],
+            ),
           ),
           SizedBox(
             width: double.infinity,
@@ -175,10 +187,10 @@ class ProvidePage extends StatelessWidget {
       if (state is ProvidePageLoading) {
         return CircularProgressIndicator();
       } else if (state is ProvidePageSuccess) {
-         print("WHOT" +
-          state.services.length.toString() +
-          state.offers.length.toString() +
-          state.scheduled.length.toString());
+        print("WHOT" +
+            state.services.length.toString() +
+            state.offers.length.toString() +
+            state.scheduled.length.toString());
         return _body(state.services, state.offers, state.scheduled, context);
       } else if (state is ProvidePageFailure) {
         return Center(
@@ -190,6 +202,20 @@ class ProvidePage extends StatelessWidget {
         child: Text("SOmething DEFFF wrong"),
       );
     });
+
+    // List<ServicesProvideCard> _buildRecents(List<ServiceRecents> recents) {
+    //   List<ServicesProvideCard> recentsCard = [];
+    //   for (int i = 0; i < recents.length; i++) {
+    //     recentsCard.add(ServicesProvideCard(
+
+    //       serviceRecents: recents[i],
+    //       service: Service.empty(),
+    //       backgroundColor:
+    //           Constants.cardColors[i % Constants.cardColors.length],
+    //     ));
+    //   }
+    //   return recentsCard;
+    // }
 
     return SafeArea(
       child: Center(

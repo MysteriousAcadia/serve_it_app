@@ -34,7 +34,7 @@ class AcceptServicesCard extends StatelessWidget {
                   radius: 35,
                 ),
                 SizedBox(
-                  width: 20,
+                  width: 15,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +68,7 @@ class AcceptServicesCard extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 30,
+              height: 15,
             ),
             Row(
               children: <Widget>[
@@ -83,7 +83,7 @@ class AcceptServicesCard extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 30,
+              height: 15,
             ),
             if (isScheduled)
               Row(
