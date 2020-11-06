@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:serveit/models/service.dart';
+import 'package:serveit/models/service_recents.dart';
+import 'package:serveit/models/verify_service.dart';
 import 'package:serveit/services/localstorage_service.dart';
 import 'package:serveit/services/serveit_api_service.dart';
 import 'package:http/http.dart' as http;
@@ -23,12 +25,16 @@ class ProvidePageBloc extends Bloc<ProvidePageEvent, ProvidePageState> {
       UserApiClient client = UserApiClient(
           httpClient: http.Client(), localStorageService: localStorageService);
       List<dynamic> responses = await Future.wait([
-        client.getServices(localStorageService.authToken.token),
         client.getProviderServices(localStorageService.authToken.token),
         client.getServiceProvider(localStorageService.authToken.token),
+        client.serviceOffers(localStorageService.authToken.token),
       ]);
+       print("WHOTaaa" +
+          responses[0].length.toString() +
+          responses[1].length.toString() +
+          responses[2].length.toString());
       // yield (ProvidePageSuccess(responses[0], responses[0],responses[0]));
-      yield (ProvidePageSuccess(responses[0], responses[0], responses[0]));
+      yield (ProvidePageSuccess(responses[0], responses[1], responses[2]));
     }
   }
 }

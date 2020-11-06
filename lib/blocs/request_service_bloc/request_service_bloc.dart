@@ -26,7 +26,6 @@ class RequestServiceBloc
     if (event is SendRequestServiceEvent) {
       yield RequestServiceLoading();
       UserApiClient client = UserApiClient(httpClient: http.Client());
-      print(event.requestServiceBody);
       List<dynamic> responses = await Future.wait([
         client.requestService(
             event.requestServiceBody, localStorageService.authToken.token)

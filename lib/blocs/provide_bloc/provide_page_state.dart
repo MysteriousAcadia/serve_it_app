@@ -12,12 +12,12 @@ class ProvidePageInitial extends ProvidePageState {}
 class ProvidePageLoading extends ProvidePageState {}
 
 class ProvidePageSuccess extends ProvidePageState {
-  final List<Service> services;
+  final List<VerifyService> services;
   // final List<VerifyService> services;
   // final List<ServiceProvider> scheduled;
-  final List<Service> scheduled;
+  final List<ServiceRecents> scheduled;
   // final List<ServiceProvider> offers;
-  final List<Service> offers;
+  final List<ServiceRecents> offers;
 
   ProvidePageSuccess(this.services, this.scheduled, this.offers);
 

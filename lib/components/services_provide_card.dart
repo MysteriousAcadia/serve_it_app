@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:serveit/models/service.dart';
+import 'package:serveit/models/service_recents.dart';
 import 'package:serveit/pages/provide/verify_service.dart';
 import 'package:serveit/pages/services.dart';
 
 import '../utils/constants.dart';
 
 class ServicesProvideCard extends StatelessWidget {
+  final ServiceRecents serviceRecents;
   final Service service;
   Color backgroundColor = Constants.cardColors[0];
-  ServicesProvideCard(this.service,this.backgroundColor);
+  ServicesProvideCard(this.serviceRecents, this.backgroundColor):
+  service = serviceRecents.service;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -62,8 +65,7 @@ class ServicesProvideCard extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text:
-                                  service.description+service.id,
+                              text: service.description + service.id,
                             ),
                             TextSpan(
                               text: '',
@@ -107,8 +109,13 @@ class ServicesProvideCard extends StatelessWidget {
                               onTap: () {
                                 SchedulerBinding.instance
                                     .addPostFrameCallback((_) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => VerifyServicePage( service,),),);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => VerifyServicePage(
+                                        service,
+                                      ),
+                                    ),
+                                  );
                                 });
                               },
                               child: Padding(

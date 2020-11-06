@@ -54,7 +54,38 @@ class VerifyCommunityPage extends StatelessWidget {
         } else if (state is VerifyCommunityFileAdded) {
           return Column(
             children: <Widget>[
-              Text("File added successfully"),
+              Padding(
+                padding: EdgeInsets.all(30),
+                child: Card(
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        padding: const EdgeInsets.all(18.0),
+                        child: Text(
+                          file != null ? state.fileName : 'Document',
+                          style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: 21,
+                            color: const Color(0xff606060),
+                            letterSpacing: -0.525,
+                            fontWeight: FontWeight.w700,
+                            height: 1.1904761904761905,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Spacer(),
+                      Icon(
+                        Icons.picture_as_pdf,
+                      ),
+                      SizedBox(
+                        width: 20,
+                      )
+                    ],
+                  ),
+                ),
+              ),
               addFileButton,
               button,
             ],
@@ -93,38 +124,6 @@ class VerifyCommunityPage extends StatelessWidget {
                   height: 1.1851851851851851,
                 ),
                 textAlign: TextAlign.center,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(30),
-              child: Card(
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      padding: const EdgeInsets.all(18.0),
-                      child: Text(
-                        file != null ? filename : 'Documents',
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 21,
-                          color: const Color(0xff606060),
-                          letterSpacing: -0.525,
-                          fontWeight: FontWeight.w700,
-                          height: 1.1904761904761905,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    Spacer(),
-                    Icon(
-                      Icons.picture_as_pdf,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    )
-                  ],
-                ),
               ),
             ),
             body,

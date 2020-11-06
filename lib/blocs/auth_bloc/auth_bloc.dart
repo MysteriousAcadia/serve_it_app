@@ -48,9 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         }
       } catch (e) {
-        print('this was error');
-        print(e.toString());
-        print(localStorageService.authToken);
+     
         yield ErrorState();
       }
     } else if (event is LogoutEvent) {
