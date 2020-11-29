@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:serveit/models/community.dart';
+import 'package:serveit/models/response/token_response.dart';
 import 'package:serveit/repositories/user_repository.dart';
 import 'package:serveit/services/localstorage_service.dart';
 
@@ -26,31 +27,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async* {
     if (event is AppStartedEvent) {
       try {
-        var isSignedIn = await userRepository.isSignedIn();
-        var isNewUser = localStorageService.authToken.newUser;
-        var isVerified = localStorageService.authToken.verified;
-        var community = localStorageService.authToken.currentCommunity;
-        if (isSignedIn) {
-          if (isNewUser) {
-            yield NewUserState();
-          } else if (community == null) {
-            yield NoCommunityState();
-          } else if (isVerified <= 0) {
-            yield UnverifiedState(community);
-          } else {
-            yield AuthenticatedState(
-                user: await userRepository.getCurrentUser());
-          }
-        } else {
-          print('this was?? error');
-
+        bool isSignedIn = await userRepository.isSignedIn();
+        if (!isSignedIn) {
           yield UnAuthenticated();
+          return;
+        }
+        Token token = await userRepository.getAuthToken();
+        if (token.newUser) {
+          yield NewUserState();
+          return;
+        } else if (token.currentCommunity == null) {
+          yield NoCommunityState();
+          return;
+        } else if (token.verified == 1) {
+          yield UnverifiedState(token.currentCommunity);
+          return;
+        }
+        else{
+        yield AuthenticatedState(user: await userRepository.getCurrentUser());
+
         }
       } catch (e) {
-        print('this was error');
-        print(e.toString());
-        print(localStorageService.authToken);
-        yield UnAuthenticated();
+     
+        yield ErrorState();
       }
     } else if (event is LogoutEvent) {
       try {

@@ -68,7 +68,7 @@ class CommunityCard extends StatelessWidget {
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
-                                community.name,
+                                "community.name,",
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                                 style: TextStyle(

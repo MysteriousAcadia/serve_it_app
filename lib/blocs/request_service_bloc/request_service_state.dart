@@ -13,3 +13,5 @@ class RequestServiceSuccess extends RequestServiceState {}
 class RequestServiceLoading extends RequestServiceState {}
 
 class RequestServiceError extends RequestServiceState {}
+
+class UpdateServiceStatus extends RequestServiceState {}

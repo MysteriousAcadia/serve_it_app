@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:search_widget/search_widget.dart';
+import 'package:serveit/components/allTasksCard.dart';
 import 'package:serveit/components/button.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/pages/auth/signin_page.dart';
@@ -10,50 +11,132 @@ class FinancesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Container(
-                    height: 247.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(54.0),bottomRight:  Radius.circular(54.0)),
-                      color: const Color(0xffdcf3e9),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x0d000000),
-                          offset: Offset(0, 7),
-                          blurRadius: 14,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              height: 300.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(54.0),
+                    bottomRight: Radius.circular(54.0)),
+                color: const Color(0xffdcf3e9),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0x0d000000),
+                    offset: Offset(0, 7),
+                    blurRadius: 14,
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Your Finances',
+                    style: TextStyle(
+                      fontFamily: 'Ubuntu',
+                      fontSize: 28,
+                      color: const Color(0xff005c7e),
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: Color(0xFF005C7E),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          '7500\$',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          'earned this month',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),
-                  
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Your Finances',
-                  style: TextStyle(
-                    fontFamily: 'Ubuntu',
-                    fontSize: 28,
-                    color: const Color(0xff005c7e),
-                    fontWeight: FontWeight.w700,
+                    radius: 60,
                   ),
-                  textAlign: TextAlign.left,
-                ),
-                Icon(Icons.album, size: 120),
-                SizedBox(
-                  width: 20,
-                ),
-                
-                SvgPicture.string(
-                  _svg_gj78bz,
-                  allowDrawingOutsideViewBox: true,
-                ),
-              ],
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 60, right: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 15,
+                          ),
+                          child: Text('Today'),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 15,
+                          ),
+                          child: Text('This month'),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 15,
+                          ),
+                          child: Text('This year'),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-         Align(alignment: Alignment.center,child: Text("Coming soon!"),)
-        ],
+            SizedBox(
+              height: 30,
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                bottom: 30,
+              ),
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: ListView.builder(
+                itemBuilder: (context, index) => AllTasksCard(),
+                itemCount: 5,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

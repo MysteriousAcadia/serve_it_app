@@ -26,22 +26,22 @@ class UserRepository {
     var currentUser = await _fAuth.currentUser();
     if (currentUser == null || currentUser.isAnonymous) {
       return false;
+    } else {
+      return true;
     }
+  }
+
+  Future<Token> getAuthToken() async {
+    var currentUser = await _fAuth.currentUser();
     try {
       print("work");
       Token token = await _userApiClient.getToken(currentUser.uid);
-      print("work2");
       _localStorageService.authToken = token;
-      print("TRY" + token.toJson().toString());
-      if (token != null) {
-        return true;
-      }
+      return token;
     } catch (e) {
       print("failed to get token" + e);
-      return false;
+      return Token();
     }
-
-    return false;
   }
 
   Future<FirebaseUser> getCurrentUser() async {

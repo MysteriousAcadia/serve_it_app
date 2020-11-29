@@ -11,6 +11,7 @@ import 'package:serveit/components/question_answer.dart';
 import 'package:serveit/components/recents_card.dart';
 import 'package:serveit/components/services_provide_card.dart';
 import 'package:serveit/models/service_recents.dart';
+import 'package:serveit/services/helperService.dart';
 import 'package:serveit/utils/constants.dart';
 import 'package:serveit/models/request/request_service.dart';
 import 'package:serveit/models/service.dart';
@@ -18,18 +19,27 @@ import 'package:serveit/models/service_question.dart';
 
 class RequestServicePage extends StatelessWidget {
   Service service;
+  bool editable = true;
   ServiceRecents serviceRecents;
   RequestServiceBloc requestServiceBloc;
   RequestServicePage({this.service, this.serviceRecents});
   @override
   Widget build(BuildContext context) {
-    requestServiceBloc = BlocProvider.of<RequestServiceBloc>(context);
     DateTime date;
+
+    if (serviceRecents != null) {
+      service = serviceRecents.service;
+      editable = false;
+      // TODO
+      date = serviceRecents.time;
+    }
+    requestServiceBloc = BlocProvider.of<RequestServiceBloc>(context);
     TimeOfDay timeOfDay;
     _pickDate() async {
       date = await showDatePicker(
         context: context,
         lastDate: DateTime.now(),
+        // TODO date format
         firstDate: DateTime(DateTime.now().day + 5),
         initialDate: DateTime.now(),
       );
@@ -48,8 +58,8 @@ class RequestServicePage extends StatelessWidget {
       print(date.toIso8601String());
     }
 
-    if (serviceRecents != null) {}
-    List<QuestionAnswer> questionAnswers = questionBuilder(service.questions);
+    List<QuestionAnswer> questionAnswers =
+        questionBuilder(service.questions, editable);
 
     Widget optionsCard = Container(
       width: double.infinity,
@@ -68,7 +78,7 @@ class RequestServicePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Text(
-                'Answer Questions',
+                'Answer' + (editable ? "" : "ed") + ' Questions',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 20,
@@ -125,7 +135,6 @@ class RequestServicePage extends StatelessWidget {
                       if (state is RequestServiceSuccess) {
                         SchedulerBinding.instance.addPostFrameCallback((_) {
                           Navigator.of(context).pop();
-                       
                         });
                       }
                       return state is RequestServiceLoading
@@ -134,6 +143,7 @@ class RequestServicePage extends StatelessWidget {
                               flex: 1,
                               child: Button(
                                 "Book Now",
+                                // TODO  redirect to /payments
                                 Constants.white,
                                 Constants.buttonTextStyle,
                                 () {
@@ -141,6 +151,8 @@ class RequestServicePage extends StatelessWidget {
                                       service.id,
                                       questionAnswers
                                           .map((e) => ServiceQuestion(
+                                              question:
+                                                  e.serviceQuestion.question,
                                               id: e.serviceQuestion.id,
                                               answer: e.controller.text))
                                           .toList());
@@ -206,7 +218,7 @@ class RequestServicePage extends StatelessWidget {
                         builder: (context, state) {
                           return Text(date == null
                               ? "Please select a time"
-                              : date.toIso8601String());
+                              : HelperService.getFormattedDate(date));
                         },
                       ),
                       trailing: Icon(Icons.keyboard_arrow_down),
@@ -266,10 +278,11 @@ class RequestServicePage extends StatelessWidget {
     );
   }
 
-  List<QuestionAnswer> questionBuilder(List<ServiceQuestion> questions) {
+  List<QuestionAnswer> questionBuilder(
+      List<ServiceQuestion> questions, bool editable) {
     List<QuestionAnswer> questionWidgets = [];
     for (int i = 0; i < questions.length; i++) {
-      questionWidgets.add(QuestionAnswer(questions[i]));
+      questionWidgets.add(QuestionAnswer(questions[i], editable));
     }
     return questionWidgets;
   }

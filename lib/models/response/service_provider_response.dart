@@ -4,14 +4,19 @@ import 'package:serveit/models/service_recents.dart';
 
 class ServicesProviderResponse {
   bool success;
-  List<ServiceProvider> services;
+  List<ServiceRecents> services;
 
   ServicesProviderResponse({this.success, this.services});
 
   ServicesProviderResponse.fromJson(Map<String, dynamic> json) {
     this.success = json['success'];
-    var _services = json['request'] as List;
-    services = _services.map((e) => ServiceProvider.fromJson(e)).toList();
+    var _services = (json['request']==null?json['available']:json['request']) as List;
+    print('IIIIII' + _services.toString());
+    if (_services != null && _services.length > 0) {
+      services = _services.map((e) => ServiceRecents.fromJson(e)).toList();
+    } else {
+      services = [];
+    }
   }
 
   Map<String, dynamic> toJson() {

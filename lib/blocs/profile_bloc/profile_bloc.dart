@@ -96,10 +96,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             localStorageService: localStorageService);
         try {
           await client.updateProfile(body, localStorageService.authToken.token);
+                  yield ProfileUploaded();
+
         } catch (e) {
           yield ProfileError();
         }
-        yield ProfileUploaded();
       } else {
         activeCheck = true;
         ProfileLoaded state = ProfileLoaded(

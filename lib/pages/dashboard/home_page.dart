@@ -21,6 +21,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   SettingsBloc settingsBloc;
+
+  static final String deliverIconName = 'assets/icons/deliver.svg';
+  final Widget deliverIcon = SvgPicture.asset(
+    deliverIconName,
+    semanticsLabel: 'Deliver Icon',
+  );
+
   @override
   Widget build(BuildContext context) {
     settingsBloc = BlocProvider.of<SettingsBloc>(context);
@@ -60,7 +67,9 @@ class _HomePageState extends State<HomePage> {
           if (state.settings.isProvideServicesEnabled) {
             navIcons.add(
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                icon: Icon(
+                  Icons.room_service,
+                ),
                 title: Text(
                   "Provide",
                 ),
@@ -70,7 +79,7 @@ class _HomePageState extends State<HomePage> {
           if (state.settings.isReceiveServicesEnabled) {
             navIcons.add(
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                icon: deliverIcon,
                 title: Text(
                   "Receive",
                 ),
@@ -79,7 +88,7 @@ class _HomePageState extends State<HomePage> {
           }
           navIcons.add(
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.payment),
               title: Text(
                 "Finances",
               ),
@@ -87,7 +96,7 @@ class _HomePageState extends State<HomePage> {
           );
           navIcons.add(
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.person),
               title: Text(
                 "Profile",
               ),
@@ -130,5 +139,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-

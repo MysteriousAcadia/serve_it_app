@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +14,10 @@ import 'package:serveit/blocs/select_community_bloc/select_community_bloc.dart';
 import 'package:serveit/blocs/settings_bloc/settings_bloc_bloc.dart';
 import 'package:serveit/blocs/verify_community_bloc/verify_community_bloc.dart';
 import 'package:serveit/blocs/verify_service_bloc/verify_service_bloc.dart';
+import 'package:serveit/models/adress.dart';
+import 'package:serveit/models/community.dart';
+import 'package:serveit/models/response/token_response.dart';
+import 'package:serveit/pages/dashboard/all_tasks_page.dart';
 import 'package:serveit/pages/dashboard/home_page.dart' as HomePage;
 import 'package:serveit/pages/dashboard/receive_page.dart';
 import 'package:serveit/pages/onboard/basic_profile_page.dart';
@@ -22,8 +28,14 @@ import 'package:serveit/pages/auth/signin_page.dart';
 import 'package:serveit/pages/onboard/select_community_page.dart';
 import 'package:serveit/pages/onboard/verify_community_page.dart';
 import 'package:serveit/pages/onboard/verify_waiting_page.dart';
+import 'package:serveit/pages/pay_with_stripe.dart';
+import 'package:serveit/pages/payment.dart';
+import 'package:serveit/pages/payment_screen.dart';
+import 'package:serveit/pages/provide/offer_service.dart';
+import 'package:serveit/pages/provide_offers.dart';
 import 'package:serveit/pages/services.dart';
 import 'package:serveit/pages/splash.dart';
+import 'package:serveit/pages/stripe_payment.dart';
 import 'package:serveit/repositories/user_repository.dart';
 import 'package:serveit/services/localstorage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -88,7 +100,7 @@ class MyApp extends StatelessWidget {
           create: (c) => ProvidePageBloc(localStorageService),
         ),
         BlocProvider<VerifyServiceBloc>(
-          create: (c) => VerifyServiceBloc(),
+          create: (c) => VerifyServiceBloc(localStorageService),
         ),
         BlocProvider<SelectCommunityBloc>(
           create: (c) => SelectCommunityBloc(localStorageService),
@@ -99,10 +111,12 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'ServeIt',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          accentColor: Color(0xFF9BDCE7),
         ),
-        home: App(),
+        home: HomePage.HomePage(),
       ),
     );
   }
@@ -115,7 +129,7 @@ class App extends StatelessWidget {
     authBloc = BlocProvider.of<AuthBloc>(context);
     authBloc.add(AppStartedEvent());
     return BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-      print("State, came here:" + state.toString());
+      // print("State, came here:" + state.toString());
       return HomePage.HomePage();
       if (state is AuthInitial) {
         return Splash();

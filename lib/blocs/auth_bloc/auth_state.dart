@@ -43,3 +43,9 @@ class NoCommunityState extends AuthState {
   // TODO: implement props
   List<Object> get props => null;
 }
+
+class ErrorState extends AuthState{
+   @override
+  // TODO: implement props
+  List<Object> get props => null;
+}

@@ -8,15 +8,23 @@ class Community {
   final String description;
   final Address address;
   final int status;
-  Community({this.name, this.description, this.status, this.id, this.address});
+  final dynamic docs;
+  Community({
+    this.name = "W",
+    this.description = "W",
+    this.status = 1,
+    this.id = "W",
+    this.address,
+    this.docs = "W",
+  });
   Community.fromJson(Map<String, dynamic> json)
-      : name = json['community_name'],
-        description = json['community_description'],
-        address = json['community_address'] != null
-            ? Address.fromJson(json['community_address'])
-            : Address(),
-        id = json["community_id"],
-        status = 1;
+      : name = "json['community_name']",
+        description = "json['community_description']",
+        address = Address(),
+        // id = json["community_id"],
+        id = "1",
+        status = 1,
+        docs = "json['docs'];";
   // description = json['address']['description'] == null
   //     ? "Test Description"
   //     : json['address']['description'],

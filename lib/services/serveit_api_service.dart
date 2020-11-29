@@ -10,10 +10,12 @@ import 'package:serveit/models/response/communities_response.dart';
 import 'package:serveit/models/response/service_provider_response.dart';
 import 'package:serveit/models/response/service_recents_response.dart';
 import 'package:serveit/models/response/services_response.dart';
+import 'package:serveit/models/response/servicespr_response.dart';
 import 'package:serveit/models/response/token_response.dart';
 import 'package:serveit/models/service.dart';
 import 'package:serveit/models/service_provider.dart';
 import 'package:serveit/models/service_recents.dart';
+import 'package:serveit/models/verify_service.dart';
 import 'package:serveit/repositories/user_repository.dart';
 import 'package:serveit/services/localstorage_service.dart';
 
@@ -72,8 +74,10 @@ class UserApiClient {
         .httpClient
         .post(url, headers: {"token": token}, body: jsonEncode(body.toJson()));
     if (response.statusCode != 200) {
+      print(response.body);
       throw new Exception("Something went Wrong, please try again");
     }
+    print(response.body);
 
     return response;
   }
@@ -91,25 +95,39 @@ class UserApiClient {
   }
 
   //TODO: BE IMPLEMENTED
-  Future<List<ServiceProvider>> getServiceProvider(String token) async {
+  //SCHEDULED
+  Future<List<ServiceRecents>> getServiceProvider(String token) async {
     final url = '$_baseUrl/showServiceProvider';
     final response = await this.httpClient.get(
       url,
       headers: {"token": token},
     );
     final json = jsonDecode(response.body);
-    print(json);
+    print("NO:Scheduled"+json.toString());
     return ServicesProviderResponse.fromJson(json).services;
   }
 
-  Future<List<ServiceProvider>> getProviderServices(String token) async {
+  //LIST of services
+  Future<List<VerifyService>> getProviderServices(String token) async {
     final url = '$_baseUrl/providerServices';
     final response = await this.httpClient.get(
       url,
       headers: {"token": token},
     );
     final json = jsonDecode(response.body);
-    print(json);
+    print("NO:ListOfService"+json.toString());
+    return ServicesPrResponse.fromJson(json).services;
+  }
+
+  //LIST OF OFFERS
+  Future<List<ServiceRecents>> serviceOffers(String token) async {
+    final url = '$_baseUrl/availableNow';
+    final response = await this.httpClient.get(
+      url,
+      headers: {"token": token},
+    );
+    final json = jsonDecode(response.body);
+    print("NO:serviceOffers"+json.toString());
     return ServicesProviderResponse.fromJson(json).services;
   }
 
@@ -178,16 +196,47 @@ class UserApiClient {
     return response;
   }
 
-  Future<http.Response> joinCommunity1(
-    String community_id,
+  Future<http.Response> verifyServiceDoc(
+    String service_id,
     String token,
     String doc,
   ) async {
-    final url = '$_baseUrl/joinCommunity';
+    final url = '$_baseUrl/joinServices';
     var response = await this.httpClient.post(
       url,
       headers: {"token": token},
-      body: {"community_id": community_id},
+      body: {
+        "service_id": service_id,
+        "doc": jsonEncode({"doc": doc})
+      },
+    );
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
+
+  Future<http.Response> acceptService(String serviceID) async {
+    final url = '$_baseUrl/accept';
+    var response = await this.httpClient.post(
+      url,
+      headers: {"token": localStorageService.authToken.token},
+      body: {
+        "request_id": serviceID,
+      },
+    );
+    print(response.statusCode);
+    print(response.body);
+    return response;
+  }
+
+  Future<http.Response> markAsDone(String serviceID) async {
+    final url = '$_baseUrl/done';
+    var response = await this.httpClient.post(
+      url,
+      headers: {"token": localStorageService.authToken.token},
+      body: {
+        "request_id": serviceID,
+      },
     );
     print(response.statusCode);
     print(response.body);

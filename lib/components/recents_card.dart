@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:serveit/models/service.dart';
 import 'package:serveit/models/service_recents.dart';
+import 'package:serveit/models/user.dart';
 import 'package:serveit/pages/services.dart';
 
 import '../utils/constants.dart';
@@ -18,6 +19,7 @@ class RecentsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     String statusText = "Not defined";
     if (serviceRecents.status == 0) {
       statusText = "Not confirmed";
@@ -29,7 +31,7 @@ class RecentsCard extends StatelessWidget {
     void onClick() {
       SchedulerBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => RequestServicePage(service: service,)));
+            builder: (context) => RequestServicePage(service: service,serviceRecents: serviceRecents,)));
       });
     }
 
@@ -91,7 +93,7 @@ class RecentsCard extends StatelessWidget {
                                       text: 'Accepted by\n',
                                     ),
                                     TextSpan(
-                                      text: serviceRecents.user.name,
+                                      text: serviceRecents.user!=null?serviceRecents.user.name:"None",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                       ),

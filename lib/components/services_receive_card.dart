@@ -109,7 +109,7 @@ class ServicesReceiveCard extends StatelessWidget {
                                     .addPostFrameCallback((_) {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) =>
-                                          VerifyServicePage(service)));
+                                          RequestServicePage(service:service)));
                                 });
                               },
                               child: Padding(

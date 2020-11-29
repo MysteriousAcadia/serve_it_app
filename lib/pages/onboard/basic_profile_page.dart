@@ -151,7 +151,14 @@ class BasicProfilePage extends StatelessWidget {
       builder: (context, state) {
         String url = "";
         print("Here" + state.toString());
-        if (state is ProfileLoaded && state.picture != null) {
+        if (state is ProfileUploaded) {
+          print("CAMMMEE");
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => SelectCommunityPage()));
+          });
+        } 
+        else if (state is ProfileLoaded && state.picture != null) {
           return GestureDetector(
             onTap: getImage,
             child: Container(
@@ -182,7 +189,8 @@ class BasicProfilePage extends StatelessWidget {
               ),
             ),
           );
-        } else if(compressedFile!=null){
+        } else if (compressedFile != null) {
+          print("why u do dis?");
           return GestureDetector(
             onTap: getImage,
             child: Container(
@@ -197,14 +205,9 @@ class BasicProfilePage extends StatelessWidget {
               ),
             ),
           );
-        }
-        else if (state is ProfileUploaded) {
-          SchedulerBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => SelectCommunityPage()));
-          });
         } else {
-          url = "https://firebasestorage.googleapis.com/v0/b/serve-it-281307.appspot.com/o/various%2Fprofile_add.png?alt=media&token=5aa34120-f8c8-416f-bdb3-c52e90643932";
+          url =
+              "https://firebasestorage.googleapis.com/v0/b/serve-it-281307.appspot.com/o/various%2Fprofile_add.png?alt=media&token=5aa34120-f8c8-416f-bdb3-c52e90643932";
         }
         return GestureDetector(
           onTap: getImage,
@@ -242,39 +245,44 @@ class BasicProfilePage extends StatelessWidget {
     }
 
     return Scaffold(
+      // resizeToAvoidBottomPadding: false,
       backgroundColor: Constants.primaryColor,
       body: Center(
         child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Basic Profile!",
-                  textAlign: TextAlign.center,
-                  style: Constants.buttonTextStyle.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 33,
-                    color: Constants.white,
-                  ),
+          child: ListView(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Basic Profile!",
+                      textAlign: TextAlign.center,
+                      style: Constants.buttonTextStyle.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 33,
+                        color: Constants.white,
+                      ),
+                    ),
+                    SizedBox(height: 35.0),
+                    profilePic,
+                    SizedBox(height: 35.0),
+                    SizedBox(height: 30.0),
+                    nameField,
+                    SizedBox(height: 25.0),
+                    mobileField,
+                    SizedBox(height: 25.0),
+                    localityField,
+                    SizedBox(
+                      height: 35.0,
+                    ),
+                    loadingOrError(context),
+                  ],
                 ),
-                SizedBox(height: 35.0),
-                profilePic,
-                SizedBox(height: 35.0),
-                SizedBox(height: 30.0),
-                nameField,
-                SizedBox(height: 25.0),
-                mobileField,
-                SizedBox(height: 25.0),
-                localityField,
-                SizedBox(
-                  height: 35.0,
-                ),
-                loadingOrError(context),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
